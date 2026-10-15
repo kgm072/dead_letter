@@ -8,7 +8,6 @@ namespace DeadLetter.Player
     {
         [SerializeField] private Transform viewPivot;
         [SerializeField, Min(0.1f)] private float moveSpeed = 4.5f;
-        [SerializeField, Min(0.1f)] private float jumpHeight = 1.1f;
         [SerializeField, Min(0.1f)] private float gravity = 20f;
         [SerializeField, Min(0.01f)] private float lookSensitivity = 0.08f;
         [SerializeField, Range(1f, 89f)] private float lookLimit = 80f;
@@ -16,8 +15,6 @@ namespace DeadLetter.Player
         private CharacterController characterController;
         private float pitch;
         private float verticalSpeed;
-        private bool cursorLocked;
-
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -31,16 +28,11 @@ namespace DeadLetter.Player
             if (keyboard == null || mouse == null)
                 return;
 
-            if (keyboard.escapeKey.wasPressedThisFrame)
-                UnlockCursor();
-            else if (!cursorLocked && mouse.leftButton.wasPressedThisFrame)
-                LockCursor();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                return;
 
-            if (cursorLocked)
-            {
-                ReadLook(mouse);
-                Move(keyboard);
-            }
+            ReadLook(mouse);
+            Move(keyboard);
         }
 
         private void ReadLook(Mouse mouse)
@@ -64,9 +56,6 @@ namespace DeadLetter.Player
 
             if (characterController.isGrounded && verticalSpeed < 0f)
                 verticalSpeed = -2f;
-            if (characterController.isGrounded && keyboard.spaceKey.wasPressedThisFrame)
-                verticalSpeed = Mathf.Sqrt(2f * gravity * jumpHeight);
-
             verticalSpeed -= gravity * Time.deltaTime;
             Vector3 planar = (transform.right * input.x + transform.forward * input.y) * moveSpeed;
             Vector3 velocity = planar + Vector3.up * verticalSpeed;
@@ -77,14 +66,6 @@ namespace DeadLetter.Player
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            cursorLocked = true;
-        }
-
-        private void UnlockCursor()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            cursorLocked = false;
         }
     }
 }

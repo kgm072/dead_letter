@@ -1,5 +1,6 @@
 using DeadLetter.Interaction;
 using DeadLetter.Player;
+using DeadLetter.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -8,7 +9,6 @@ using UnityEngine.SceneManagement;
 
 namespace DeadLetter.Editor
 {
-    [InitializeOnLoad]
     public static class GrayboxMapGenerator
     {
         private const string RootName = "DEAD LETTER - Graybox";
@@ -16,27 +16,6 @@ namespace DeadLetter.Editor
         private const float WallThickness = 0.18f;
         private const float DoorWidth = 1.9f;
         private const float DoorHeight = 2.2f;
-
-        static GrayboxMapGenerator()
-        {
-            EditorApplication.delayCall += EnsureCompactRestaurantMapExists;
-        }
-
-        private static void EnsureCompactRestaurantMapExists()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-
-            Scene scene = SceneManager.GetActiveScene();
-            if (!scene.IsValid() || scene.path != "Assets/Scenes/SampleScene.unity")
-                return;
-
-            GameObject root = GameObject.Find(RootName);
-            Transform player = root != null ? root.transform.Find("Player Controller") : null;
-            bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(-3.3f, 0.05f, 8.5f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, -44f)) > 1f;
-            if (root == null || playerNeedsRelocation || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Hidden Room Closed Door") == null || root.transform.Find("Hall Ceiling Fixture") == null || root.transform.Find("Central Hall Ceiling") == null || root.transform.Find("West Spur North Wall") == null)
-                Generate();
-        }
 
         [MenuItem("Tools/DEAD LETTER/Generate Graybox Map")]
         public static void Generate()
@@ -79,35 +58,37 @@ namespace DeadLetter.Editor
             CreateLighting(root.transform);
             CreateLightFixtures(root.transform, glow);
 
-            // Compact cross-shaped hall, with the four small rooms attached around it.
+            // Longer cross-shaped hall, with the four rooms placed at meaningful walking distance.
             CreateBox(root.transform, "Central Hall Floor", new Vector3(0f, -0.1f, 0f), new Vector3(12f, 0.2f, 3.6f), floor);
-            CreateBox(root.transform, "North-South Hall Floor", new Vector3(0f, -0.1f, 0f), new Vector3(3.6f, 0.2f, 21f), floor);
+            CreateBox(root.transform, "North-South Hall Floor", new Vector3(0f, -0.1f, 0f), new Vector3(3.6f, 0.2f, 33f), floor);
             CreateBox(root.transform, "Central Hall Ceiling", new Vector3(0f, 2.89f, 0f), new Vector3(12f, 0.18f, 3.6f), ceiling);
-            CreateBox(root.transform, "North-South Hall Ceiling", new Vector3(0f, 2.89f, 0f), new Vector3(3.6f, 0.18f, 21f), ceiling);
+            CreateBox(root.transform, "North-South Hall Ceiling", new Vector3(0f, 2.89f, 0f), new Vector3(3.6f, 0.18f, 33f), ceiling);
             CreateBox(root.transform, "West Spur Floor", new Vector3(-3.9f, -0.1f, 0f), new Vector3(4.2f, 0.2f, 3.6f), floor);
             CreateBox(root.transform, "West Spur Ceiling", new Vector3(-3.9f, 2.89f, 0f), new Vector3(4.2f, 0.18f, 3.6f), ceiling);
             CreateBox(root.transform, "East Spur Floor", new Vector3(3.9f, -0.1f, 0f), new Vector3(4.2f, 0.2f, 3.6f), floor);
             CreateBox(root.transform, "East Spur Ceiling", new Vector3(3.9f, 2.89f, 0f), new Vector3(4.2f, 0.18f, 3.6f), ceiling);
-            CreateVerticalWall(root.transform, "West Corridor Wall Upper", -1.8f, 1.8f, 6.35f, wall);
-            CreateVerticalWall(root.transform, "West Corridor Wall Lower", -1.8f, -6.35f, -1.8f, wall);
-            CreateVerticalWall(root.transform, "East Corridor Wall Upper", 1.8f, 1.8f, 6.35f, wall);
-            CreateVerticalWall(root.transform, "East Corridor Wall Lower", 1.8f, -6.35f, -1.8f, wall);
+            CreateVerticalWall(root.transform, "West Corridor Wall Upper", -1.8f, 1.8f, 12.35f, wall);
+            CreateVerticalWall(root.transform, "West Corridor Wall Lower", -1.8f, -12.35f, -1.8f, wall);
+            CreateVerticalWall(root.transform, "East Corridor Wall Upper", 1.8f, 1.8f, 12.35f, wall);
+            CreateVerticalWall(root.transform, "East Corridor Wall Lower", 1.8f, -12.35f, -1.8f, wall);
             CreateHorizontalWall(root.transform, "West Spur North Wall", -6f, -1.8f, 1.8f, wall);
             CreateHorizontalWall(root.transform, "West Spur South Wall", -6f, -1.8f, -1.8f, wall);
             CreateHorizontalWall(root.transform, "East Spur North Wall", 1.8f, 6f, 1.8f, wall);
             CreateHorizontalWall(root.transform, "East Spur South Wall", 1.8f, 6f, -1.8f, wall);
 
             // Main office / counter room, north.
-            CreateRoomFloor(root.transform, "Counter Room", 0f, 10.85f, 9f, 9f, floor);
-            CreateBox(root.transform, "Counter Room Ceiling", new Vector3(0f, 2.89f, 10.85f), new Vector3(9f, 0.18f, 9f), ceiling);
-            CreateHorizontalWall(root.transform, "Counter North Wall Left", -4.5f, -1.05f, 15.35f, wall);
-            CreateHorizontalWall(root.transform, "Counter North Wall Right", 1.05f, 4.5f, 15.35f, wall);
-            CreateDoorFrame(root.transform, "Counter Exterior Door", 0f, 15.35f, true, wall);
-            CreateVerticalWall(root.transform, "Counter West Wall", -4.5f, 6.35f, 15.35f, wall);
-            CreateVerticalWall(root.transform, "Counter East Wall", 4.5f, 6.35f, 15.35f, wall);
-            CreateHorizontalWall(root.transform, "Counter Hall Wall Left", -4.5f, -1.05f, 6.35f, wall);
-            CreateHorizontalWall(root.transform, "Counter Hall Wall Right", 1.05f, 4.5f, 6.35f, wall);
-            CreateDoorFrame(root.transform, "Counter Hall Door", 0f, 6.35f, true, wall);
+            CreateRoomFloor(root.transform, "Counter Room", 0f, 16.85f, 9f, 9f, floor);
+            CreateBox(root.transform, "Counter Room Ceiling", new Vector3(0f, 2.89f, 16.85f), new Vector3(9f, 0.18f, 9f), ceiling);
+            CreateHorizontalWall(root.transform, "Counter North Wall Left", -4.5f, -1.05f, 21.35f, wall);
+            CreateHorizontalWall(root.transform, "Counter North Wall Right", 1.05f, 4.5f, 21.35f, wall);
+            CreateDoorFrame(root.transform, "Counter Exterior Door Frame", 0f, 21.35f, true, wall);
+            CreateSwingDoor(root.transform, "Counter Exterior Door", 0f, 21.35f, true, closedDoor);
+            CreateVerticalWall(root.transform, "Counter West Wall", -4.5f, 12.35f, 21.35f, wall);
+            CreateVerticalWall(root.transform, "Counter East Wall", 4.5f, 12.35f, 21.35f, wall);
+            CreateHorizontalWall(root.transform, "Counter Hall Wall Left", -4.5f, -1.05f, 12.35f, wall);
+            CreateHorizontalWall(root.transform, "Counter Hall Wall Right", 1.05f, 4.5f, 12.35f, wall);
+            CreateDoorFrame(root.transform, "Counter Hall Door Frame", 0f, 12.35f, true, wall);
+            CreateSwingDoor(root.transform, "Counter Hall Door", 0f, 12.35f, true, closedDoor);
 
             // Pantry and staff lounge, west.
             CreateRoomFloor(root.transform, "Pantry", -10.5f, 0f, 9f, 9f, floor);
@@ -118,9 +99,10 @@ namespace DeadLetter.Editor
             CreateVerticalWall(root.transform, "Pantry Hall Wall Upper", -6f, 1.15f, 4.5f, wall);
             CreateVerticalWall(root.transform, "Pantry Hall Wall Lower", -6f, -4.5f, -1.15f, wall);
             CreateDoorFrame(root.transform, "Pantry Hall Door", -6f, 0f, false, wall);
+            CreateSwingDoor(root.transform, "Pantry Hall Door", -6f, 0f, false, closedDoor);
 
             // The hidden room is physically attached to the east side of the hall.
-            // Its doorway has a solid panel, so it is visible but cannot be entered.
+            // Its doorway is now a normal interactive door, ready for later lock-state rules.
             CreateRoomFloor(root.transform, "Hidden Room", 10.5f, 0f, 9f, 9f, floor);
             CreateBox(root.transform, "Hidden Room Ceiling", new Vector3(10.5f, 2.89f, 0f), new Vector3(9f, 0.18f, 9f), ceiling);
             CreateVerticalWall(root.transform, "Hidden East Wall", 15f, -4.5f, 4.5f, wall);
@@ -129,21 +111,23 @@ namespace DeadLetter.Editor
             CreateVerticalWall(root.transform, "Hidden West Wall Upper", 6f, 1.15f, 4.5f, wall);
             CreateVerticalWall(root.transform, "Hidden West Wall Lower", 6f, -4.5f, -1.15f, wall);
             CreateDoorFrame(root.transform, "Hidden Room Door Frame", 6f, 0f, false, wall);
-            CreateBox(root.transform, "Hidden Room Closed Door", new Vector3(6f, DoorHeight * 0.5f, 0f), new Vector3(0.12f, DoorHeight, DoorWidth - 0.08f), closedDoor);
+            CreateSwingDoor(root.transform, "Hidden Room Door", 6f, 0f, false, closedDoor);
             // Keep the plate flush against the corridor-facing surface of the sealed door.
             CreateBox(root.transform, "Hidden Door Warning Plate", new Vector3(5.935f, 1.7f, 0f), new Vector3(0.02f, 0.28f, 0.8f), trim);
 
             // Mail processing room, south.
-            CreateRoomFloor(root.transform, "Mail Processing Room", 0f, -10.85f, 9f, 9f, floor);
-            CreateBox(root.transform, "Mail Room Ceiling", new Vector3(0f, 2.89f, -10.85f), new Vector3(9f, 0.18f, 9f), ceiling);
-            CreateHorizontalWall(root.transform, "Mail South Wall Left", -4.5f, -1.05f, -15.35f, wall);
-            CreateHorizontalWall(root.transform, "Mail South Wall Right", 1.05f, 4.5f, -15.35f, wall);
-            CreateDoorFrame(root.transform, "Mail Exterior Door", 0f, -15.35f, true, wall);
-            CreateVerticalWall(root.transform, "Mail West Wall", -4.5f, -15.35f, -6.35f, wall);
-            CreateVerticalWall(root.transform, "Mail East Wall", 4.5f, -15.35f, -6.35f, wall);
-            CreateHorizontalWall(root.transform, "Mail Hall Wall Left", -4.5f, -1.05f, -6.35f, wall);
-            CreateHorizontalWall(root.transform, "Mail Hall Wall Right", 1.05f, 4.5f, -6.35f, wall);
-            CreateDoorFrame(root.transform, "Mail Hall Door", 0f, -6.35f, true, wall);
+            CreateRoomFloor(root.transform, "Mail Processing Room", 0f, -16.85f, 9f, 9f, floor);
+            CreateBox(root.transform, "Mail Room Ceiling", new Vector3(0f, 2.89f, -16.85f), new Vector3(9f, 0.18f, 9f), ceiling);
+            CreateHorizontalWall(root.transform, "Mail South Wall Left", -4.5f, -1.05f, -21.35f, wall);
+            CreateHorizontalWall(root.transform, "Mail South Wall Right", 1.05f, 4.5f, -21.35f, wall);
+            CreateDoorFrame(root.transform, "Mail Exterior Door Frame", 0f, -21.35f, true, wall);
+            CreateSwingDoor(root.transform, "Mail Exterior Door", 0f, -21.35f, true, closedDoor);
+            CreateVerticalWall(root.transform, "Mail West Wall", -4.5f, -21.35f, -12.35f, wall);
+            CreateVerticalWall(root.transform, "Mail East Wall", 4.5f, -21.35f, -12.35f, wall);
+            CreateHorizontalWall(root.transform, "Mail Hall Wall Left", -4.5f, -1.05f, -12.35f, wall);
+            CreateHorizontalWall(root.transform, "Mail Hall Wall Right", 1.05f, 4.5f, -12.35f, wall);
+            CreateDoorFrame(root.transform, "Mail Hall Door Frame", 0f, -12.35f, true, wall);
+            CreateSwingDoor(root.transform, "Mail Hall Door", 0f, -12.35f, true, closedDoor);
 
             CreateCounterFurniture(root.transform, furniture, equipment, trim);
             CreatePantryFurniture(root.transform, furniture, equipment);
@@ -174,18 +158,18 @@ namespace DeadLetter.Editor
         private static void CreateLighting(Transform parent)
         {
             CreatePointLight(parent, "Hall Amber Light", new Vector3(0f, 2.35f, 0f), new Color(1f, 0.52f, 0.22f), 8f, 9f);
-            CreatePointLight(parent, "Office Sickly Light", new Vector3(0f, 2.35f, 10.8f), new Color(0.65f, 0.78f, 0.48f), 6f, 8f);
+            CreatePointLight(parent, "Office Sickly Light", new Vector3(0f, 2.35f, 16.8f), new Color(0.65f, 0.78f, 0.48f), 6f, 8f);
             CreatePointLight(parent, "Pantry Red Light", new Vector3(-10.5f, 2.3f, 0f), new Color(0.9f, 0.16f, 0.12f), 5f, 7.5f);
-            CreatePointLight(parent, "Mail Room Warm Light", new Vector3(0f, 2.3f, -10.8f), new Color(1f, 0.4f, 0.16f), 5.5f, 7.5f);
+            CreatePointLight(parent, "Mail Room Warm Light", new Vector3(0f, 2.3f, -16.8f), new Color(1f, 0.4f, 0.16f), 5.5f, 7.5f);
             CreatePointLight(parent, "Sealed Room Red Glow", new Vector3(10.5f, 2.2f, 0f), new Color(0.85f, 0.08f, 0.1f), 4f, 7f);
         }
 
         private static void CreateLightFixtures(Transform parent, Material glow)
         {
             CreateBox(parent, "Hall Ceiling Fixture", new Vector3(0f, 2.62f, 0f), new Vector3(0.55f, 0.08f, 1.1f), glow);
-            CreateBox(parent, "Office Ceiling Fixture", new Vector3(0f, 2.62f, 10.8f), new Vector3(0.55f, 0.08f, 1.1f), glow);
+            CreateBox(parent, "Office Ceiling Fixture", new Vector3(0f, 2.62f, 16.8f), new Vector3(0.55f, 0.08f, 1.1f), glow);
             CreateBox(parent, "Pantry Ceiling Fixture", new Vector3(-10.5f, 2.62f, 0f), new Vector3(0.55f, 0.08f, 1.1f), glow);
-            CreateBox(parent, "Mail Ceiling Fixture", new Vector3(0f, 2.62f, -10.8f), new Vector3(0.55f, 0.08f, 1.1f), glow);
+            CreateBox(parent, "Mail Ceiling Fixture", new Vector3(0f, 2.62f, -16.8f), new Vector3(0.55f, 0.08f, 1.1f), glow);
         }
 
         private static void ConfigureEmission(Material material, Color emission)
@@ -214,10 +198,10 @@ namespace DeadLetter.Editor
 
         private static void CreateCounterFurniture(Transform parent, Material furniture, Material equipment, Material trim)
         {
-            CreateBox(parent, "Counter Desk", new Vector3(0f, 0.45f, 10.8f), new Vector3(5.8f, 0.9f, 2.4f), furniture);
-            CreateBox(parent, "Counter Monitor", new Vector3(0f, 1.15f, 11.65f), new Vector3(1.7f, 0.75f, 0.18f), equipment);
-            CreateBox(parent, "Counter Cashier", new Vector3(-3.75f, 0.75f, 10.8f), new Vector3(0.55f, 1.5f, 2.1f), equipment);
-            CreateBox(parent, "Counter Clock", new Vector3(4.35f, 1f, 11f), new Vector3(0.16f, 1.7f, 0.8f), trim);
+            CreateBox(parent, "Counter Desk", new Vector3(0f, 0.45f, 16.8f), new Vector3(5.8f, 0.9f, 2.4f), furniture);
+            CreateBox(parent, "Counter Monitor", new Vector3(0f, 1.15f, 17.65f), new Vector3(1.7f, 0.75f, 0.18f), equipment);
+            CreateBox(parent, "Counter Cashier", new Vector3(-3.75f, 0.75f, 16.8f), new Vector3(0.55f, 1.5f, 2.1f), equipment);
+            CreateBox(parent, "Counter Clock", new Vector3(4.35f, 1f, 17f), new Vector3(0.16f, 1.7f, 0.8f), trim);
         }
 
         private static void CreatePantryFurniture(Transform parent, Material furniture, Material equipment)
@@ -230,14 +214,14 @@ namespace DeadLetter.Editor
 
         private static void CreateMailFurniture(Transform parent, Material furniture, Material equipment, Material trim)
         {
-            CreateBox(parent, "Mail Sorting Table", new Vector3(2.7f, 0.45f, -10.8f), new Vector3(1.8f, 0.9f, 5.6f), furniture);
-            CreateBox(parent, "Mail Monitor", new Vector3(2.7f, 1.25f, -8.8f), new Vector3(0.8f, 1.5f, 0.18f), equipment);
-            CreateBox(parent, "Mail Conveyor", new Vector3(-1.8f, 0.4f, -12.3f), new Vector3(2.2f, 0.8f, 3.3f), trim);
+            CreateBox(parent, "Mail Sorting Table", new Vector3(2.7f, 0.45f, -16.8f), new Vector3(1.8f, 0.9f, 5.6f), furniture);
+            CreateBox(parent, "Mail Monitor", new Vector3(2.7f, 1.25f, -14.8f), new Vector3(0.8f, 1.5f, 0.18f), equipment);
+            CreateBox(parent, "Mail Conveyor", new Vector3(-1.8f, 0.4f, -18.3f), new Vector3(2.2f, 0.8f, 3.3f), trim);
         }
 
         private static void CreateInteractableFuseBox(Transform parent, Material equipment, Material trim, Material indicator)
         {
-            GameObject panel = CreateBox(parent, "Interactable Fuse Box", new Vector3(-4.25f, 1.35f, 9.4f), new Vector3(0.72f, 0.75f, 0.32f), equipment);
+            GameObject panel = CreateBox(parent, "Interactable Fuse Box", new Vector3(-4.25f, 1.35f, 15.4f), new Vector3(0.72f, 0.75f, 0.32f), equipment);
             // The local front points toward +X so the controls face into the room from its west wall.
             panel.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
 
@@ -294,6 +278,28 @@ namespace DeadLetter.Editor
             }
         }
 
+        private static void CreateSwingDoor(Transform parent, string name, float x, float z, bool horizontalWall, Material material)
+        {
+            float panelWidth = DoorWidth - 0.2f;
+            GameObject hinge = new GameObject(name);
+            Undo.RegisterCreatedObjectUndo(hinge, "Create interactive door");
+            hinge.transform.SetParent(parent, false);
+            hinge.transform.localPosition = horizontalWall
+                ? new Vector3(x - panelWidth * 0.5f, 0f, z)
+                : new Vector3(x, 0f, z - panelWidth * 0.5f);
+
+            Vector3 panelPosition = horizontalWall
+                ? new Vector3(panelWidth * 0.5f, DoorHeight * 0.5f, 0f)
+                : new Vector3(0f, DoorHeight * 0.5f, panelWidth * 0.5f);
+            Vector3 panelSize = horizontalWall
+                ? new Vector3(panelWidth, DoorHeight, 0.12f)
+                : new Vector3(0.12f, DoorHeight, panelWidth);
+
+            GameObject panel = CreateBox(hinge.transform, name + " Panel", panelPosition, panelSize, material);
+            panel.isStatic = false;
+            hinge.AddComponent<SwingDoor>();
+        }
+
         private static GameObject CreateBox(Transform parent, string name, Vector3 position, Vector3 size, Material material)
         {
             GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -312,7 +318,7 @@ namespace DeadLetter.Editor
             GameObject player = new GameObject("Player Controller");
             Undo.RegisterCreatedObjectUndo(player, "Create player controller");
             player.transform.SetParent(parent, false);
-            player.transform.position = new Vector3(-3.3f, 0.05f, 8.5f);
+            player.transform.position = new Vector3(-3.3f, 0.05f, 14.5f);
             player.transform.rotation = Quaternion.Euler(0f, -44f, 0f);
 
             CharacterController controller = player.AddComponent<CharacterController>();
@@ -345,24 +351,26 @@ namespace DeadLetter.Editor
             SerializedObject interactionData = new SerializedObject(interactor);
             interactionData.FindProperty("playerCamera").objectReferenceValue = camera;
             interactionData.ApplyModifiedPropertiesWithoutUndo();
+
+            player.AddComponent<PauseMenuController>();
         }
 
         private static void DisableTemplateCamerasAndPostProcessing()
         {
-            foreach (Camera camera in Object.FindObjectsByType<Camera>())
+            foreach (Camera camera in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
             {
                 camera.enabled = false;
                 if (camera.gameObject.CompareTag("MainCamera"))
                     camera.gameObject.tag = "Untagged";
             }
 
-            foreach (AudioListener listener in Object.FindObjectsByType<AudioListener>())
+            foreach (AudioListener listener in Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None))
                 listener.enabled = false;
 
-            foreach (Volume volume in Object.FindObjectsByType<Volume>())
+            foreach (Volume volume in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
                 volume.enabled = false;
 
-            foreach (Light light in Object.FindObjectsByType<Light>())
+            foreach (Light light in Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
                 light.enabled = false;
         }
 
