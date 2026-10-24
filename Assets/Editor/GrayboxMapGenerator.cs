@@ -33,8 +33,8 @@ namespace DeadLetter.Editor
 
             GameObject root = GameObject.Find(RootName);
             Transform player = root != null ? root.transform.Find("Player Controller") : null;
-            bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(-3.3f, 0.05f, 8.5f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, -44f)) > 1f;
-            if (root == null || playerNeedsRelocation || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Hidden Room Closed Door") == null || root.transform.Find("Hall Ceiling Fixture") == null || root.transform.Find("Central Hall Ceiling") == null || root.transform.Find("West Spur North Wall") == null)
+            bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(0f, 0.05f, 8.6f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, 180f)) > 1f;
+            if (root == null || playerNeedsRelocation || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null || root.transform.Find("Mail Hall Door Pivot") == null || root.transform.Find("Hall Ceiling Fixture") == null || root.transform.Find("Central Hall Ceiling") == null || root.transform.Find("West Spur North Wall") == null)
                 Generate();
         }
 
@@ -103,11 +103,13 @@ namespace DeadLetter.Editor
             CreateHorizontalWall(root.transform, "Counter North Wall Left", -4.5f, -1.05f, 15.35f, wall);
             CreateHorizontalWall(root.transform, "Counter North Wall Right", 1.05f, 4.5f, 15.35f, wall);
             CreateDoorFrame(root.transform, "Counter Exterior Door", 0f, 15.35f, true, wall);
+            CreateHingedDoor(root.transform, "Counter Exterior Door", 0f, 15.35f, true, 90f, closedDoor, trim);
             CreateVerticalWall(root.transform, "Counter West Wall", -4.5f, 6.35f, 15.35f, wall);
             CreateVerticalWall(root.transform, "Counter East Wall", 4.5f, 6.35f, 15.35f, wall);
             CreateHorizontalWall(root.transform, "Counter Hall Wall Left", -4.5f, -1.05f, 6.35f, wall);
             CreateHorizontalWall(root.transform, "Counter Hall Wall Right", 1.05f, 4.5f, 6.35f, wall);
             CreateDoorFrame(root.transform, "Counter Hall Door", 0f, 6.35f, true, wall);
+            CreateHingedDoor(root.transform, "Counter Hall Door", 0f, 6.35f, true, -90f, closedDoor, trim);
 
             // Pantry and staff lounge, west.
             CreateRoomFloor(root.transform, "Pantry", -10.5f, 0f, 9f, 9f, floor);
@@ -118,6 +120,7 @@ namespace DeadLetter.Editor
             CreateVerticalWall(root.transform, "Pantry Hall Wall Upper", -6f, 1.15f, 4.5f, wall);
             CreateVerticalWall(root.transform, "Pantry Hall Wall Lower", -6f, -4.5f, -1.15f, wall);
             CreateDoorFrame(root.transform, "Pantry Hall Door", -6f, 0f, false, wall);
+            CreateHingedDoor(root.transform, "Pantry Hall Door", -6f, 0f, false, -90f, closedDoor, trim);
 
             // The hidden room is physically attached to the east side of the hall.
             // Its doorway has a solid panel, so it is visible but cannot be entered.
@@ -129,9 +132,7 @@ namespace DeadLetter.Editor
             CreateVerticalWall(root.transform, "Hidden West Wall Upper", 6f, 1.15f, 4.5f, wall);
             CreateVerticalWall(root.transform, "Hidden West Wall Lower", 6f, -4.5f, -1.15f, wall);
             CreateDoorFrame(root.transform, "Hidden Room Door Frame", 6f, 0f, false, wall);
-            CreateBox(root.transform, "Hidden Room Closed Door", new Vector3(6f, DoorHeight * 0.5f, 0f), new Vector3(0.12f, DoorHeight, DoorWidth - 0.08f), closedDoor);
-            // Keep the plate flush against the corridor-facing surface of the sealed door.
-            CreateBox(root.transform, "Hidden Door Warning Plate", new Vector3(5.935f, 1.7f, 0f), new Vector3(0.02f, 0.28f, 0.8f), trim);
+            CreateHingedDoor(root.transform, "Hidden Room Door", 6f, 0f, false, 90f, closedDoor, trim, true);
 
             // Mail processing room, south.
             CreateRoomFloor(root.transform, "Mail Processing Room", 0f, -10.85f, 9f, 9f, floor);
@@ -139,11 +140,13 @@ namespace DeadLetter.Editor
             CreateHorizontalWall(root.transform, "Mail South Wall Left", -4.5f, -1.05f, -15.35f, wall);
             CreateHorizontalWall(root.transform, "Mail South Wall Right", 1.05f, 4.5f, -15.35f, wall);
             CreateDoorFrame(root.transform, "Mail Exterior Door", 0f, -15.35f, true, wall);
+            CreateHingedDoor(root.transform, "Mail Exterior Door", 0f, -15.35f, true, -90f, closedDoor, trim);
             CreateVerticalWall(root.transform, "Mail West Wall", -4.5f, -15.35f, -6.35f, wall);
             CreateVerticalWall(root.transform, "Mail East Wall", 4.5f, -15.35f, -6.35f, wall);
             CreateHorizontalWall(root.transform, "Mail Hall Wall Left", -4.5f, -1.05f, -6.35f, wall);
             CreateHorizontalWall(root.transform, "Mail Hall Wall Right", 1.05f, 4.5f, -6.35f, wall);
             CreateDoorFrame(root.transform, "Mail Hall Door", 0f, -6.35f, true, wall);
+            CreateHingedDoor(root.transform, "Mail Hall Door", 0f, -6.35f, true, 90f, closedDoor, trim);
 
             CreateCounterFurniture(root.transform, furniture, equipment, trim);
             CreatePantryFurniture(root.transform, furniture, equipment);
@@ -294,6 +297,64 @@ namespace DeadLetter.Editor
             }
         }
 
+        private static void CreateHingedDoor(
+            Transform parent,
+            string name,
+            float x,
+            float z,
+            bool horizontalWall,
+            float openAngle,
+            Material doorMaterial,
+            Material handleMaterial,
+            bool addWarningPlate = false)
+        {
+            float leafWidth = DoorWidth - 0.16f;
+            float leafHeight = DoorHeight - 0.08f;
+            float halfWidth = leafWidth * 0.5f;
+
+            GameObject pivot = new GameObject(name + " Pivot");
+            Undo.RegisterCreatedObjectUndo(pivot, "Create hinged door");
+            pivot.transform.SetParent(parent, false);
+            pivot.transform.localPosition = horizontalWall
+                ? new Vector3(x - halfWidth, 0.04f, z)
+                : new Vector3(x, 0.04f, z - halfWidth);
+
+            Vector3 leafPosition = horizontalWall
+                ? new Vector3(halfWidth, leafHeight * 0.5f, 0f)
+                : new Vector3(0f, leafHeight * 0.5f, halfWidth);
+            Vector3 leafSize = horizontalWall
+                ? new Vector3(leafWidth, leafHeight, 0.12f)
+                : new Vector3(0.12f, leafHeight, leafWidth);
+            GameObject leaf = CreateBox(pivot.transform, name + " Leaf", leafPosition, leafSize, doorMaterial);
+            leaf.isStatic = false;
+
+            Vector3 handlePosition = horizontalWall
+                ? new Vector3(leafWidth * 0.78f, 1.02f, -0.09f)
+                : new Vector3(-0.09f, 1.02f, leafWidth * 0.78f);
+            GameObject handle = CreateBox(pivot.transform, name + " Handle", handlePosition, new Vector3(0.11f, 0.11f, 0.11f), handleMaterial);
+            handle.isStatic = false;
+            handle.GetComponent<Collider>().enabled = false;
+
+            if (addWarningPlate)
+            {
+                Vector3 platePosition = horizontalWall
+                    ? new Vector3(halfWidth, 1.67f, -0.071f)
+                    : new Vector3(-0.071f, 1.67f, halfWidth);
+                Vector3 plateSize = horizontalWall
+                    ? new Vector3(0.8f, 0.28f, 0.02f)
+                    : new Vector3(0.02f, 0.28f, 0.8f);
+                GameObject plate = CreateBox(pivot.transform, "Hidden Door Warning Plate", platePosition, plateSize, handleMaterial);
+                plate.isStatic = false;
+                plate.GetComponent<Collider>().enabled = false;
+            }
+
+            HingedDoor door = Undo.AddComponent<HingedDoor>(pivot);
+            SerializedObject doorData = new SerializedObject(door);
+            doorData.FindProperty("hinge").objectReferenceValue = pivot.transform;
+            doorData.FindProperty("openAngle").floatValue = openAngle;
+            doorData.ApplyModifiedPropertiesWithoutUndo();
+        }
+
         private static GameObject CreateBox(Transform parent, string name, Vector3 position, Vector3 size, Material material)
         {
             GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -312,8 +373,8 @@ namespace DeadLetter.Editor
             GameObject player = new GameObject("Player Controller");
             Undo.RegisterCreatedObjectUndo(player, "Create player controller");
             player.transform.SetParent(parent, false);
-            player.transform.position = new Vector3(-3.3f, 0.05f, 8.5f);
-            player.transform.rotation = Quaternion.Euler(0f, -44f, 0f);
+            player.transform.position = new Vector3(0f, 0.05f, 8.6f);
+            player.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
             CharacterController controller = player.AddComponent<CharacterController>();
             controller.height = 1.8f;
