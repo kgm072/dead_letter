@@ -16,6 +16,8 @@ namespace DeadLetter.Mail
         }
 
         [SerializeField] private LetterTaskState taskState;
+        [SerializeField] private Texture2D fireStampTexture;
+        [SerializeField] private Texture2D impactStampTexture;
 
         private WorkTool selectedTool;
         private bool workspaceOpen;
@@ -24,6 +26,7 @@ namespace DeadLetter.Mail
         private GUIStyle titleStyle;
         private GUIStyle labelStyle;
         private GUIStyle centerStyle;
+        private GUIStyle buttonStyle;
 
         public bool CanInteract(GameObject interactor)
         {
@@ -36,6 +39,7 @@ namespace DeadLetter.Mail
                 return;
 
             workspaceOpen = true;
+            taskState.SetWorkstationViewOpen(true);
             selectedTool = WorkTool.None;
             lockedController = interactor.GetComponent<FirstPersonController>();
             lockedInteractor = interactor.GetComponent<FirstPersonInteractor>();
@@ -72,20 +76,20 @@ namespace DeadLetter.Mail
             float height = Screen.height / scale;
 
             DrawRect(new Rect(0f, 0f, width, height), new Color(0.018f, 0.014f, 0.02f, 0.94f));
-            GUI.Label(new Rect(54f, 34f, 700f, 42f), "LETTER PROCESSING DESK", titleStyle);
-            GUI.Label(new Rect(56f, 78f, 700f, 28f), $"CUSTOMER  {taskState.CustomerId}     LETTER  {taskState.LetterId}", labelStyle);
+            GUI.Label(new Rect(54f, 34f, 700f, 42f), "편지 처리 작업대", titleStyle);
+            GUI.Label(new Rect(56f, 78f, 800f, 28f), $"민원인  {GetCustomerDisplayName(taskState.CustomerId)}     접수 번호  {GetLetterDisplayId(taskState.LetterId)}", labelStyle);
 
             Rect envelope = new Rect(95f, 145f, 760f, 430f);
             DrawRect(envelope, new Color(0.78f, 0.72f, 0.57f, 1f));
             DrawRect(new Rect(envelope.x + 12f, envelope.y + 12f, envelope.width - 24f, envelope.height - 24f), new Color(0.66f, 0.59f, 0.45f, 1f));
-            GUI.Label(new Rect(envelope.x + 220f, envelope.y + 125f, 330f, 40f), "DEAD LETTER POST", centerStyle);
+            GUI.Label(new Rect(envelope.x + 220f, envelope.y + 125f, 330f, 40f), "데드 레터 우편국", centerStyle);
 
             Rect stampArea = new Rect(envelope.x + 32f, envelope.yMax - 150f, 240f, 110f);
             Rect postmarkArea = new Rect(envelope.xMax - 272f, envelope.yMax - 150f, 240f, 110f);
             DrawRect(stampArea, new Color(0.19f, 0.16f, 0.13f, 0.32f));
             DrawRect(postmarkArea, new Color(0.19f, 0.16f, 0.13f, 0.32f));
-            GUI.Label(new Rect(stampArea.x, stampArea.y + 38f, stampArea.width, 24f), "STAMP AREA", centerStyle);
-            GUI.Label(new Rect(postmarkArea.x, postmarkArea.y + 38f, postmarkArea.width, 24f), "POSTMARK AREA", centerStyle);
+            GUI.Label(new Rect(stampArea.x, stampArea.y + 38f, stampArea.width, 24f), "우표 부착 위치", centerStyle);
+            GUI.Label(new Rect(postmarkArea.x, postmarkArea.y + 38f, postmarkArea.width, 24f), "도장 날인 위치", centerStyle);
 
             if (GUI.Button(stampArea, GUIContent.none, GUIStyle.none))
             {
@@ -101,7 +105,7 @@ namespace DeadLetter.Mail
             DrawAppliedMarks(stampArea, postmarkArea);
             DrawToolPanel(new Rect(900f, 145f, 315f, 430f));
 
-            if (GUI.Button(new Rect(1055f, 620f, 160f, 48f), "CLOSE  [ESC]"))
+            if (GUI.Button(new Rect(1055f, 620f, 160f, 48f), "닫기  [ESC]", buttonStyle))
                 CloseWorkspace();
 
             GUI.matrix = previousMatrix;
@@ -110,18 +114,23 @@ namespace DeadLetter.Mail
         private void DrawToolPanel(Rect panel)
         {
             DrawRect(panel, new Color(0.08f, 0.065f, 0.075f, 1f));
-            GUI.Label(new Rect(panel.x + 22f, panel.y + 20f, panel.width - 44f, 34f), "TOOLS", titleStyle);
-            if (GUI.Button(new Rect(panel.x + 24f, panel.y + 78f, panel.width - 48f, 58f), "SELECT  FIRE STAMP"))
+            GUI.Label(new Rect(panel.x + 22f, panel.y + 20f, panel.width - 44f, 34f), "작업 도구", titleStyle);
+            Rect fireButton = new Rect(panel.x + 24f, panel.y + 78f, panel.width - 48f, 58f);
+            Rect impactButton = new Rect(panel.x + 24f, panel.y + 151f, panel.width - 48f, 58f);
+            if (GUI.Button(fireButton, "불 우표 선택", buttonStyle))
                 selectedTool = WorkTool.FireStamp;
-            if (GUI.Button(new Rect(panel.x + 24f, panel.y + 151f, panel.width - 48f, 58f), "SELECT  SHOCK STAMP"))
+            if (GUI.Button(impactButton, "충격 우표 선택", buttonStyle))
                 selectedTool = WorkTool.ShockStamp;
-            if (GUI.Button(new Rect(panel.x + 24f, panel.y + 224f, panel.width - 48f, 58f), "SELECT  POSTMARK"))
+            if (GUI.Button(new Rect(panel.x + 24f, panel.y + 224f, panel.width - 48f, 58f), "접수 도장 선택", buttonStyle))
                 selectedTool = WorkTool.Postmark;
 
-            GUI.Label(new Rect(panel.x + 24f, panel.y + 306f, panel.width - 48f, 26f), $"SELECTED  {selectedTool}", labelStyle);
-            string stampResult = taskState.HasRequiredStamps ? "REQUIRED STAMPS  OK" : "REQUIRED  FIRE + SHOCK";
+            DrawToolIcon(fireButton, fireStampTexture);
+            DrawToolIcon(impactButton, impactStampTexture);
+
+            GUI.Label(new Rect(panel.x + 24f, panel.y + 306f, panel.width - 48f, 26f), $"선택 도구  {GetToolName(selectedTool)}", labelStyle);
+            string stampResult = taskState.HasRequiredStamps ? "필수 우표 부착 완료" : "필수 우표  불 + 충격";
             GUI.Label(new Rect(panel.x + 24f, panel.y + 345f, panel.width - 48f, 26f), stampResult, labelStyle);
-            GUI.Label(new Rect(panel.x + 24f, panel.y + 378f, panel.width - 48f, 26f), taskState.PostmarkApplied ? "POSTMARK  APPLIED" : "POSTMARK  NOT APPLIED", labelStyle);
+            GUI.Label(new Rect(panel.x + 24f, panel.y + 378f, panel.width - 48f, 26f), taskState.PostmarkApplied ? "도장 날인 완료" : "도장 미날인", labelStyle);
         }
 
         private void DrawAppliedMarks(Rect stampArea, Rect postmarkArea)
@@ -129,28 +138,66 @@ namespace DeadLetter.Mail
             if ((taskState.AttachedStamps & LetterStamp.Fire) != 0)
             {
                 Rect mark = new Rect(stampArea.x + 18f, stampArea.y + 16f, 92f, 78f);
-                DrawRect(mark, new Color(0.52f, 0.12f, 0.055f, 1f));
-                GUI.Label(mark, "FIRE", centerStyle);
+                DrawStamp(mark, fireStampTexture, new Color(0.52f, 0.12f, 0.055f, 1f), "불");
             }
 
             if ((taskState.AttachedStamps & LetterStamp.Shock) != 0)
             {
                 Rect mark = new Rect(stampArea.x + 128f, stampArea.y + 16f, 92f, 78f);
-                DrawRect(mark, new Color(0.22f, 0.19f, 0.48f, 1f));
-                GUI.Label(mark, "SHOCK", centerStyle);
+                DrawStamp(mark, impactStampTexture, new Color(0.22f, 0.19f, 0.48f, 1f), "충격");
             }
 
             if (taskState.PostmarkApplied)
             {
                 DrawRect(new Rect(postmarkArea.x + 24f, postmarkArea.y + 24f, postmarkArea.width - 48f, 5f), new Color(0.22f, 0.07f, 0.07f, 1f));
                 DrawRect(new Rect(postmarkArea.x + 24f, postmarkArea.y + 52f, postmarkArea.width - 48f, 5f), new Color(0.22f, 0.07f, 0.07f, 1f));
-                GUI.Label(new Rect(postmarkArea.x, postmarkArea.y + 62f, postmarkArea.width, 28f), "ACCEPTED", centerStyle);
+                GUI.Label(new Rect(postmarkArea.x, postmarkArea.y + 62f, postmarkArea.width, 28f), "접수 완료", centerStyle);
             }
+        }
+
+        private static void DrawToolIcon(Rect button, Texture2D texture)
+        {
+            if (texture != null)
+                GUI.DrawTexture(new Rect(button.x + 8f, button.y + 7f, 44f, 44f), texture, ScaleMode.ScaleToFit, true);
+        }
+
+        private void DrawStamp(Rect rect, Texture2D texture, Color fallbackColor, string fallbackText)
+        {
+            if (texture != null)
+                GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit, true);
+            else
+            {
+                DrawRect(rect, fallbackColor);
+                GUI.Label(rect, fallbackText, centerStyle);
+            }
+        }
+
+        private static string GetToolName(WorkTool tool)
+        {
+            return tool switch
+            {
+                WorkTool.FireStamp => "불 우표",
+                WorkTool.ShockStamp => "충격 우표",
+                WorkTool.Postmark => "접수 도장",
+                _ => "없음"
+            };
+        }
+
+        private static string GetCustomerDisplayName(string customerId)
+        {
+            return customerId == "customer_mascot_test" ? "인형탈" : customerId;
+        }
+
+        private static string GetLetterDisplayId(string letterId)
+        {
+            return letterId == "letter_mascot_001" ? "001" : letterId;
         }
 
         private void CloseWorkspace()
         {
             workspaceOpen = false;
+            if (taskState != null)
+                taskState.SetWorkstationViewOpen(false);
             selectedTool = WorkTool.None;
             if (lockedInteractor != null)
                 lockedInteractor.enabled = true;
@@ -167,17 +214,26 @@ namespace DeadLetter.Mail
 
             titleStyle = new GUIStyle(GUI.skin.label)
             {
+                font = KoreanGuiFont.Get(),
                 fontSize = 26,
                 fontStyle = FontStyle.Bold,
                 normal = { textColor = new Color(0.94f, 0.89f, 0.76f, 1f) }
             };
             labelStyle = new GUIStyle(GUI.skin.label)
             {
+                font = KoreanGuiFont.Get(),
                 fontSize = 16,
                 fontStyle = FontStyle.Bold,
                 normal = { textColor = new Color(0.9f, 0.84f, 0.73f, 1f) }
             };
             centerStyle = new GUIStyle(labelStyle) { alignment = TextAnchor.MiddleCenter };
+            buttonStyle = new GUIStyle(GUI.skin.button)
+            {
+                font = KoreanGuiFont.Get(),
+                fontSize = 16,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
         }
 
         private static void DrawRect(Rect rect, Color color)

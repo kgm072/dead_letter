@@ -17,7 +17,7 @@ namespace DeadLetter.Editor
         private const float WallThickness = 0.18f;
         private const float DoorWidth = 1.9f;
         private const float DoorHeight = 2.2f;
-        private const string LayoutMarkerName = "Reference Layout Marker - Letter Intake v3";
+        private const string LayoutMarkerName = "Reference Layout Marker - Korean Stamp Tutorial v5";
 
         static GrayboxMapGenerator()
         {
@@ -36,7 +36,7 @@ namespace DeadLetter.Editor
             GameObject root = GameObject.Find(RootName);
             Transform player = root != null ? root.transform.Find("Player Controller") : null;
             bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(0f, 0.05f, -10.1f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, 180f)) > 1f;
-            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
+            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Letter Tutorial HUD") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
                 Generate();
         }
 
@@ -169,6 +169,7 @@ namespace DeadLetter.Editor
             CreateHingedDoor(root.transform, "Counter Hall Door", 0f, -7f, true, 90f, closedDoor, trim);
 
             LetterTaskState letterTask = CreateLetterTaskState(root.transform);
+            CreateLetterTutorialHud(root.transform, letterTask);
             CreateStorageFurniture(root.transform, furniture, equipment, trim, cardboard, paper);
             CreatePantryFurniture(root.transform, furniture, equipment, trim, upholstery);
             CreateWorkshopFurniture(root.transform, letterTask, furniture, equipment, trim, cardboard, paper, screen, glow);
@@ -314,6 +315,8 @@ namespace DeadLetter.Editor
             LetterWorkstation workstation = Undo.AddComponent<LetterWorkstation>(packingBench);
             SerializedObject workstationData = new SerializedObject(workstation);
             workstationData.FindProperty("taskState").objectReferenceValue = letterTask;
+            workstationData.FindProperty("fireStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/FireStamp.png");
+            workstationData.FindProperty("impactStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/ImpactStamp.png");
             workstationData.ApplyModifiedPropertiesWithoutUndo();
             CreateShelfUnit(parent, "Workshop Parcel Shelves", new Vector3(15.15f, 0f, 3.05f), new Vector3(0.72f, 2.1f, 2.4f), equipment);
             CreateParcelBox(parent, "Workshop Shelf Parcel", new Vector3(15.1f, 0.72f, 3.1f), new Vector3(0.48f, 0.36f, 0.72f), cardboard, paper, 0f);
@@ -338,6 +341,17 @@ namespace DeadLetter.Editor
             Undo.RegisterCreatedObjectUndo(stateObject, "Create letter task state");
             stateObject.transform.SetParent(parent, false);
             return Undo.AddComponent<LetterTaskState>(stateObject);
+        }
+
+        private static void CreateLetterTutorialHud(Transform parent, LetterTaskState taskState)
+        {
+            GameObject hudObject = new GameObject("Letter Tutorial HUD");
+            Undo.RegisterCreatedObjectUndo(hudObject, "Create letter tutorial HUD");
+            hudObject.transform.SetParent(parent, false);
+            LetterTutorialHUD hud = Undo.AddComponent<LetterTutorialHUD>(hudObject);
+            SerializedObject hudData = new SerializedObject(hud);
+            hudData.FindProperty("taskState").objectReferenceValue = taskState;
+            hudData.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void CreateTestCustomer(

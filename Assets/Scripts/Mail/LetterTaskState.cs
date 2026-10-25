@@ -19,6 +19,9 @@ namespace DeadLetter.Mail
         [SerializeField] private LetterStamp attachedStamps;
         [SerializeField] private bool postmarkApplied;
         [SerializeField] private bool hasLetter;
+        [SerializeField] private bool workstationOpened;
+
+        private bool workstationViewOpen;
 
         public string LetterId => letterId;
         public string CustomerId => customerId;
@@ -26,6 +29,8 @@ namespace DeadLetter.Mail
         public LetterStamp AttachedStamps => attachedStamps;
         public bool PostmarkApplied => postmarkApplied;
         public bool HasLetter => hasLetter;
+        public bool WorkstationOpened => workstationOpened;
+        public bool WorkstationViewOpen => workstationViewOpen;
         public bool HasRequiredStamps => hasLetter && ContainsRequiredStamps(attachedStamps, requiredStamps);
 
         public event Action Changed;
@@ -45,6 +50,7 @@ namespace DeadLetter.Mail
             requiredStamps = newRequiredStamps;
             attachedStamps = LetterStamp.None;
             postmarkApplied = false;
+            workstationOpened = false;
             hasLetter = true;
             Changed?.Invoke();
             return true;
@@ -68,6 +74,14 @@ namespace DeadLetter.Mail
             postmarkApplied = true;
             Changed?.Invoke();
             return true;
+        }
+
+        public void SetWorkstationViewOpen(bool open)
+        {
+            workstationViewOpen = open;
+            if (open)
+                workstationOpened = true;
+            Changed?.Invoke();
         }
     }
 }
