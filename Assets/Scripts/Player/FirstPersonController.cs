@@ -17,6 +17,7 @@ namespace DeadLetter.Player
         private float pitch;
         private float verticalSpeed;
         private bool cursorLocked;
+        private bool inputEnabled = true;
 
         private void Awake()
         {
@@ -29,6 +30,9 @@ namespace DeadLetter.Player
             Keyboard keyboard = Keyboard.current;
             Mouse mouse = Mouse.current;
             if (keyboard == null || mouse == null)
+                return;
+
+            if (!inputEnabled)
                 return;
 
             if (keyboard.escapeKey.wasPressedThisFrame)
@@ -85,6 +89,15 @@ namespace DeadLetter.Player
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             cursorLocked = false;
+        }
+
+        public void SetInputEnabled(bool enabled)
+        {
+            inputEnabled = enabled;
+            if (enabled)
+                LockCursor();
+            else
+                UnlockCursor();
         }
     }
 }

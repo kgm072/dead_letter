@@ -49,6 +49,9 @@ namespace DeadLetter.Interaction
             {
                 if (behaviour is IInteractable interactable)
                 {
+                    if (behaviour is IConditionalInteractable conditional && !conditional.CanInteract(gameObject))
+                        continue;
+
                     currentInteractable = interactable;
                     showInteractionPrompt = true;
                     return;
