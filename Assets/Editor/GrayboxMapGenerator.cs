@@ -18,7 +18,8 @@ namespace DeadLetter.Editor
         private const float DoorWidth = 1.9f;
         private const float DoorHeight = 2.2f;
         // Changing this marker forces existing graybox scenes to receive the current gameplay cycle.
-        private const string LayoutMarkerName = "Reference Layout Marker - Pantry Stamp Assets v7";
+        private const string LayoutMarkerName = "Reference Layout Marker - Recorder And Mailbox Scale v10";
+        private const string VoiceRecorderAssetPath = "Assets/Models/Props/VoiceRecorder.fbx";
 
         static GrayboxMapGenerator()
         {
@@ -37,7 +38,7 @@ namespace DeadLetter.Editor
             GameObject root = GameObject.Find(RootName);
             Transform player = root != null ? root.transform.Find("Player Controller") : null;
             bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(0f, 0.05f, -10.1f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, 180f)) > 1f;
-            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Day Cycle Runtime") == null || root.transform.Find("Letter Tutorial HUD") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Workshop Mail Drop Box") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
+            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Day Cycle Runtime") == null || root.transform.Find("Letter Tutorial HUD") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Workshop Mail Drop Box") == null || root.transform.Find("Counter Voice Recorder") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
                 Generate();
         }
 
@@ -339,7 +340,8 @@ namespace DeadLetter.Editor
 
         private static void CreateMailDropBox(Transform parent, LetterTaskState taskState, Material body, Material trim, Material glow)
         {
-            GameObject box = CreateBox(parent, "Workshop Mail Drop Box", new Vector3(8.25f, 0.95f, -3.45f), new Vector3(1.15f, 1.9f, 0.72f), body);
+            GameObject box = CreateBox(parent, "Workshop Mail Drop Box", new Vector3(13.35f, 1.1f, -3.5f), new Vector3(1.45f, 2.2f, 0.9f), body);
+            box.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             CreateBox(box.transform, "Mail Slot", new Vector3(0f, 0.24f, -0.53f), new Vector3(0.72f, 0.12f, 0.08f), trim, false);
             CreateBox(box.transform, "Mail Box Status", new Vector3(0f, -0.18f, -0.53f), new Vector3(0.42f, 0.25f, 0.06f), glow, false);
             MailDropBox dropBox = Undo.AddComponent<MailDropBox>(box);
@@ -356,6 +358,55 @@ namespace DeadLetter.Editor
             CreateBench(parent, "Counter Waiting Bench", new Vector3(3.82f, 0f, -13.35f), 3.7f, furniture, upholstery, 90f);
             CreateDrawerCabinet(parent, "Counter Side Cabinet", new Vector3(-3.8f, 0f, -13.2f), 90f, new Vector3(2.2f, 1.45f, 0.72f), equipment, trim);
             CreateLetterTray(parent, "Counter Incoming Letter Tray", new Vector3(-0.35f, 1.05f, -11.28f), paper, trim);
+            CreateCounterVoiceRecorder(parent);
+        }
+
+        private static void CreateCounterVoiceRecorder(Transform parent)
+        {
+            GameObject recorderAsset = AssetDatabase.LoadAssetAtPath<GameObject>(VoiceRecorderAssetPath);
+            if (recorderAsset == null)
+            {
+                Debug.LogWarning($"Voice recorder model was not found at {VoiceRecorderAssetPath}.");
+                return;
+            }
+
+            GameObject recorder = PrefabUtility.InstantiatePrefab(recorderAsset, parent) as GameObject;
+            if (recorder == null)
+                return;
+
+            Undo.RegisterCreatedObjectUndo(recorder, "Create counter voice recorder");
+            recorder.name = "Counter Voice Recorder";
+            recorder.transform.localPosition = new Vector3(0.55f, 0f, -11.18f);
+            recorder.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            recorder.transform.localScale = Vector3.one;
+
+            Renderer[] renderers = recorder.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0)
+                return;
+
+            Bounds modelBounds = renderers[0].bounds;
+            for (int index = 1; index < renderers.Length; index++)
+                modelBounds.Encapsulate(renderers[index].bounds);
+
+            float largestDimension = Mathf.Max(modelBounds.size.x, modelBounds.size.y, modelBounds.size.z);
+            if (largestDimension > 0.0001f)
+                recorder.transform.localScale = Vector3.one * (0.58f / largestDimension);
+
+            modelBounds = renderers[0].bounds;
+            for (int index = 1; index < renderers.Length; index++)
+                modelBounds.Encapsulate(renderers[index].bounds);
+
+            Vector3 alignedPosition = recorder.transform.position;
+            alignedPosition.y += 1.065f - modelBounds.min.y;
+            recorder.transform.position = alignedPosition;
+
+            BoxCollider collider = Undo.AddComponent<BoxCollider>(recorder);
+            collider.center = recorder.transform.InverseTransformPoint(modelBounds.center);
+            Vector3 scale = recorder.transform.lossyScale;
+            collider.size = new Vector3(
+                modelBounds.size.x / Mathf.Max(Mathf.Abs(scale.x), 0.0001f),
+                modelBounds.size.y / Mathf.Max(Mathf.Abs(scale.y), 0.0001f),
+                modelBounds.size.z / Mathf.Max(Mathf.Abs(scale.z), 0.0001f));
         }
 
         private static LetterTaskState CreateLetterTaskState(Transform parent)
