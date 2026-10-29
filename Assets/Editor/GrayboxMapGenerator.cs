@@ -17,7 +17,8 @@ namespace DeadLetter.Editor
         private const float WallThickness = 0.18f;
         private const float DoorWidth = 1.9f;
         private const float DoorHeight = 2.2f;
-        private const string LayoutMarkerName = "Reference Layout Marker - Korean Stamp Tutorial v5";
+        // Changing this marker forces existing graybox scenes to receive the current gameplay cycle.
+        private const string LayoutMarkerName = "Reference Layout Marker - Pantry Stamp Assets v7";
 
         static GrayboxMapGenerator()
         {
@@ -36,7 +37,7 @@ namespace DeadLetter.Editor
             GameObject root = GameObject.Find(RootName);
             Transform player = root != null ? root.transform.Find("Player Controller") : null;
             bool playerNeedsRelocation = player == null || Vector3.Distance(player.position, new Vector3(0f, 0.05f, -10.1f)) > 0.05f || Mathf.Abs(Mathf.DeltaAngle(player.eulerAngles.y, 180f)) > 1f;
-            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Letter Tutorial HUD") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
+            if (root == null || playerNeedsRelocation || root.transform.Find(LayoutMarkerName) == null || root.transform.Find("Letter Task Runtime") == null || root.transform.Find("Day Cycle Runtime") == null || root.transform.Find("Letter Tutorial HUD") == null || root.transform.Find("Test Mascot Customer") == null || root.transform.Find("Workshop Mail Drop Box") == null || root.transform.Find("Interactable Fuse Box") == null || root.transform.Find("Storage Hall Door Pivot") == null || root.transform.Find("Pantry Hall Door Pivot") == null || root.transform.Find("Workshop Hall Door Pivot") == null || root.transform.Find("Counter Hall Door Pivot") == null || root.transform.Find("Hidden Room Door Pivot") == null)
                 Generate();
         }
 
@@ -170,13 +171,14 @@ namespace DeadLetter.Editor
 
             LetterTaskState letterTask = CreateLetterTaskState(root.transform);
             CreateLetterTutorialHud(root.transform, letterTask);
+            TestCustomerNPC customer = CreateTestCustomer(root.transform, letterTask, counterExteriorDoor, cardboard, upholstery, equipment, paper, trim, screen);
+            DayCycleManager dayCycle = CreateDayCycleManager(root.transform, letterTask, customer);
             CreateStorageFurniture(root.transform, furniture, equipment, trim, cardboard, paper);
-            CreatePantryFurniture(root.transform, furniture, equipment, trim, upholstery);
+            CreatePantryFurniture(root.transform, letterTask, dayCycle, furniture, equipment, trim, upholstery);
             CreateWorkshopFurniture(root.transform, letterTask, furniture, equipment, trim, cardboard, paper, screen, glow);
             CreateCounterFurniture(root.transform, furniture, equipment, trim, upholstery, paper, screen);
             CreateHiddenRoomFurniture(root.transform, furniture, equipment, trim, glow);
             CreateInteractableFuseBox(root.transform, equipment, trim, closedDoor, glow);
-            CreateTestCustomer(root.transform, letterTask, counterExteriorDoor, cardboard, upholstery, equipment, paper, trim, screen);
 
             CreatePlayer(root.transform);
 
@@ -295,15 +297,20 @@ namespace DeadLetter.Editor
             CreateFileBox(parent, "Storage Document Box", new Vector3(-0.9f, 1.35f, 15.05f), cardboard, paper);
         }
 
-        private static void CreatePantryFurniture(Transform parent, Material furniture, Material equipment, Material trim, Material upholstery)
+        private static void CreatePantryFurniture(Transform parent, LetterTaskState taskState, DayCycleManager dayCycle, Material furniture, Material equipment, Material trim, Material upholstery)
         {
-            CreateRefrigerator(parent, "Pantry Refrigerator", new Vector3(-14.65f, 0f, 3.05f), equipment, trim);
-            CreateKitchenCounter(parent, "Pantry Kitchen Counter", new Vector3(-11.3f, 0f, 3.85f), furniture, equipment, trim);
-            CreateSofa(parent, "Pantry Sleep Sofa", new Vector3(-14.25f, 0f, -2.45f), 90f, upholstery, furniture);
-            CreateTable(parent, "Pantry Break Table", new Vector3(-11.05f, 0f, -1.1f), new Vector2(2.3f, 1.55f), furniture, trim);
-            CreateChair(parent, "Pantry Chair A", new Vector3(-10.95f, 0f, -2.35f), 0f, furniture, trim);
-            CreateChair(parent, "Pantry Chair B", new Vector3(-10.95f, 0f, 0.15f), 180f, furniture, trim);
-            CreateLocker(parent, "Pantry Staff Locker", new Vector3(-8.9f, 0f, 2.45f), new Vector3(0.72f, 2f, 1.8f), equipment, trim);
+            CreateRefrigerator(parent, "Pantry Refrigerator", new Vector3(-15.1f, 0f, 3.15f), equipment, trim);
+            CreateKitchenCounter(parent, "Pantry Kitchen Counter", new Vector3(-11.75f, 0f, 3.85f), furniture, equipment, trim);
+            GameObject sofa = CreateSofa(parent, "Pantry Sleep Sofa", new Vector3(-15.15f, 0f, -1.55f), 90f, upholstery, furniture);
+            DaySleepSofa sleep = Undo.AddComponent<DaySleepSofa>(sofa);
+            SerializedObject sleepData = new SerializedObject(sleep);
+            sleepData.FindProperty("taskState").objectReferenceValue = taskState;
+            sleepData.FindProperty("dayCycle").objectReferenceValue = dayCycle;
+            sleepData.ApplyModifiedPropertiesWithoutUndo();
+            CreateTable(parent, "Pantry Break Table", new Vector3(-11.25f, 0f, -1.65f), new Vector2(2.2f, 1.45f), furniture, trim);
+            CreateChair(parent, "Pantry Chair A", new Vector3(-11.25f, 0f, -2.75f), 0f, furniture, trim);
+            CreateChair(parent, "Pantry Chair B", new Vector3(-11.25f, 0f, -0.55f), 180f, furniture, trim);
+            CreateLocker(parent, "Pantry Staff Locker", new Vector3(-7.55f, 0f, 3.25f), new Vector3(0.72f, 2f, 1.6f), equipment, trim);
         }
 
         private static void CreateWorkshopFurniture(Transform parent, LetterTaskState letterTask, Material furniture, Material equipment, Material trim, Material cardboard, Material paper, Material screen, Material glow)
@@ -316,13 +323,29 @@ namespace DeadLetter.Editor
             SerializedObject workstationData = new SerializedObject(workstation);
             workstationData.FindProperty("taskState").objectReferenceValue = letterTask;
             workstationData.FindProperty("fireStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/FireStamp.png");
+            workstationData.FindProperty("waterStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/WaterStamp.png");
+            workstationData.FindProperty("electricityStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/ElectricityStamp.png");
             workstationData.FindProperty("impactStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/ImpactStamp.png");
+            workstationData.FindProperty("medicineStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/MedicineStamp.png");
+            workstationData.FindProperty("alcoholStampTexture").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/UI/Stamps/AlcoholStamp.png");
             workstationData.ApplyModifiedPropertiesWithoutUndo();
             CreateShelfUnit(parent, "Workshop Parcel Shelves", new Vector3(15.15f, 0f, 3.05f), new Vector3(0.72f, 2.1f, 2.4f), equipment);
             CreateParcelBox(parent, "Workshop Shelf Parcel", new Vector3(15.1f, 0.72f, 3.1f), new Vector3(0.48f, 0.36f, 0.72f), cardboard, paper, 0f);
             CreateParcelBox(parent, "Workshop Open Parcel", new Vector3(12.25f, 1.04f, -3.65f), new Vector3(0.9f, 0.38f, 0.7f), cardboard, paper, 0f);
             CreateStampSet(parent, "Workshop Pictogram Stamp Set", new Vector3(9.4f, 1.03f, -3.65f), trim, glow, paper);
             CreateLetterStack(parent, "Workshop Letters", new Vector3(10.9f, 1.02f, -3.65f), paper, trim);
+            CreateMailDropBox(parent, letterTask, equipment, trim, glow);
+        }
+
+        private static void CreateMailDropBox(Transform parent, LetterTaskState taskState, Material body, Material trim, Material glow)
+        {
+            GameObject box = CreateBox(parent, "Workshop Mail Drop Box", new Vector3(8.25f, 0.95f, -3.45f), new Vector3(1.15f, 1.9f, 0.72f), body);
+            CreateBox(box.transform, "Mail Slot", new Vector3(0f, 0.24f, -0.53f), new Vector3(0.72f, 0.12f, 0.08f), trim, false);
+            CreateBox(box.transform, "Mail Box Status", new Vector3(0f, -0.18f, -0.53f), new Vector3(0.42f, 0.25f, 0.06f), glow, false);
+            MailDropBox dropBox = Undo.AddComponent<MailDropBox>(box);
+            SerializedObject dropBoxData = new SerializedObject(dropBox);
+            dropBoxData.FindProperty("taskState").objectReferenceValue = taskState;
+            dropBoxData.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void CreateCounterFurniture(Transform parent, Material furniture, Material equipment, Material trim, Material upholstery, Material paper, Material screen)
@@ -343,6 +366,19 @@ namespace DeadLetter.Editor
             return Undo.AddComponent<LetterTaskState>(stateObject);
         }
 
+        private static DayCycleManager CreateDayCycleManager(Transform parent, LetterTaskState taskState, TestCustomerNPC customer)
+        {
+            GameObject cycleObject = new GameObject("Day Cycle Runtime");
+            Undo.RegisterCreatedObjectUndo(cycleObject, "Create day cycle runtime");
+            cycleObject.transform.SetParent(parent, false);
+            DayCycleManager cycle = Undo.AddComponent<DayCycleManager>(cycleObject);
+            SerializedObject cycleData = new SerializedObject(cycle);
+            cycleData.FindProperty("taskState").objectReferenceValue = taskState;
+            cycleData.FindProperty("customer").objectReferenceValue = customer;
+            cycleData.ApplyModifiedPropertiesWithoutUndo();
+            return cycle;
+        }
+
         private static void CreateLetterTutorialHud(Transform parent, LetterTaskState taskState)
         {
             GameObject hudObject = new GameObject("Letter Tutorial HUD");
@@ -354,7 +390,7 @@ namespace DeadLetter.Editor
             hudData.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        private static void CreateTestCustomer(
+        private static TestCustomerNPC CreateTestCustomer(
             Transform parent,
             LetterTaskState taskState,
             HingedDoor entranceDoor,
@@ -422,6 +458,7 @@ namespace DeadLetter.Editor
             for (int index = 0; index < waypoints.Length; index++)
                 waypointData.GetArrayElementAtIndex(index).objectReferenceValue = waypoints[index];
             npcData.ApplyModifiedPropertiesWithoutUndo();
+            return npc;
         }
 
         private static void CreateHiddenRoomFurniture(Transform parent, Material furniture, Material equipment, Material trim, Material glow)
@@ -557,7 +594,7 @@ namespace DeadLetter.Editor
             CreateBox(root.transform, "Faucet Spout", new Vector3(1.31f, 1.33f, 0.25f), new Vector3(0.36f, 0.06f, 0.06f), trim, false);
         }
 
-        private static void CreateSofa(Transform parent, string name, Vector3 position, float rotationY, Material upholstery, Material frame)
+        private static GameObject CreateSofa(Transform parent, string name, Vector3 position, float rotationY, Material upholstery, Material frame)
         {
             GameObject root = CreatePropRoot(parent, name, position, rotationY);
             CreateBox(root.transform, "Sofa Base", new Vector3(0f, 0.28f, 0f), new Vector3(3.15f, 0.35f, 1.2f), frame);
@@ -567,6 +604,7 @@ namespace DeadLetter.Editor
             CreateBox(root.transform, "Back Cushion Right", new Vector3(0.76f, 1.02f, 0.46f), new Vector3(1.42f, 0.78f, 0.24f), upholstery);
             CreateBox(root.transform, "Left Arm", new Vector3(-1.52f, 0.68f, 0f), new Vector3(0.22f, 0.78f, 1.25f), upholstery);
             CreateBox(root.transform, "Right Arm", new Vector3(1.52f, 0.68f, 0f), new Vector3(0.22f, 0.78f, 1.25f), upholstery);
+            return root;
         }
 
         private static void CreateTable(Transform parent, string name, Vector3 position, Vector2 size, Material top, Material legs)

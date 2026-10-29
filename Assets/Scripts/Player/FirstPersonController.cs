@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DeadLetter.UI;
 
 namespace DeadLetter.Player
 {
@@ -8,7 +9,6 @@ namespace DeadLetter.Player
     {
         [SerializeField] private Transform viewPivot;
         [SerializeField, Min(0.1f)] private float moveSpeed = 4.5f;
-        [SerializeField, Min(0.1f)] private float jumpHeight = 1.1f;
         [SerializeField, Min(0.1f)] private float gravity = 20f;
         [SerializeField, Min(0.01f)] private float lookSensitivity = 0.08f;
         [SerializeField, Range(1f, 89f)] private float lookLimit = 80f;
@@ -22,6 +22,8 @@ namespace DeadLetter.Player
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
+            if (PlayerPrefs.HasKey(MainMenuController.MouseSensitivityPreference))
+                lookSensitivity = Mathf.Lerp(0.025f, 0.18f, PlayerPrefs.GetFloat(MainMenuController.MouseSensitivityPreference));
             LockCursor();
         }
 
@@ -68,9 +70,6 @@ namespace DeadLetter.Player
 
             if (characterController.isGrounded && verticalSpeed < 0f)
                 verticalSpeed = -2f;
-            if (characterController.isGrounded && keyboard.spaceKey.wasPressedThisFrame)
-                verticalSpeed = Mathf.Sqrt(2f * gravity * jumpHeight);
-
             verticalSpeed -= gravity * Time.deltaTime;
             Vector3 planar = (transform.right * input.x + transform.forward * input.y) * moveSpeed;
             Vector3 velocity = planar + Vector3.up * verticalSpeed;
