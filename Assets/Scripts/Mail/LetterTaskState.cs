@@ -162,6 +162,22 @@ namespace DeadLetter.Mail
             Changed?.Invoke();
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public void DebugResetForDay(int day)
+        {
+            currentDay = Mathf.Max(1, day);
+            completedRequests = 0;
+            ClearCurrentRequest();
+            Changed?.Invoke();
+        }
+
+        public void DebugClearCurrentRequest()
+        {
+            ClearCurrentRequest();
+            Changed?.Invoke();
+        }
+#endif
+
         private void ClearCurrentRequest()
         {
             letterId = string.Empty;

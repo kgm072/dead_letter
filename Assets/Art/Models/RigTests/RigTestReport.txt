@@ -1,0 +1,7 @@
+Model: Assets/Art/Models/RigTests/tripo_rig_test.fbx
+Skinned meshes: 2
+Bones: 52
+Animation clips: 0
+Clip names: None
+Texture/material import: intentionally disabled for this rig-only test
+Test scene: Assets/Scenes/RigTestScene.unity

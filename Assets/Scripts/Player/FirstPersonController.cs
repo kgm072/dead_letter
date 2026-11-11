@@ -19,6 +19,9 @@ namespace DeadLetter.Player
         private bool cursorLocked;
         private bool inputEnabled = true;
 
+        public bool InputEnabled => inputEnabled;
+        public bool CursorLocked => cursorLocked;
+
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DeadLetter.Mail
 {
-    public sealed class DaySleepSofa : MonoBehaviour, IInteractable
+    public sealed class DaySleepSofa : MonoBehaviour, IInteractable, IInteractionPromptProvider
     {
         [SerializeField] private LetterTaskState taskState;
         [SerializeField] private DayCycleManager dayCycle;
@@ -11,6 +11,8 @@ namespace DeadLetter.Mail
         private string message;
         private float messageUntil;
         private GUIStyle messageStyle;
+
+        public string GetInteractionPrompt(GameObject interactor) => "소파에서 잠자기";
 
         public void Interact(GameObject interactor)
         {

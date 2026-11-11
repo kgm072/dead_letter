@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DeadLetter.Mail
 {
-    public sealed class TestCustomerNPC : MonoBehaviour, IInteractable, IConditionalInteractable
+    public sealed class TestCustomerNPC : MonoBehaviour, IInteractable, IConditionalInteractable, IInteractionPromptProvider
     {
         private enum CustomerState
         {
@@ -33,6 +33,11 @@ namespace DeadLetter.Mail
         private float dialogueUntil;
         private GUIStyle dialogueStyle;
         private GUIStyle speakerStyle;
+
+        public string GetInteractionPrompt(GameObject interactor)
+        {
+            return state == CustomerState.WaitingForDispatch ? "발송 결과 알리기" : "편지 받기";
+        }
 
         private void Awake()
         {
@@ -81,7 +86,10 @@ namespace DeadLetter.Mail
                 return false;
 
             return state == CustomerState.WaitingForLetter && !taskState.HasLetter ||
-                   state == CustomerState.WaitingForDispatch && taskState.LetterMailed;
+                   state == CustomerState.WaitingForDispatch &&
+                   (dayCycle != null
+                       ? dayCycle.CanFinishCurrentCustomer(customerId, letterId)
+                       : taskState.LetterMailed);
         }
 
         public void Interact(GameObject interactor)
@@ -95,12 +103,16 @@ namespace DeadLetter.Mail
                     return;
 
                 state = CustomerState.WaitingForDispatch;
+                dayCycle?.NotifyRequestAccepted(letterId);
                 dialogue = $"필요한 우표는 {GetStampList(requiredStamps)}입니다. 처리 후 다시 알려 주세요.";
                 dialogueUntil = Time.time + 6f;
                 if (letterProp != null)
                     letterProp.SetActive(false);
                 return;
             }
+
+            if (dayCycle != null && !dayCycle.TryFinishCurrentCustomer(customerId, letterId))
+                return;
 
             dialogue = "확인했습니다. 수고하셨습니다.";
             dialogueUntil = Time.time + 2.5f;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DeadLetter.Interaction
 {
-    public sealed class TinyFuseBox : MonoBehaviour, IInteractable
+    public sealed class TinyFuseBox : MonoBehaviour, IInteractable, IInteractionPromptProvider
     {
         [SerializeField] private Transform lever;
         [SerializeField] private Renderer indicatorRenderer;
@@ -10,6 +10,8 @@ namespace DeadLetter.Interaction
         [SerializeField] private Color unpoweredColor = new Color(0.9f, 0.08f, 0.025f);
 
         private bool powered;
+
+        public string GetInteractionPrompt(GameObject interactor) => powered ? "퓨즈 끄기" : "퓨즈 켜기";
 
         private void Awake()
         {

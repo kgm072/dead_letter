@@ -3,13 +3,15 @@ using UnityEngine;
 
 namespace DeadLetter.Mail
 {
-    public sealed class MailDropBox : MonoBehaviour, IInteractable
+    public sealed class MailDropBox : MonoBehaviour, IInteractable, IInteractionPromptProvider
     {
         [SerializeField] private LetterTaskState taskState;
 
         private string message;
         private float messageUntil;
         private GUIStyle messageStyle;
+
+        public string GetInteractionPrompt(GameObject interactor) => "우편함 사용";
 
         public void Interact(GameObject interactor)
         {

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace DeadLetter.Mail
 {
-    public sealed class LetterWorkstation : MonoBehaviour, IInteractable, IConditionalInteractable
+    public sealed class LetterWorkstation : MonoBehaviour, IInteractable, IConditionalInteractable, IInteractionPromptProvider
     {
         private enum WorkTool
         {
@@ -35,6 +35,8 @@ namespace DeadLetter.Mail
         private GUIStyle labelStyle;
         private GUIStyle centerStyle;
         private GUIStyle buttonStyle;
+
+        public string GetInteractionPrompt(GameObject interactor) => "작업대 사용";
 
         public bool CanInteract(GameObject interactor)
         {

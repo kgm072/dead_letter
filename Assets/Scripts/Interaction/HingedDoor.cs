@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DeadLetter.Interaction
 {
-    public sealed class HingedDoor : MonoBehaviour, IInteractable
+    public sealed class HingedDoor : MonoBehaviour, IInteractable, IInteractionPromptProvider
     {
         [SerializeField] private Transform hinge;
         [SerializeField] private float openAngle = 90f;
@@ -13,6 +13,8 @@ namespace DeadLetter.Interaction
         private Quaternion closedRotation;
         private Quaternion openRotation;
         private bool isOpen;
+
+        public string GetInteractionPrompt(GameObject interactor) => isOpen ? "문 닫기" : "문 열기";
 
         private void Awake()
         {
