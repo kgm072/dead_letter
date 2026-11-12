@@ -36,7 +36,12 @@ namespace DeadLetter.Mail
 
         public string GetInteractionPrompt(GameObject interactor)
         {
-            return state == CustomerState.WaitingForDispatch ? "발송 결과 알리기" : "편지 받기";
+            if (state != CustomerState.WaitingForDispatch)
+                return "편지 받기";
+
+            return dayCycle?.CurrentDayTwoRequest?.Definition.RequestType == MailRequestType.Receive
+                ? "포장 물품 전달"
+                : "발송 결과 알리기";
         }
 
         private void Awake()
@@ -104,7 +109,13 @@ namespace DeadLetter.Mail
 
                 state = CustomerState.WaitingForDispatch;
                 dayCycle?.NotifyRequestAccepted(letterId);
-                dialogue = $"필요한 우표는 {GetStampList(requiredStamps)}입니다. 처리 후 다시 알려 주세요.";
+                MailRequestType? requestType = dayCycle?.CurrentDayTwoRequest?.Definition.RequestType;
+                string work = requestType == MailRequestType.Dispatch
+                    ? "창구 물품을 포장해 컨베이어로 보낸 뒤 다시 알려 주세요."
+                    : requestType == MailRequestType.Receive
+                        ? "창고 물품을 포장한 뒤 제게 전달해 주세요."
+                        : "처리 후 다시 알려 주세요.";
+                dialogue = $"필요한 도안은 {GetStampList(requiredStamps)}입니다. {work}";
                 dialogueUntil = Time.time + 6f;
                 if (letterProp != null)
                     letterProp.SetActive(false);

@@ -20,6 +20,12 @@ namespace DeadLetter.Mail
         InsulatedGloves
     }
 
+    public enum Day2ItemSource
+    {
+        Counter,
+        Storage
+    }
+
     public enum LetterAppearanceType
     {
         LightlyScorched,
@@ -84,6 +90,7 @@ namespace DeadLetter.Mail
     public sealed class Day2RequestRuntimeState
     {
         private readonly HashSet<Day2ItemType> securedItems = new();
+        private readonly Dictionary<Day2ItemType, string> securedItemInstanceIds = new();
         private readonly List<Day2ItemType> packedItems = new();
 
         public Day2RequestRuntimeState(Day2RequestDefinition definition)
@@ -93,6 +100,7 @@ namespace DeadLetter.Mail
 
         public Day2RequestDefinition Definition { get; }
         public IReadOnlyCollection<Day2ItemType> SecuredItems => securedItems;
+        public IReadOnlyDictionary<Day2ItemType, string> SecuredItemInstanceIds => securedItemInstanceIds;
         public IReadOnlyList<Day2ItemType> PackedItems => packedItems;
         public bool RequestAccepted { get; private set; }
         public bool ItemsSecured => Definition.RequestedItems.All(securedItems.Contains);
@@ -134,7 +142,18 @@ namespace DeadLetter.Mail
 
         public bool SecureItem(Day2ItemType item)
         {
-            return RequestAccepted && Definition.RequestedItems.Contains(item) && securedItems.Add(item);
+            return SecureItem(item, $"state_{Definition.RequestId}_{item}");
+        }
+
+        public bool SecureItem(Day2ItemType item, string instanceId)
+        {
+            if (!RequestAccepted || !Definition.RequestedItems.Contains(item) ||
+                string.IsNullOrWhiteSpace(instanceId) || securedItems.Contains(item))
+                return false;
+
+            securedItems.Add(item);
+            securedItemInstanceIds.Add(item, instanceId);
+            return true;
         }
 
         public bool SecureEmptyBox(string boxId)
@@ -164,10 +183,16 @@ namespace DeadLetter.Mail
 
         public bool ApplyBoxPictogram(LetterStamp pictogram)
         {
-            if (!Packed || pictogram == LetterStamp.None || (AppliedBoxPictograms & pictogram) == pictogram)
+            if (!Packed || !IsSinglePictogram(pictogram) || (AppliedBoxPictograms & pictogram) == pictogram)
                 return false;
             AppliedBoxPictograms |= pictogram;
             return true;
+        }
+
+        private static bool IsSinglePictogram(LetterStamp pictogram)
+        {
+            int value = (int)pictogram;
+            return value > 0 && (value & (value - 1)) == 0;
         }
 
         public bool TryRecordConveyorDispatch()
@@ -202,6 +227,7 @@ namespace DeadLetter.Mail
         public void Reset()
         {
             securedItems.Clear();
+            securedItemInstanceIds.Clear();
             packedItems.Clear();
             RequestAccepted = false;
             EmptyBoxSecured = false;

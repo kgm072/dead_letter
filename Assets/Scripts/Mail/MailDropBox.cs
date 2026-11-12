@@ -6,6 +6,7 @@ namespace DeadLetter.Mail
     public sealed class MailDropBox : MonoBehaviour, IInteractable, IInteractionPromptProvider
     {
         [SerializeField] private LetterTaskState taskState;
+        [SerializeField] private DayCycleManager dayCycle;
 
         private string message;
         private float messageUntil;
@@ -40,7 +41,12 @@ namespace DeadLetter.Mail
             }
 
             if (taskState.TryMailLetter())
-                ShowMessage("발송 접수 완료. 민원인에게 돌아가 상호작용하세요.");
+            {
+                dayCycle ??= FindAnyObjectByType<DayCycleManager>();
+                ShowMessage(dayCycle != null && dayCycle.IsDayTwoActive
+                    ? "편지 처리 완료. 박스 업무를 계속 진행하세요."
+                    : "발송 접수 완료. 민원인에게 돌아가 상호작용하세요.");
+            }
         }
 
         private void OnGUI()

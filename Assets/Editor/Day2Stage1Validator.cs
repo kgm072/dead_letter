@@ -129,6 +129,7 @@ namespace DeadLetter.Editor
         private static void ValidateReceiveState(Day2RequestDefinition definition)
         {
             Day2RequestRuntimeState state = PreparePackedState(definition);
+            state.SetLetterProcessingState(definition.RequiredPictograms, true);
             ApplyRequiredBoxMarks(state, definition.RequiredPictograms);
             Require(!state.TryDeliverTo("model_student"), "Delivery to a different customer must fail.");
             Require(!state.Completed, "Wrong-customer delivery must not complete the request.");

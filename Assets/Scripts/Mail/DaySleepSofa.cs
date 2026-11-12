@@ -29,6 +29,8 @@ namespace DeadLetter.Mail
             int finishedDay = taskState.CurrentDay;
             if (dayCycle.TryAdvanceDay())
                 ShowMessage($"DAY {finishedDay} 종료. DAY {taskState.CurrentDay} 업무를 시작합니다.");
+            else if (finishedDay == 2)
+                ShowMessage("DAY 2 업무 완료. DAY 3 업무는 아직 구현 범위 밖입니다.");
         }
 
         private void OnGUI()

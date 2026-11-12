@@ -28,6 +28,8 @@ namespace DeadLetter.Mail
         private readonly List<CustomerDefinition> dayOneOrder = new();
         private readonly List<Day2RequestRuntimeState> dayTwoRequests = new();
         private readonly List<Day2RequestRuntimeState> dayTwoOrder = new();
+        private readonly Dictionary<string, string> claimedWorldItemOwners = new();
+        private readonly Dictionary<string, string> claimedBoxOwners = new();
         private int nextCustomerIndex;
         private bool transitionInProgress;
         private bool customerActive;
@@ -39,8 +41,13 @@ namespace DeadLetter.Mail
         public IReadOnlyList<Day2RequestRuntimeState> DayTwoRequests => dayTwoRequests;
         public IReadOnlyList<Day2RequestRuntimeState> DayTwoOrder => dayTwoOrder;
         public Day2RequestRuntimeState CurrentDayTwoRequest => currentDayTwoRequest;
+        public string CurrentLetterId => currentLetterId;
         public string CurrentCustomerId => currentCustomerId;
         public string CurrentCustomerDisplayName => currentCustomerDisplayName;
+        public bool IsDayTwoActive => taskState != null && taskState.CurrentDay == 2;
+
+        public event System.Action DayTwoStateChanged;
+        public event System.Action<string> ActionFeedback;
 
         public string GetCurrentOrderSummary()
         {
@@ -92,6 +99,237 @@ namespace DeadLetter.Mail
                 return;
             currentDayTwoRequest.AcceptRequest();
             HandleTaskStateChanged();
+            NotifyDayTwoStateChanged();
+        }
+
+        public bool IsWorldItemClaimed(string instanceId)
+        {
+            return !string.IsNullOrWhiteSpace(instanceId) && claimedWorldItemOwners.ContainsKey(instanceId);
+        }
+
+        public bool IsBoxClaimed(string boxId)
+        {
+            return !string.IsNullOrWhiteSpace(boxId) && claimedBoxOwners.ContainsKey(boxId);
+        }
+
+        public bool CanAcquireCurrentItem(
+            string instanceId,
+            string requestId,
+            Day2ItemType item,
+            Day2ItemSource source,
+            out string reason)
+        {
+            if (!TryGetAcceptedCurrentRequest(requestId, out Day2RequestRuntimeState request, out reason))
+                return false;
+            if (string.IsNullOrWhiteSpace(instanceId))
+            {
+                reason = "물품 식별값이 없습니다.";
+                return false;
+            }
+            if (claimedWorldItemOwners.ContainsKey(instanceId))
+            {
+                reason = "이미 사용한 물품입니다.";
+                return false;
+            }
+            Day2ItemSource requiredSource = request.Definition.RequestType == MailRequestType.Dispatch
+                ? Day2ItemSource.Counter
+                : Day2ItemSource.Storage;
+            if (source != requiredSource)
+            {
+                reason = requiredSource == Day2ItemSource.Counter
+                    ? "발송 물품은 창구에서 받아야 합니다."
+                    : "수령 물품은 창고에서 확보해야 합니다.";
+                return false;
+            }
+            if (!request.Definition.RequestedItems.Contains(item))
+            {
+                reason = "현재 민원의 요청 물품이 아닙니다.";
+                return false;
+            }
+            if (request.SecuredItems.Contains(item))
+            {
+                reason = "이미 확보한 물품입니다.";
+                return false;
+            }
+            if (request.Definition.RequestId == Day2RequestCatalog.TroublemakerRequestId &&
+                item == Day2ItemType.BulliedUniform && !IsRelatedRequestComplete(request.Definition.RelatedRequestId))
+            {
+                reason = "모범생의 교복 발송이 아직 완료되지 않았습니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        public bool TryAcquireCurrentItem(string instanceId, string requestId, Day2ItemType item, Day2ItemSource source)
+        {
+            if (!CanAcquireCurrentItem(instanceId, requestId, item, source, out string reason))
+                return Fail(reason);
+
+            if (!currentDayTwoRequest.SecureItem(item, instanceId))
+                return Fail("물품 상태를 기록하지 못했습니다.");
+
+            claimedWorldItemOwners.Add(instanceId, currentDayTwoRequest.Definition.RequestId);
+            NotifyDayTwoStateChanged();
+            return Succeed($"{Day2Labels.GetItemLabel(item)} 확보 완료");
+        }
+
+        public bool CanAcquireEmptyBox(string boxId, out string reason)
+        {
+            if (!TryGetAcceptedCurrentRequest(string.Empty, out Day2RequestRuntimeState request, out reason, false))
+                return false;
+            if (string.IsNullOrWhiteSpace(boxId))
+            {
+                reason = "박스 식별값이 없습니다.";
+                return false;
+            }
+            if (claimedBoxOwners.ContainsKey(boxId))
+            {
+                reason = "이미 사용한 박스입니다.";
+                return false;
+            }
+            if (request.EmptyBoxSecured)
+            {
+                reason = "현재 민원에 이미 빈 박스를 연결했습니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        public bool TryAcquireEmptyBox(string boxId)
+        {
+            if (!CanAcquireEmptyBox(boxId, out string reason))
+                return Fail(reason);
+            if (!currentDayTwoRequest.SecureEmptyBox(boxId))
+                return Fail("빈 박스 상태를 기록하지 못했습니다.");
+
+            claimedBoxOwners.Add(boxId, currentDayTwoRequest.Definition.RequestId);
+            NotifyDayTwoStateChanged();
+            return Succeed("빈 박스 확보 완료");
+        }
+
+        public bool CanPackCurrentRequest(out string reason)
+        {
+            if (!TryGetAcceptedCurrentRequest(string.Empty, out Day2RequestRuntimeState request, out reason, false))
+                return false;
+            if (!request.ItemsSecured)
+            {
+                reason = "요청 물품을 모두 확보해야 합니다.";
+                return false;
+            }
+            if (!request.EmptyBoxSecured)
+            {
+                reason = "창고에서 빈 박스를 확보해야 합니다.";
+                return false;
+            }
+            if (request.Packed)
+            {
+                reason = "이미 포장한 민원입니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        public bool TryPackCurrentRequest()
+        {
+            if (!CanPackCurrentRequest(out string reason))
+                return Fail(reason);
+            if (!currentDayTwoRequest.TryPack())
+                return Fail("포장 상태를 기록하지 못했습니다.");
+
+            NotifyDayTwoStateChanged();
+            return Succeed("포장 완료 — 편지와 박스 도장을 처리하세요.");
+        }
+
+        public bool CanApplyBoxPictogram(LetterStamp pictogram, out string reason)
+        {
+            if (!TryGetAcceptedCurrentRequest(string.Empty, out Day2RequestRuntimeState request, out reason, false))
+                return false;
+            if (!request.Packed)
+            {
+                reason = "먼저 물품을 포장해야 합니다.";
+                return false;
+            }
+            if (request.ConveyorDispatched || request.DeliveredToCustomer || request.Completed)
+            {
+                reason = "이미 인계된 박스에는 날인할 수 없습니다.";
+                return false;
+            }
+            int value = (int)pictogram;
+            if (value <= 0 || (value & (value - 1)) != 0)
+            {
+                reason = "박스 도장은 한 종류씩 선택해야 합니다.";
+                return false;
+            }
+            if ((request.AppliedBoxPictograms & pictogram) == pictogram)
+            {
+                reason = "이미 찍은 박스 도장입니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        public bool TryApplyBoxPictogram(LetterStamp pictogram)
+        {
+            if (!CanApplyBoxPictogram(pictogram, out string reason))
+                return Fail(reason);
+            if (!currentDayTwoRequest.ApplyBoxPictogram(pictogram))
+                return Fail("박스 도장 상태를 기록하지 못했습니다.");
+
+            NotifyDayTwoStateChanged();
+            return Succeed($"박스에 {Day2Labels.GetStampLabel(pictogram)} 도장을 찍었습니다.");
+        }
+
+        public bool CanDispatchCurrentPackage(out string reason)
+        {
+            if (!TryGetAcceptedCurrentRequest(string.Empty, out Day2RequestRuntimeState request, out reason, false))
+                return false;
+            if (request.Definition.RequestType != MailRequestType.Dispatch)
+            {
+                reason = "수령 민원은 컨베이어가 아니라 민원인에게 전달해야 합니다.";
+                return false;
+            }
+            if (!request.Packed)
+            {
+                reason = "먼저 박스를 포장해야 합니다.";
+                return false;
+            }
+            if (!request.HasOnlyRequiredBoxPictograms)
+            {
+                reason = "박스의 필수 픽토그램 도장을 확인하세요.";
+                return false;
+            }
+            if (taskState == null || !taskState.LetterMailed || !request.LetterProcessingComplete)
+            {
+                reason = "편지 우표·도장을 마치고 우편함에 넣어야 합니다.";
+                return false;
+            }
+            if (request.ConveyorDispatched)
+            {
+                reason = "이미 발송한 박스입니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        public bool TryDispatchCurrentPackage()
+        {
+            if (!CanDispatchCurrentPackage(out string reason))
+                return Fail(reason);
+            if (!currentDayTwoRequest.TryRecordConveyorDispatch())
+                return Fail("컨베이어 발송 상태를 기록하지 못했습니다.");
+
+            NotifyDayTwoStateChanged();
+            return Succeed("컨베이어 발송 완료 — 창구에서 민원인에게 알려 주세요.");
         }
 
         public bool CanFinishCurrentCustomer(string customerId, string letterId)
@@ -116,9 +354,17 @@ namespace DeadLetter.Mail
             if (taskState.CurrentDay != 2)
                 return true;
 
-            return currentDayTwoRequest.Definition.RequestType == MailRequestType.Dispatch
+            bool completed = currentDayTwoRequest.Definition.RequestType == MailRequestType.Dispatch
                 ? currentDayTwoRequest.TryRecordCompletionNotice()
                 : currentDayTwoRequest.TryDeliverTo(customerId);
+            if (completed)
+            {
+                NotifyDayTwoStateChanged();
+                Succeed(currentDayTwoRequest.Definition.RequestType == MailRequestType.Dispatch
+                    ? "발송 완료 안내를 전달했습니다."
+                    : "해당 민원인에게 포장 물품을 전달했습니다.");
+            }
+            return completed;
         }
 
         public bool TryAdvanceDay()
@@ -146,6 +392,8 @@ namespace DeadLetter.Mail
             dayOneOrder.Clear();
             dayTwoRequests.Clear();
             dayTwoOrder.Clear();
+            claimedWorldItemOwners.Clear();
+            claimedBoxOwners.Clear();
             currentDayTwoRequest = null;
             currentLetterId = string.Empty;
             currentCustomerId = string.Empty;
@@ -159,6 +407,7 @@ namespace DeadLetter.Mail
             nextCustomerIndex = 0;
             customerActive = false;
             BeginNextCustomer();
+            NotifyDayTwoStateChanged();
         }
 
         private void PrepareDayOne()
@@ -216,6 +465,7 @@ namespace DeadLetter.Mail
                     currentLetterId,
                     definition.RequiredPictograms,
                     this);
+                NotifyDayTwoStateChanged();
                 return;
             }
 
@@ -247,6 +497,57 @@ namespace DeadLetter.Mail
             if (taskState == null || taskState.CurrentDay != 2 || currentDayTwoRequest == null)
                 return;
             currentDayTwoRequest.SetLetterProcessingState(taskState.AttachedStamps, taskState.PostmarkApplied);
+            NotifyDayTwoStateChanged();
+        }
+
+        private bool TryGetAcceptedCurrentRequest(
+            string requestId,
+            out Day2RequestRuntimeState request,
+            out string reason,
+            bool requireRequestId = true)
+        {
+            request = currentDayTwoRequest;
+            if (!IsDayTwoActive || request == null)
+            {
+                reason = "DAY 2 민원이 진행 중일 때만 사용할 수 있습니다.";
+                return false;
+            }
+            if (requireRequestId && !string.Equals(request.Definition.RequestId, requestId, System.StringComparison.Ordinal))
+            {
+                reason = "현재 민원에 연결된 물품이 아닙니다.";
+                return false;
+            }
+            if (!request.RequestAccepted)
+            {
+                reason = "먼저 창구에서 민원을 접수해야 합니다.";
+                return false;
+            }
+
+            reason = string.Empty;
+            return true;
+        }
+
+        private bool IsRelatedRequestComplete(string requestId)
+        {
+            return dayTwoRequests.Any(request =>
+                request.Definition.RequestId == requestId && request.Completed);
+        }
+
+        private void NotifyDayTwoStateChanged()
+        {
+            DayTwoStateChanged?.Invoke();
+        }
+
+        private bool Fail(string message)
+        {
+            ActionFeedback?.Invoke(message);
+            return false;
+        }
+
+        private bool Succeed(string message)
+        {
+            ActionFeedback?.Invoke(message);
+            return true;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -288,10 +589,12 @@ namespace DeadLetter.Mail
             customer.HideUntilNextCustomer();
             taskState.DebugClearCurrentRequest();
             selected.Reset();
+            ReleaseClaimsForRequest(selected.Definition.RequestId);
             currentDayTwoRequest = selected;
             int orderIndex = dayTwoOrder.IndexOf(selected);
             nextCustomerIndex = orderIndex >= 0 ? orderIndex + 1 : dayTwoOrder.Count;
             BeginDayTwoCustomer(selected);
+            NotifyDayTwoStateChanged();
             return true;
         }
 
@@ -321,18 +624,23 @@ namespace DeadLetter.Mail
                 return false;
             foreach (Day2ItemType item in currentDayTwoRequest.Definition.RequestedItems)
                 currentDayTwoRequest.SecureItem(item);
+            NotifyDayTwoStateChanged();
             return currentDayTwoRequest.ItemsSecured;
         }
 
         public bool DebugSecureCurrentBox()
         {
-            return currentDayTwoRequest != null &&
-                   currentDayTwoRequest.SecureEmptyBox($"debug_box_{currentDayTwoRequest.Definition.RequestId}");
+            bool result = currentDayTwoRequest != null &&
+                          currentDayTwoRequest.SecureEmptyBox($"debug_box_{currentDayTwoRequest.Definition.RequestId}");
+            if (result) NotifyDayTwoStateChanged();
+            return result;
         }
 
         public bool DebugPackCurrentRequest()
         {
-            return currentDayTwoRequest != null && currentDayTwoRequest.TryPack();
+            bool result = currentDayTwoRequest != null && currentDayTwoRequest.TryPack();
+            if (result) NotifyDayTwoStateChanged();
+            return result;
         }
 
         public bool DebugProcessCurrentLetter()
@@ -347,6 +655,7 @@ namespace DeadLetter.Mail
             if (!taskState.LetterMailed)
                 taskState.TryMailLetter();
             currentDayTwoRequest.SetLetterProcessingState(taskState.AttachedStamps, taskState.PostmarkApplied);
+            NotifyDayTwoStateChanged();
             return taskState.LetterMailed;
         }
 
@@ -356,22 +665,37 @@ namespace DeadLetter.Mail
                 return false;
             foreach (LetterStamp stamp in GetIndividualStamps(currentDayTwoRequest.Definition.RequiredPictograms))
                 currentDayTwoRequest.ApplyBoxPictogram(stamp);
+            NotifyDayTwoStateChanged();
             return currentDayTwoRequest.HasOnlyRequiredBoxPictograms;
         }
 
         public bool DebugDispatchCurrentRequest()
         {
-            return currentDayTwoRequest != null && currentDayTwoRequest.TryRecordConveyorDispatch();
+            bool result = currentDayTwoRequest != null && currentDayTwoRequest.TryRecordConveyorDispatch();
+            if (result) NotifyDayTwoStateChanged();
+            return result;
         }
 
         public bool DebugDeliverCurrentRequest(string customerId)
         {
-            return currentDayTwoRequest != null && currentDayTwoRequest.TryDeliverTo(customerId);
+            bool result = currentDayTwoRequest != null && currentDayTwoRequest.TryDeliverTo(customerId);
+            if (result) NotifyDayTwoStateChanged();
+            return result;
         }
 
         public bool DebugRecordCurrentCompletionNotice()
         {
-            return currentDayTwoRequest != null && currentDayTwoRequest.TryRecordCompletionNotice();
+            bool result = currentDayTwoRequest != null && currentDayTwoRequest.TryRecordCompletionNotice();
+            if (result) NotifyDayTwoStateChanged();
+            return result;
+        }
+
+        private void ReleaseClaimsForRequest(string requestId)
+        {
+            foreach (string key in claimedWorldItemOwners.Where(pair => pair.Value == requestId).Select(pair => pair.Key).ToArray())
+                claimedWorldItemOwners.Remove(key);
+            foreach (string key in claimedBoxOwners.Where(pair => pair.Value == requestId).Select(pair => pair.Key).ToArray())
+                claimedBoxOwners.Remove(key);
         }
 
         private static IEnumerable<LetterStamp> GetIndividualStamps(LetterStamp stamps)

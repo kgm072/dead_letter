@@ -73,7 +73,6 @@ namespace DeadLetter.DebugTools
             ResolveReferences();
             return dayCycle != null && taskState != null &&
                    !taskState.WorkstationViewOpen &&
-                   Cursor.lockState == CursorLockMode.Locked &&
                    (playerController == null || playerController.InputEnabled);
         }
 
@@ -148,7 +147,7 @@ namespace DeadLetter.DebugTools
             layout.childForceExpandWidth = true;
 
             AddLabel(panel.transform, "DEVELOPER TEST MODE  [F1]", 24, GetAccent(), 38f, TextAlignmentOptions.Left);
-            statusText = AddLabel(panel.transform, "", 15, GetPrimary(), 270f, TextAlignmentOptions.TopLeft);
+            statusText = AddLabel(panel.transform, "", 15, GetPrimary(), 310f, TextAlignmentOptions.TopLeft);
             feedbackText = AddLabel(panel.transform, "대기 중", 14, GetMuted(), 28f, TextAlignmentOptions.Left);
 
             AddLabel(panel.transform, "DAY 제어", 17, GetAccent(), 26f, TextAlignmentOptions.Left);
@@ -231,12 +230,20 @@ namespace DeadLetter.DebugTools
             value.AppendLine($"선후 조건: {(modelIndex >= 0 && modelIndex < troubleIndex ? "정상" : "오류")}  모범생 {modelIndex + 1} / 불량이 {troubleIndex + 1}");
             value.AppendLine($"민원: {definition.RequestId}  유형: {(definition.RequestType == MailRequestType.Dispatch ? "발송" : "수령")}");
             value.AppendLine($"물품: {string.Join(", ", definition.RequestedItems.Select(GetItemLabel))}");
+            value.AppendLine($"확보 물품: {(state.SecuredItemInstanceIds.Count == 0 ? "-" : string.Join(", ", state.SecuredItemInstanceIds.Select(pair => $"{GetItemLabel(pair.Key)}={pair.Value}")))}");
+            value.AppendLine($"박스 ID: {EmptyAsDash(state.BoxId)}");
             value.AppendLine($"진행: {state.ProgressStage}");
             value.AppendLine($"{Flag(state.RequestAccepted)} 접수   {Flag(state.ItemsSecured)} 물품   {Flag(state.EmptyBoxSecured)} 빈 박스   {Flag(state.Packed)} 포장");
             value.AppendLine($"{Flag(state.HasOnlyRequiredLetterStamps)} 편지 우표   {Flag(state.LetterPostmarkApplied)} 편지 도장   {Flag(state.HasOnlyRequiredBoxPictograms)} 박스 도장");
             value.AppendLine($"{Flag(state.ConveyorDispatched)} 발송   {Flag(state.DeliveredToCustomer)} 전달   {Flag(state.CompletionNoticeGiven)} 안내   {Flag(state.Completed)} 최종 완료");
             value.AppendLine($"편지 우표: {state.AttachedLetterStamps} / 박스 도장: {state.AppliedBoxPictograms}");
             value.AppendLine($"연계 민원: {EmptyAsDash(definition.RelatedRequestId)} / 전달 ID: {EmptyAsDash(definition.TransferLinkId)}");
+            if (definition.TransferLinkId == Day2RequestCatalog.StudentUniformTransferLinkId)
+            {
+                Day2RequestRuntimeState modelStudent = dayCycle.DayTwoRequests.FirstOrDefault(
+                    request => request.Definition.RequestId == Day2RequestCatalog.ModelStudentRequestId);
+                value.AppendLine($"교복 연계 발송 완료: {Flag(modelStudent != null && modelStudent.Completed)}");
+            }
             statusText.text = value.ToString();
         }
 
