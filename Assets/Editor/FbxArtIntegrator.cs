@@ -275,6 +275,8 @@ namespace DeadLetter.Editor
             BoxCollider collider = proxy.AddComponent<BoxCollider>();
             collider.center = Vector3.zero;
             collider.size = renderer.bounds.size;
+            ArtColliderFollower follower = proxy.AddComponent<ArtColliderFollower>();
+            follower.Configure(renderer);
             if (role != ArtInteractionRole.None)
             {
                 ArtInteractionMarker marker = proxy.AddComponent<ArtInteractionMarker>();
@@ -320,9 +322,11 @@ namespace DeadLetter.Editor
         {
             if (modelName == "창구")
             {
-                if (objectName.Contains("책상")) return new Vector3(2.4f, 1.05f, 1f);
-                if (objectName.Contains("녹음기")) return new Vector3(0.36f, 0.24f, 0.22f);
-                if (objectName.Contains("시계")) return new Vector3(0.62f, 0.62f, 0.08f);
+                // This is a service counter in a 12 m room, not a single-person office desk.
+                // The renderer also includes its monitor, keyboard, mouse and cup.
+                if (objectName.Contains("책상")) return new Vector3(3.2f, 1.35f, 1.05f);
+                if (objectName.Contains("녹음기")) return new Vector3(0.28f, 0.18f, 0.16f);
+                if (objectName.Contains("시계")) return new Vector3(0.26f, 0.14f, 0.12f);
                 if (objectName.Contains("액자")) return new Vector3(0.9f, 1.2f, 0.06f);
             }
             else if (modelName == "작업실")

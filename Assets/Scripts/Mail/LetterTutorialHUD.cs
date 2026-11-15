@@ -60,14 +60,20 @@ namespace DeadLetter.Mail
                 return "창고에서 빈 박스 확보";
             if (!state.Packed)
                 return "작업실 포장대에서 물품 포장";
+            if (!state.HasOnlyRequiredBoxPictograms)
+            {
+                LetterStamp incorrect = state.AppliedBoxPictograms & ~state.Definition.RequiredPictograms;
+                if (incorrect != LetterStamp.None)
+                    return $"박스의 {Day2Labels.GetStampList(incorrect)} 도장을 다시 찍어 제거";
+                LetterStamp missing = state.Definition.RequiredPictograms & ~state.AppliedBoxPictograms;
+                return $"분류 전표 확인 후 박스에 {Day2Labels.GetStampList(missing)} 도장 날인";
+            }
             if (!taskState.HasOnlyRequiredStamps)
                 return "편지에 필수 우표 부착";
             if (!taskState.PostmarkApplied)
                 return "편지 오른쪽 아래에 도장 날인";
             if (!taskState.LetterMailed)
                 return "처리실 우편함에 편지 넣기";
-            if (!state.HasOnlyRequiredBoxPictograms)
-                return "포장 박스에 필수 픽토그램 날인";
             if (state.Definition.RequestType == MailRequestType.Dispatch && !state.ConveyorDispatched)
                 return "컨베이어로 포장 박스 발송";
             return state.Definition.RequestType == MailRequestType.Dispatch

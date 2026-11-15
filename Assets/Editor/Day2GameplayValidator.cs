@@ -133,6 +133,7 @@ namespace DeadLetter.Editor
                 int troubleIndex = IndexOf(manager, Day2RequestCatalog.TroublemakerRequestId);
                 Require(modelIndex >= 0 && modelIndex < troubleIndex, "Model student must precede troublemaker.");
 
+                ValidateDispatchItemPresentation(manager, customer);
                 ValidateDispatchFlow(manager, taskState);
                 ValidateReceiveFlow(manager);
                 ValidateStudentTransfer(manager);
@@ -141,6 +142,57 @@ namespace DeadLetter.Editor
             {
                 UnityEngine.Object.DestroyImmediate(customerObject);
                 UnityEngine.Object.DestroyImmediate(root);
+            }
+        }
+
+        private static void ValidateDispatchItemPresentation(DayCycleManager manager, TestCustomerNPC customer)
+        {
+            Require(manager.DebugSelectDayTwoRequest(Day2RequestCatalog.MascotRequestId),
+                "Could not select mascot request for carry presentation validation.");
+
+            GameObject itemObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            itemObject.name = "DAY 2 Carry Presentation Validation Item";
+            itemObject.transform.position = new Vector3(4f, 1.3f, -11f);
+            Day2WorldItem item = itemObject.AddComponent<Day2WorldItem>();
+            try
+            {
+                SerializedObject serialized = new(item);
+                serialized.FindProperty("dayCycle").objectReferenceValue = manager;
+                serialized.FindProperty("customer").objectReferenceValue = customer;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                item.Configure(
+                    "validation_carried_cigarettes",
+                    Day2RequestCatalog.MascotRequestId,
+                    Day2ItemType.Cigarettes,
+                    Day2ItemSource.Counter);
+
+                Require(item.IsPresentedByCustomer,
+                    "Unaccepted dispatch item must be presented in the customer's hands.");
+                Require(itemObject.GetComponent<Renderer>().enabled,
+                    "Carried dispatch item must be visible.");
+                Require(!itemObject.GetComponent<Collider>().enabled,
+                    "Carried dispatch item collider must stay disabled.");
+                Require(Vector3.Distance(itemObject.transform.position, customer.transform.position) < 2f,
+                    "Carried dispatch item must follow the active customer.");
+
+                Require(manager.DebugAcceptCurrentRequest(),
+                    "Could not accept mascot request for counter presentation validation.");
+                item.Configure(
+                    "validation_carried_cigarettes",
+                    Day2RequestCatalog.MascotRequestId,
+                    Day2ItemType.Cigarettes,
+                    Day2ItemSource.Counter);
+                Require(!item.IsPresentedByCustomer,
+                    "Accepted dispatch item must no longer follow the customer.");
+                Require(itemObject.GetComponent<Collider>().enabled,
+                    "Accepted dispatch item collider must be enabled on the counter.");
+                Require(Vector3.Distance(itemObject.transform.position, item.CounterWorldPosition) < 0.01f,
+                    "Accepted dispatch item must return to its counter placement.");
+            }
+            finally
+            {
+                itemObject.SetActive(false);
+                UnityEngine.Object.DestroyImmediate(itemObject);
             }
         }
 
@@ -164,6 +216,14 @@ namespace DeadLetter.Editor
             Day2RequestRuntimeState state = manager.CurrentDayTwoRequest;
             Require(state.PackedItems.Count == 2 && state.SecuredItemInstanceIds.Count == 2,
                 "Packed contents and acquired instance IDs were not recorded.");
+            ValidateClassificationSlip(manager);
+            ValidateHudGuidance(manager, taskState, "불 · 충격");
+            Require(manager.TryToggleBoxPictogram(LetterStamp.Water), "Wrong box mark test failed.");
+            Require(!state.HasOnlyRequiredBoxPictograms, "Wrong box mark must not satisfy classification.");
+            ValidateHudGuidance(manager, taskState, "다시 찍어 제거");
+            Require(manager.TryToggleBoxPictogram(LetterStamp.Water), "Wrong box mark recovery failed.");
+            Require(state.AppliedBoxPictograms == LetterStamp.None,
+                "Toggling the same wrong mark must remove it without blocking the request.");
             Require(manager.TryApplyBoxPictogram(LetterStamp.Shock), "Shock box mark failed.");
             Require(manager.TryApplyBoxPictogram(LetterStamp.Fire), "Fire box mark failed.");
             Require(!manager.TryApplyBoxPictogram(LetterStamp.Fire), "Duplicate box mark must fail.");
@@ -181,6 +241,51 @@ namespace DeadLetter.Editor
             Require(state.Completed, "Dispatch request must complete after the notice.");
             Require(!manager.TryFinishCurrentCustomer(manager.CurrentCustomerId, manager.CurrentLetterId),
                 "Dispatch request must not complete twice.");
+        }
+
+        private static void ValidateClassificationSlip(DayCycleManager manager)
+        {
+            GameObject slipObject = new("Classification Slip Validation");
+            try
+            {
+                Day2ClassificationSlip slip = slipObject.AddComponent<Day2ClassificationSlip>();
+                SerializedObject serialized = new(slip);
+                serialized.FindProperty("dayCycle").objectReferenceValue = manager;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                string text = slip.CurrentText;
+                Require(text.Contains("인형탈") && text.Contains("발송"),
+                    "Classification slip must show the current customer and request type.");
+                Require(text.Contains("담배") && text.Contains("라이터"),
+                    "Classification slip must show the current request items.");
+                Require(text.Contains("불") && text.Contains("충격"),
+                    "Classification slip must derive required marks from the request definition.");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(slipObject);
+            }
+        }
+
+        private static void ValidateHudGuidance(
+            DayCycleManager manager,
+            LetterTaskState taskState,
+            string expectedText)
+        {
+            GameObject hudObject = new("DAY 2 HUD Guidance Validation");
+            try
+            {
+                LetterTutorialHUD tutorial = hudObject.AddComponent<LetterTutorialHUD>();
+                SerializedObject serialized = new(tutorial);
+                serialized.FindProperty("taskState").objectReferenceValue = taskState;
+                serialized.FindProperty("dayCycle").objectReferenceValue = manager;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                Require(tutorial.GetNextActionLabel().Contains(expectedText),
+                    $"DAY 2 HUD guidance must contain: {expectedText}");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(hudObject);
+            }
         }
 
         private static void ValidateReceiveFlow(DayCycleManager manager)

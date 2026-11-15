@@ -287,6 +287,48 @@ namespace DeadLetter.Mail
             return Succeed($"박스에 {Day2Labels.GetStampLabel(pictogram)} 도장을 찍었습니다.");
         }
 
+        public bool CanToggleBoxPictogram(LetterStamp pictogram, out string reason)
+        {
+            int value = (int)pictogram;
+            if (value <= 0 || (value & (value - 1)) != 0)
+            {
+                reason = "박스 도장은 한 종류씩 선택해야 합니다.";
+                return false;
+            }
+
+            Day2RequestRuntimeState request = currentDayTwoRequest;
+            if (request != null && (request.AppliedBoxPictograms & pictogram) == pictogram)
+            {
+                if (request.ConveyorDispatched || request.DeliveredToCustomer || request.Completed)
+                {
+                    reason = "이미 인계된 박스의 도장은 수정할 수 없습니다.";
+                    return false;
+                }
+                reason = string.Empty;
+                return request.Packed;
+            }
+            return CanApplyBoxPictogram(pictogram, out reason);
+        }
+
+        public bool TryToggleBoxPictogram(LetterStamp pictogram)
+        {
+            if (!CanToggleBoxPictogram(pictogram, out string reason))
+                return Fail(reason);
+
+            bool alreadyApplied = (currentDayTwoRequest.AppliedBoxPictograms & pictogram) == pictogram;
+            bool changed = alreadyApplied
+                ? currentDayTwoRequest.RemoveBoxPictogram(pictogram)
+                : currentDayTwoRequest.ApplyBoxPictogram(pictogram);
+            if (!changed)
+                return Fail("박스 도장 상태를 변경하지 못했습니다.");
+
+            NotifyDayTwoStateChanged();
+            string label = Day2Labels.GetStampLabel(pictogram);
+            return Succeed(alreadyApplied
+                ? $"박스에서 {label} 도장을 제거했습니다."
+                : $"박스에 {label} 도장을 찍었습니다.");
+        }
+
         public bool CanDispatchCurrentPackage(out string reason)
         {
             if (!TryGetAcceptedCurrentRequest(string.Empty, out Day2RequestRuntimeState request, out reason, false))

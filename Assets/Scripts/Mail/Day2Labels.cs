@@ -2,6 +2,25 @@ namespace DeadLetter.Mail
 {
     public static class Day2Labels
     {
+        public static string GetItemList(System.Collections.Generic.IEnumerable<Day2ItemType> items)
+        {
+            return items == null ? "없음" : string.Join(" · ", System.Linq.Enumerable.Select(items, GetItemLabel));
+        }
+
+        public static string GetStampList(LetterStamp stamps)
+        {
+            if (stamps == LetterStamp.None)
+                return "없음";
+
+            System.Collections.Generic.List<string> labels = new();
+            foreach (LetterStamp value in System.Enum.GetValues(typeof(LetterStamp)))
+            {
+                if (value != LetterStamp.None && (stamps & value) == value)
+                    labels.Add(GetStampLabel(value));
+            }
+            return string.Join(" · ", labels);
+        }
+
         public static string GetItemLabel(Day2ItemType item)
         {
             return item switch

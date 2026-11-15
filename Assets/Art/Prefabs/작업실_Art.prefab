@@ -344,6 +344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4622888231509880565}
   - component: {fileID: 2728460099690681149}
+  - component: {fileID: 8088722421274209460}
   m_Layer: 0
   m_Name: "Collider - \uC791\uC5C5\uC2E4-\uC0C1\uC790"
   m_TagString: Untagged
@@ -387,6 +388,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 0.44999993, z: 2.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8088722421274209460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2990092129134632202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 22568440717565433}
 --- !u!1 &3466196158859445429
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +412,7 @@ GameObject:
   - component: {fileID: 4458550532649359322}
   - component: {fileID: 2661779188463412118}
   - component: {fileID: 8421324588018489374}
+  - component: {fileID: 7372438406130422958}
   m_Layer: 0
   m_Name: "Collider - \uC9C1\uC5C5\uC2E4-\uB3C4\uC7A5"
   m_TagString: Untagged
@@ -454,6 +469,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtInteractionMarker
   role: 2
+--- !u!114 &7372438406130422958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3466196158859445429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 2984394813294363567}
 --- !u!1 &3877513451581807222
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +614,7 @@ GameObject:
   - component: {fileID: 964016000434610687}
   - component: {fileID: 6076369809073201525}
   - component: {fileID: 3650090967980071063}
+  - component: {fileID: 4506832684185965161}
   m_Layer: 0
   m_Name: "Collider - \uC791\uC5C5\uC2E4-\uD14C\uC774\uD504"
   m_TagString: Untagged
@@ -642,6 +671,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtInteractionMarker
   role: 3
+--- !u!114 &4506832684185965161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663893470481016866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 650104973298993601}
 --- !u!1 &5570279071965474156
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +785,7 @@ GameObject:
   - component: {fileID: 3272699768169538482}
   - component: {fileID: 652526092609520414}
   - component: {fileID: 6810263618003656956}
+  - component: {fileID: 415899467768974426}
   m_Layer: 0
   m_Name: "Collider - \uC791\uC5C5\uC2E4-\uC6B0\uD45C"
   m_TagString: Untagged
@@ -799,6 +842,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtInteractionMarker
   role: 2
+--- !u!114 &415899467768974426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5717473965194731039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 6968839951615771149}
 --- !u!1 &5787167687356720435
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,6 +865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8332407477875577298}
   - component: {fileID: 1415983199107844045}
+  - component: {fileID: 9040148096844286756}
   m_Layer: 0
   m_Name: "Collider - \uC791\uC5C5\uC2E4-\uCF58\uBCA0\uC774\uC5B4 \uBC38\uD2B8"
   m_TagString: Untagged
@@ -852,6 +909,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1, y: 0.74999994, z: 3.9999998}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9040148096844286756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5787167687356720435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 1440312702472036354}
 --- !u!1 &5881376927656013564
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7212802423144825321}
   - component: {fileID: 7778163001077119475}
+  - component: {fileID: 3585524131313688947}
   m_Layer: 0
   m_Name: "Collider - \uC791\uC5C5\uC2E4-\uCC45\uC0C1"
   m_TagString: Untagged
@@ -937,6 +1008,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8500001, y: 0.78000003, z: 1.7999998}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3585524131313688947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6467485501669987609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba72de1b344c81b49beff4a942e748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadLetter.Interaction.ArtColliderFollower
+  targetRenderer: {fileID: 7541786708186499416}
 --- !u!1 &6521103303979517132
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,9 +18,15 @@ namespace DeadLetter.Mail
 
         public string GetInteractionPrompt(GameObject interactor)
         {
-            return Day2BoxStampSelection.Selected == LetterStamp.None
-                ? "박스 도장 선택 필요"
-                : $"{Day2Labels.GetStampLabel(Day2BoxStampSelection.Selected)} 도장 날인";
+            LetterStamp selected = Day2BoxStampSelection.Selected;
+            if (selected == LetterStamp.None)
+                return "박스 도장 선택 필요";
+
+            bool applied = dayCycle?.CurrentDayTwoRequest != null &&
+                           (dayCycle.CurrentDayTwoRequest.AppliedBoxPictograms & selected) == selected;
+            return applied
+                ? $"{Day2Labels.GetStampLabel(selected)} 도장 제거"
+                : $"{Day2Labels.GetStampLabel(selected)} 도장 날인";
         }
 
         private void Awake()
@@ -48,13 +54,13 @@ namespace DeadLetter.Mail
         {
             LetterStamp selected = Day2BoxStampSelection.Selected;
             return IsPackageVisible() && selected != LetterStamp.None && dayCycle != null &&
-                   dayCycle.CanApplyBoxPictogram(selected, out _);
+                   dayCycle.CanToggleBoxPictogram(selected, out _);
         }
 
         public void Interact(GameObject interactor)
         {
             LetterStamp selected = Day2BoxStampSelection.Selected;
-            if (selected != LetterStamp.None && dayCycle != null && dayCycle.TryApplyBoxPictogram(selected))
+            if (selected != LetterStamp.None && dayCycle != null && dayCycle.TryToggleBoxPictogram(selected))
                 Refresh();
         }
 

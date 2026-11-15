@@ -12,6 +12,7 @@ namespace DeadLetter.UI
         [SerializeField] private FirstPersonInteractor interactor;
         [SerializeField] private LetterTutorialHUD tutorial;
         [SerializeField] private LetterTaskState taskState;
+        [SerializeField] private DayCycleManager dayCycle;
         [SerializeField] private DeadLetterUITheme theme;
 
         [Header("HUD Elements")]
@@ -27,6 +28,7 @@ namespace DeadLetter.UI
 
         private string displayedPrompt = string.Empty;
         private bool displayedInteractive;
+        private DayCycleManager subscribedDayCycle;
 
         private void Awake()
         {
@@ -41,6 +43,7 @@ namespace DeadLetter.UI
             ResolveReferences();
             if (taskState != null)
                 taskState.Changed += RefreshTaskHUD;
+            SubscribeDayTwoState();
             RefreshTaskHUD();
         }
 
@@ -48,6 +51,9 @@ namespace DeadLetter.UI
         {
             if (taskState != null)
                 taskState.Changed -= RefreshTaskHUD;
+            if (subscribedDayCycle != null)
+                subscribedDayCycle.DayTwoStateChanged -= RefreshTaskHUD;
+            subscribedDayCycle = null;
         }
 
         private void Update()
@@ -60,6 +66,18 @@ namespace DeadLetter.UI
             interactor ??= FindAnyObjectByType<FirstPersonInteractor>();
             tutorial ??= FindAnyObjectByType<LetterTutorialHUD>();
             taskState ??= tutorial != null ? tutorial.TaskState : FindAnyObjectByType<LetterTaskState>();
+            dayCycle ??= FindAnyObjectByType<DayCycleManager>();
+        }
+
+        private void SubscribeDayTwoState()
+        {
+            if (subscribedDayCycle == dayCycle)
+                return;
+            if (subscribedDayCycle != null)
+                subscribedDayCycle.DayTwoStateChanged -= RefreshTaskHUD;
+            subscribedDayCycle = dayCycle;
+            if (subscribedDayCycle != null)
+                subscribedDayCycle.DayTwoStateChanged += RefreshTaskHUD;
         }
 
         private void RefreshWorldHUD(bool force)

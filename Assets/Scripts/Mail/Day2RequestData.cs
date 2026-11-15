@@ -189,6 +189,17 @@ namespace DeadLetter.Mail
             return true;
         }
 
+        public bool RemoveBoxPictogram(LetterStamp pictogram)
+        {
+            if (!Packed || !IsSinglePictogram(pictogram) ||
+                (AppliedBoxPictograms & pictogram) != pictogram ||
+                ConveyorDispatched || DeliveredToCustomer || Completed)
+                return false;
+
+            AppliedBoxPictograms &= ~pictogram;
+            return true;
+        }
+
         private static bool IsSinglePictogram(LetterStamp pictogram)
         {
             int value = (int)pictogram;

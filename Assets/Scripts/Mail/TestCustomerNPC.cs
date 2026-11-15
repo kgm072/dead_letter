@@ -17,6 +17,10 @@ namespace DeadLetter.Mail
         [SerializeField] private LetterTaskState taskState;
         [SerializeField] private HingedDoor entranceDoor;
         [SerializeField] private Transform[] waypoints;
+        [Tooltip("The transform the customer should face after reaching the counter.")]
+        [SerializeField] private Transform waitingLookTarget;
+        [Tooltip("Yaw correction between the prefab/model forward axis and Unity's +Z forward axis.")]
+        [SerializeField] private float modelForwardYawOffset = 180f;
         [SerializeField] private GameObject letterProp;
         [SerializeField, Min(0.1f)] private float moveSpeed = 1.45f;
         [SerializeField, Min(1f)] private float turnSpeed = 360f;
@@ -70,7 +74,10 @@ namespace DeadLetter.Mail
             dialogue = string.Empty;
             dialogueUntil = 0f;
             if (waypoints != null && waypoints.Length > 0)
+            {
                 transform.position = waypoints[0].position + new Vector3(0f, 0f, -1.5f);
+                FaceDirection(waypoints[0].position - transform.position, true);
+            }
             if (letterProp != null)
                 letterProp.SetActive(true);
             gameObject.SetActive(true);
@@ -111,7 +118,7 @@ namespace DeadLetter.Mail
                 dayCycle?.NotifyRequestAccepted(letterId);
                 MailRequestType? requestType = dayCycle?.CurrentDayTwoRequest?.Definition.RequestType;
                 string work = requestType == MailRequestType.Dispatch
-                    ? "창구 물품을 포장해 컨베이어로 보낸 뒤 다시 알려 주세요."
+                    ? "제가 내려놓은 물품을 포장해 컨베이어로 보낸 뒤 다시 알려 주세요."
                     : requestType == MailRequestType.Receive
                         ? "창고 물품을 포장한 뒤 제게 전달해 주세요."
                         : "처리 후 다시 알려 주세요.";
@@ -150,10 +157,7 @@ namespace DeadLetter.Mail
 
             Vector3 direction = targetPosition - transform.position;
             if (direction.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-            }
+                FaceDirection(direction, false);
 
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, targetPosition) > 0.04f)
@@ -166,6 +170,7 @@ namespace DeadLetter.Mail
                     return;
 
                 state = CustomerState.WaitingForLetter;
+                FaceWaitingTarget();
                 dialogue = "안녕하세요. 이 편지를 접수해 주세요.";
                 dialogueUntil = float.PositiveInfinity;
                 if (entranceDoor != null)
@@ -182,6 +187,29 @@ namespace DeadLetter.Mail
             DayCycleManager manager = dayCycle;
             HideUntilNextCustomer();
             manager?.NotifyCustomerDeparted();
+        }
+
+        private void FaceWaitingTarget()
+        {
+            if (waitingLookTarget == null)
+                return;
+
+            Vector3 direction = waitingLookTarget.position - transform.position;
+            direction.y = 0f;
+            FaceDirection(direction, true);
+        }
+
+        private void FaceDirection(Vector3 worldDirection, bool immediate)
+        {
+            worldDirection.y = 0f;
+            if (worldDirection.sqrMagnitude <= 0.0001f)
+                return;
+
+            Quaternion pathRotation = Quaternion.LookRotation(worldDirection.normalized, Vector3.up);
+            Quaternion correctedRotation = pathRotation * Quaternion.Euler(0f, modelForwardYawOffset, 0f);
+            transform.rotation = immediate
+                ? correctedRotation
+                : Quaternion.RotateTowards(transform.rotation, correctedRotation, turnSpeed * Time.deltaTime);
         }
 
         private void OnGUI()
