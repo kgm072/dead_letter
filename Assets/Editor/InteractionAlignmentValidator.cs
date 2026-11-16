@@ -56,6 +56,11 @@ namespace DeadLetter.Editor
             {
                 Renderer target = follower.TargetRenderer;
                 BoxCollider box = follower.BoundCollider;
+                // The U-shaped storage shelf is deliberately not fitted to one renderer:
+                // doing so fills the whole room with a single collider. Handoff keeps a
+                // narrow disabled proxy plus the three legacy shelf-row colliders instead.
+                if (follower.name == "Collider - 칭고" && !follower.enabled && target == null && box != null)
+                    continue;
                 if (target == null || box == null)
                 {
                     failures.Add($"{follower.name} has an incomplete renderer/collider binding.");

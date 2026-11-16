@@ -1,6 +1,7 @@
 using DeadLetter.Interaction;
 using DeadLetter.Mail;
 using DeadLetter.Player;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -219,8 +220,9 @@ namespace DeadLetter.Editor
             CreateHiddenRoomFurniture(root.transform, furniture, equipment, trim, glow);
             CreateInteractableFuseBox(root.transform, equipment, trim, closedDoor, glow);
             FbxArtIntegrator.ApplyToGeneratedMap(root.transform, letterTask, dayCycle);
-
             CreatePlayer(root.transform);
+            if (File.Exists(Path.GetFullPath(HandoffSceneApplier.DataPath)))
+                HandoffSceneApplier.ApplyToLoadedScene(false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             if (!string.IsNullOrEmpty(scene.path))

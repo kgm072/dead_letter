@@ -1,0 +1,6141 @@
+{
+ "transforms": [
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Floor",
+   "localPosition": [
+    -7.6,
+    -0.1,
+    7.35
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    5.6,
+    0.2,
+    5.9
+   ],
+   "worldPosition": [
+    -7.6,
+    -0.1,
+    7.35
+   ],
+   "before": {
+    "localPosition": [
+     -7.6,
+     -0.1,
+     7.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     5.6,
+     0.2,
+     5.2
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot",
+   "localPosition": [
+    -1.8,
+    0.01,
+    5.066
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -1.8,
+    0.01,
+    5.066
+   ],
+   "before": {
+    "localPosition": [
+     -1.8,
+     0.01,
+     5.19
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Near Post",
+   "localPosition": [
+    -1.8,
+    1.075,
+    4.794
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.18,
+    2.15,
+    0.548
+   ],
+   "worldPosition": [
+    -1.8,
+    1.075,
+    4.794
+   ],
+   "before": {
+    "localPosition": [
+     -1.8,
+     1.075,
+     4.918
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.18,
+     2.15,
+     0.548
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Ceiling",
+   "localPosition": [
+    -7.6,
+    3.8,
+    7.35
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    5.6,
+    0.18,
+    5.9
+   ],
+   "worldPosition": [
+    -7.6,
+    3.8,
+    7.35
+   ],
+   "before": {
+    "localPosition": [
+     -7.6,
+     3.8,
+     7.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     5.6,
+     0.18,
+     5.2
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves",
+   "localPosition": [
+    14.98,
+    0.0,
+    -0.13
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.87,
+    1.15,
+    0.75
+   ],
+   "worldPosition": [
+    14.98,
+    0.0,
+    -0.13
+   ],
+   "before": {
+    "localPosition": [
+     0.0,
+     0.0,
+     15.35
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden East Wall Upper",
+   "localPosition": [
+    -4.8,
+    1.35,
+    8.425
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.18,
+    4.7884,
+    3.55
+   ],
+   "worldPosition": [
+    -4.8,
+    1.35,
+    8.425
+   ],
+   "before": {
+    "localPosition": [
+     -4.8,
+     1.35,
+     8.125
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.18,
+     4.7884,
+     2.95
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves",
+   "localPosition": [
+    13.055,
+    0.0,
+    -2.75
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.68,
+    1.15,
+    0.81
+   ],
+   "worldPosition": [
+    13.055,
+    0.0,
+    -2.75
+   ],
+   "before": {
+    "localPosition": [
+     3.85,
+     0.0,
+     12.5
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Dusty Light",
+   "localPosition": [
+    11.5,
+    2.35,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    11.5,
+    2.35,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     0.0,
+     2.35,
+     11.5
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Mail Drop Box",
+   "localPosition": [
+    -3.96,
+    1.1,
+    8.4
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    -0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    270.0,
+    0.0
+   ],
+   "localScale": [
+    1.45,
+    2.2,
+    0.9
+   ],
+   "worldPosition": [
+    -3.96,
+    1.1,
+    8.4
+   ],
+   "before": {
+    "localPosition": [
+     15.471,
+     1.1,
+     -3.761
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.70711,
+     0.0,
+     0.70711
+    ],
+    "localScale": [
+     1.45,
+     2.2,
+     0.9
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden North Wall",
+   "localPosition": [
+    -7.6,
+    1.35,
+    10.185
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    5.6,
+    4.7884,
+    0.18
+   ],
+   "worldPosition": [
+    -7.6,
+    1.35,
+    10.185
+   ],
+   "before": {
+    "localPosition": [
+     -7.6,
+     1.35,
+     9.6
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     5.6,
+     4.7884,
+     0.18
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Exterior Door Left Post",
+   "localPosition": [
+    0.0,
+    1.075,
+    16.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.25,
+    2.15,
+    0.18
+   ],
+   "worldPosition": [
+    0.0,
+    1.075,
+    16.0
+   ],
+   "before": {
+    "localPosition": [
+     -0.575,
+     1.075,
+     16.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.1,
+     2.15,
+     0.18
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Sickly Light",
+   "localPosition": [
+    0.0,
+    2.3,
+    11.5
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    2.3,
+    11.5
+   ],
+   "before": {
+    "localPosition": [
+     11.5,
+     2.3,
+     0.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Far Post",
+   "localPosition": [
+    -1.8,
+    1.075,
+    6.328
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.18,
+    2.15,
+    0.3919
+   ],
+   "worldPosition": [
+    -1.8,
+    1.075,
+    6.328
+   ],
+   "before": {
+    "localPosition": [
+     -1.8,
+     1.075,
+     6.452
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.18,
+     2.15,
+     0.3919
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden West Wall",
+   "localPosition": [
+    -10.4,
+    1.35,
+    7.3
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.18,
+    4.7884,
+    5.8
+   ],
+   "worldPosition": [
+    -10.4,
+    1.35,
+    7.3
+   ],
+   "before": {
+    "localPosition": [
+     -10.4,
+     1.35,
+     7.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.18,
+     4.7884,
+     5.2
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves",
+   "localPosition": [
+    13.055,
+    0.0,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.83,
+    1.15,
+    0.81
+   ],
+   "worldPosition": [
+    13.055,
+    0.0,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.85,
+     0.0,
+     12.5
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/탕비실 문",
+   "localPosition": [
+    0.0,
+    1.065,
+    0.51
+   ],
+   "localRotationQuat_xyzw": [
+    1.0,
+    -0.0,
+    -0.0,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    180.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    -7.0,
+    1.075,
+    -0.0
+   ],
+   "before": {
+    "localPosition": [
+     338.4056,
+     -7.4259,
+     200.2263
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     -0.0,
+     1.0,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Pantry Hall Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-냉장고",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     39.4186,
+     -1.3625,
+     1.1139
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.104,
+     1.5505,
+     1.0295
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-테이프/작업실-테이프",
+   "localPosition": [
+    19.0875,
+    1.9885,
+    21.3838
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.2348,
+    0.2348,
+    0.2348
+   ],
+   "worldPosition": [
+    19.087,
+    1.988,
+    21.384
+   ],
+   "before": {
+    "localPosition": [
+     -14.3664,
+     0.8509,
+     -8.0533
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/창고 Art Content/Size - 칭고",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     46.3377,
+     -2.6965,
+     5.2307
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.9978,
+     0.6551,
+     1.0459
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/비밀의방",
+   "localPosition": [
+    276.3772,
+    -5.9565,
+    251.4974
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    1.0,
+    -0.0,
+    -0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    261.9895,
+    424.5704,
+    261.9895
+   ],
+   "worldPosition": [
+    -7.556,
+    1.597,
+    9.1
+   ],
+   "before": {
+    "localPosition": [
+     341.5635,
+     -5.9565,
+     160.325
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     261.9895,
+     424.5704,
+     261.9895
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/DAY2 Conveyor Terminal",
+   "localPosition": [
+    1.9,
+    1.05,
+    11.25
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.7,
+    0.78,
+    0.42
+   ],
+   "worldPosition": [
+    1.9,
+    1.05,
+    11.25
+   ],
+   "before": {
+    "localPosition": [
+     14.55,
+     1.05,
+     -1.15
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.7,
+     0.78,
+     0.42
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-액자",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     28.9679,
+     -0.1135,
+     9.9381
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.5919,
+     1.0574,
+     1.074
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-테이프",
+   "localPosition": [
+    -3.7581,
+    0.9738,
+    13.644
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -3.758,
+    0.974,
+    13.644
+   ],
+   "before": {
+    "localPosition": [
+     5.7789,
+     0.8418,
+     -1.4857
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/Collider - 창구-책상",
+   "localPosition": [
+    0.1593,
+    0.6771,
+    -11.839
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.159,
+    0.677,
+    -11.839
+   ],
+   "before": {
+    "localPosition": [
+     0.387,
+     0.5945,
+     -0.125
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Storage Linked Uniform",
+   "localPosition": [
+    14.98,
+    0.995,
+    0.5
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.72,
+    0.12,
+    0.5
+   ],
+   "worldPosition": [
+    14.98,
+    0.995,
+    0.5
+   ],
+   "before": {
+    "localPosition": [
+     -0.526,
+     0.845,
+     14.048
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.02987,
+     -0.0,
+     0.99955
+    ],
+    "localScale": [
+     0.72,
+     0.12,
+     0.5
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Storage Safety Helmet",
+   "localPosition": [
+    12.5,
+    1.105,
+    -2.75
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.46,
+    0.34,
+    0.46
+   ],
+   "worldPosition": [
+    12.5,
+    1.105,
+    -2.75
+   ],
+   "before": {
+    "localPosition": [
+     3.247,
+     0.924,
+     10.992
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.04063,
+     -0.0,
+     0.99917
+    ],
+    "localScale": [
+     0.46,
+     0.34,
+     0.46
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Counter Cigarettes",
+   "localPosition": [
+    -0.9,
+    0.889,
+    -11.5
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.34,
+    0.12,
+    0.22
+   ],
+   "worldPosition": [
+    -0.9,
+    0.889,
+    -11.5
+   ],
+   "before": {
+    "localPosition": [
+     -1.15,
+     1.3,
+     -11.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.34,
+     0.12,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Counter Lighter",
+   "localPosition": [
+    -0.55,
+    0.969,
+    -11.5
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.12,
+    0.28,
+    0.1
+   ],
+   "worldPosition": [
+    -0.55,
+    0.969,
+    -11.5
+   ],
+   "before": {
+    "localPosition": [
+     -0.7,
+     1.3,
+     -11.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.12,
+     0.28,
+     0.1
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Counter Student Uniform",
+   "localPosition": [
+    0.35,
+    0.889,
+    -11.5
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.72,
+    0.12,
+    0.5
+   ],
+   "worldPosition": [
+    0.35,
+    0.889,
+    -11.5
+   ],
+   "before": {
+    "localPosition": [
+     0.35,
+     1.3,
+     -11.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.72,
+     0.12,
+     0.5
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Storage Hangover Remedy",
+   "localPosition": [
+    11.8,
+    1.145,
+    -2.75
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.2,
+    0.42,
+    0.2
+   ],
+   "worldPosition": [
+    11.8,
+    1.145,
+    -2.75
+   ],
+   "before": {
+    "localPosition": [
+     3.217,
+     0.971,
+     10.379
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.04131,
+     -0.0,
+     0.99915
+    ],
+    "localScale": [
+     0.2,
+     0.42,
+     0.2
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Storage Insulated Gloves",
+   "localPosition": [
+    13.4,
+    1.015,
+    -2.75
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.45,
+    0.16,
+    0.34
+   ],
+   "worldPosition": [
+    13.4,
+    1.015,
+    -2.75
+   ],
+   "before": {
+    "localPosition": [
+     3.304,
+     0.822,
+     12.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.45,
+     0.16,
+     0.34
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -38.1912,
+     1.3712,
+     -2.3565
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-액자/창구-액자",
+   "localPosition": [
+    1.3115,
+    0.7801,
+    -11.5404
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.3414,
+    0.3414,
+    0.3414
+   ],
+   "worldPosition": [
+    1.311,
+    0.78,
+    -11.54
+   ],
+   "before": {
+    "localPosition": [
+     -2.553,
+     -1.177,
+     -0.177
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.3722,
+     0.5342
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-책상/작업실-책상",
+   "localPosition": [
+    19.0875,
+    1.9885,
+    21.3838
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.2348,
+    0.2348,
+    0.2348
+   ],
+   "worldPosition": [
+    19.087,
+    1.988,
+    21.384
+   ],
+   "before": {
+    "localPosition": [
+     -17.7988,
+     2.499,
+     -7.3933
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70707,
+     -0.00709,
+     -0.00709,
+     0.70707
+    ],
+    "localScale": [
+     0.1929,
+     0.2509,
+     0.2945
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/DAY2 Packing Station",
+   "localPosition": [
+    3.03,
+    0.989,
+    8.79
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    2.2769,
+    0.18,
+    0.7
+   ],
+   "worldPosition": [
+    3.03,
+    0.989,
+    8.79
+   ],
+   "before": {
+    "localPosition": [
+     9.69,
+     0.989,
+     -3.03
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     2.2769,
+     0.18,
+     0.7
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -1.185,
+     -0.45,
+     -11.5
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     3.0618,
+     1.8922,
+     2.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-선빈/탕비실-선빈",
+   "localPosition": [
+    -11.836,
+    1.0626,
+    1.6401
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.5257,
+    0.5257,
+    0.5257
+   ],
+   "worldPosition": [
+    -11.836,
+    1.063,
+    1.64
+   ],
+   "before": {
+    "localPosition": [
+     0.4504,
+     0.6009,
+     1.4297
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.2976,
+     0.2976,
+     0.2976
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-책상/창구-책상",
+   "localPosition": [
+    0.2309,
+    1.2608,
+    -11.9666
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.203,
+    0.203,
+    0.203
+   ],
+   "worldPosition": [
+    0.231,
+    1.261,
+    -11.967
+   ],
+   "before": {
+    "localPosition": [
+     0.54,
+     1.1976,
+     -0.1211
+    ],
+    "localRotationQuat_xyzw": [
+     0.00031,
+     -0.70711,
+     -0.70711,
+     -0.00031
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/히든방 Art Content/Size - 히든룸-메모지/히든룸-메모지",
+   "localPosition": [
+    -8.5266,
+    0.4739,
+    7.1469
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.1605,
+    0.1605,
+    0.1605
+   ],
+   "worldPosition": [
+    -8.527,
+    0.474,
+    7.147
+   ],
+   "before": {
+    "localPosition": [
+     -0.0848,
+     -0.2708,
+     -0.0436
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1239,
+     0.1239,
+     0.1239
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-테이프",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     32.1097,
+     -0.5903,
+     -4.4697
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0642,
+     3.4721,
+     1.3554
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-우표/작업실-우표",
+   "localPosition": [
+    19.0875,
+    1.9885,
+    21.3838
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.2348,
+    0.2348,
+    0.2348
+   ],
+   "worldPosition": [
+    19.087,
+    1.988,
+    21.384
+   ],
+   "before": {
+    "localPosition": [
+     -16.45,
+     0.492,
+     -8.587
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70653,
+     -0.02859,
+     -0.02859,
+     0.70653
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 직업실-도장/직업실-도장",
+   "localPosition": [
+    19.0875,
+    1.9885,
+    21.3838
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.2348,
+    0.2348,
+    0.2348
+   ],
+   "worldPosition": [
+    19.087,
+    1.988,
+    21.384
+   ],
+   "before": {
+    "localPosition": [
+     -14.126,
+     0.852,
+     -9.367
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/탕비실",
+   "localPosition": [
+    259.2151,
+    -5.9565,
+    224.4472
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    1.0,
+    -0.0,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    429.868,
+    429.868,
+    429.868
+   ],
+   "worldPosition": [
+    -11.534,
+    1.597,
+    2.829
+   ],
+   "before": {
+    "localPosition": [
+     358.2549,
+     -5.9565,
+     187.9144
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     -0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     429.868,
+     429.868,
+     429.868
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창고 문",
+   "localPosition": [
+    0.0,
+    1.065,
+    0.51
+   ],
+   "localRotationQuat_xyzw": [
+    1.0,
+    -0.0,
+    -0.0,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    180.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    7.0,
+    1.075,
+    -0.0
+   ],
+   "before": {
+    "localPosition": [
+     279.566,
+     -7.4259,
+     200.2263
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     -0.0,
+     1.0,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Workshop Hall Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구",
+   "localPosition": [
+    296.7685,
+    -5.4297,
+    160.1193
+   ],
+   "localRotationQuat_xyzw": [
+    0.70711,
+    -0.0,
+    -0.70711,
+    -0.0
+   ],
+   "localEulerAngles": [
+    360.0,
+    270.0,
+    180.0
+   ],
+   "localScale": [
+    -429.868,
+    -429.868,
+    -429.868
+   ],
+   "worldPosition": [
+    -2.829,
+    1.719,
+    -12.083
+   ],
+   "before": {
+    "localPosition": [
+     321.4742,
+     -5.4297,
+     251.5521
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     0.0,
+     0.70711,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 안쪽 문",
+   "localPosition": [
+    0.516,
+    1.065,
+    -0.0417
+   ],
+   "localRotationQuat_xyzw": [
+    0.70711,
+    -0.0,
+    -0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    270.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    0.006,
+    1.075,
+    -7.042
+   ],
+   "before": {
+    "localPosition": [
+     309.3758,
+     -7.4259,
+     229.2172
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     -0.0,
+     0.70711,
+     0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Counter Hall Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     0.0,
+     0.0,
+     11.7
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.72566,
+     -0.0,
+     0.68805
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-우표",
+   "localPosition": [
+    -4.0293,
+    0.958,
+    13.6534
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -4.029,
+    0.958,
+    13.653
+   ],
+   "before": {
+    "localPosition": [
+     5.3473,
+     0.7875,
+     -1.3968
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창고",
+   "localPosition": [
+    358.8965,
+    10.0069,
+    212.255
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    -0.0,
+    -1.0,
+    -0.0
+   ],
+   "localEulerAngles": [
+    360.0,
+    360.0,
+    180.0
+   ],
+   "localScale": [
+    -429.868,
+    -429.868,
+    -429.868
+   ],
+   "worldPosition": [
+    11.574,
+    5.298,
+    0.003
+   ],
+   "before": {
+    "localPosition": [
+     259.5403,
+     10.0069,
+     200.1066
+    ],
+    "localRotationQuat_xyzw": [
+     1.0,
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/작업실",
+   "localPosition": [
+    296.7685,
+    -5.9565,
+    262.0108
+   ],
+   "localRotationQuat_xyzw": [
+    0.70711,
+    -0.0,
+    -0.70711,
+    -0.0
+   ],
+   "localEulerAngles": [
+    360.0,
+    270.0,
+    180.0
+   ],
+   "localScale": [
+    -429.868,
+    -429.868,
+    -429.868
+   ],
+   "worldPosition": [
+    -2.829,
+    1.597,
+    11.537
+   ],
+   "before": {
+    "localPosition": [
+     321.4742,
+     -5.9565,
+     150.2645
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     0.0,
+     0.70711,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 바깥 문",
+   "localPosition": [
+    1.8513,
+    1.065,
+    0.7835
+   ],
+   "localRotationQuat_xyzw": [
+    0.70711,
+    -0.0,
+    -0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    270.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    1.341,
+    1.075,
+    -15.216
+   ],
+   "before": {
+    "localPosition": [
+     314.9398,
+     -7.4259,
+     271.9099
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     0.0,
+     -0.70711,
+     0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Counter Exterior Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/창고 Art Content/Size - 칭고/칭고",
+   "localPosition": [
+    14.956,
+    0.7529,
+    -2.3215
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    -0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    89.985,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    -2.084,
+    -2.9608,
+    -4.4105
+   ],
+   "worldPosition": [
+    14.956,
+    0.753,
+    -2.322
+   ],
+   "before": {
+    "localPosition": [
+     -2.3091,
+     0.917,
+     2.615
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     -0.0,
+     0.0,
+     0.70711
+    ],
+    "localScale": [
+     -2.5287,
+     -3.5925,
+     -5.3515
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 직업실-도장",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     32.0034,
+     -0.5915,
+     -4.202
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0327,
+     1.2575,
+     0.8379
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-시계",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     29.0671,
+     -0.8635,
+     9.691
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.4102,
+     0.1317,
+     0.1052
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/Collider - 창구-녹음기",
+   "localPosition": [
+    -0.8416,
+    0.9178,
+    -11.6557
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -0.842,
+    0.918,
+    -11.656
+   ],
+   "before": {
+    "localPosition": [
+     0.8051,
+     0.7135,
+     -0.025
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/히든방 Art Content/Size - 히든룸-책상/히든룸-책상",
+   "localPosition": [
+    -8.5266,
+    0.4314,
+    7.1469
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.1605,
+    0.1605,
+    0.1605
+   ],
+   "worldPosition": [
+    -8.527,
+    0.431,
+    7.147
+   ],
+   "before": {
+    "localPosition": [
+     -0.0766,
+     0.3308,
+     0.0
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1239,
+     0.1239,
+     0.1239
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     14.313,
+     0.0,
+     2.429
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.99975,
+     -0.0,
+     -0.02215
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -12.17,
+     0.0,
+     0.1
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-시계/창구-시계",
+   "localPosition": [
+    -2.9455,
+    1.5006,
+    -11.7068
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.1638,
+    0.1638,
+    0.1638
+   ],
+   "worldPosition": [
+    -2.945,
+    1.501,
+    -11.707
+   ],
+   "before": {
+    "localPosition": [
+     -0.098,
+     0.801,
+     -0.074
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-냉장고",
+   "localPosition": [
+    -15.2532,
+    0.8677,
+    3.7814
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -15.253,
+    0.868,
+    3.781
+   ],
+   "before": {
+    "localPosition": [
+     1.2274,
+     0.9337,
+     -1.2426
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-선빈",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     37.9137,
+     -1.3712,
+     0.9114
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.3839,
+     2.6312,
+     1.8362
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-상자",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     29.966,
+     -0.9978,
+     -5.3035
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.6969,
+     2.3892,
+     1.3143
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 직업실-도장",
+   "localPosition": [
+    -3.6288,
+    1.0578,
+    13.3183
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -3.629,
+    1.058,
+    13.318
+   ],
+   "before": {
+    "localPosition": [
+     5.6727,
+     0.8906,
+     -1.2181
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-녹음기",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     32.5224,
+     -0.7018,
+     9.5036
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     -0.27652,
+     -0.0,
+     0.96101
+    ],
+    "localScale": [
+     0.9048,
+     0.44,
+     0.7373
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-상자",
+   "localPosition": [
+    2.3847,
+    0.969,
+    13.7897
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    2.385,
+    0.969,
+    13.79
+   ],
+   "before": {
+    "localPosition": [
+     -1.0529,
+     0.5995,
+     -0.024
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -30.7557,
+     1.3739,
+     -9.7159
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-콘베이어 밸트/작업실-콘베이어 밸트",
+   "localPosition": [
+    36.787,
+    3.3781,
+    25.2224
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.3992,
+    0.3992,
+    0.3992
+   ],
+   "worldPosition": [
+    36.787,
+    3.378,
+    25.222
+   ],
+   "before": {
+    "localPosition": [
+     -16.6495,
+     1.6324,
+     -5.5499
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-소파/탕비실-소파",
+   "localPosition": [
+    -13.3924,
+    0.9708,
+    0.5305
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.5157,
+    0.5157,
+    0.5157
+   ],
+   "worldPosition": [
+    -13.392,
+    0.971,
+    0.531
+   ],
+   "before": {
+    "localPosition": [
+     -1.0346,
+     0.5608,
+     -0.6854
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.2976,
+     0.2976,
+     0.2976
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Empty Box 2",
+   "localPosition": [
+    11.98,
+    0.45,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    11.98,
+    0.45,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.18,
+     0.36,
+     10.5
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.70711,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Empty Box 4",
+   "localPosition": [
+    13.5,
+    0.45,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    13.5,
+    0.45,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.18,
+     0.36,
+     12.9
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.70711,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Empty Box 5",
+   "localPosition": [
+    14.26,
+    0.45,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    14.26,
+    0.45,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.18,
+     0.36,
+     14.1
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.70711,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Empty Box 3",
+   "localPosition": [
+    12.74,
+    0.45,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    12.74,
+    0.45,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.18,
+     0.36,
+     11.7
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.70711,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Empty Box 1",
+   "localPosition": [
+    11.22,
+    0.45,
+    2.37
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    11.22,
+    0.45,
+    2.37
+   ],
+   "before": {
+    "localPosition": [
+     -3.18,
+     0.36,
+     9.3
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.70711,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-탁자",
+   "localPosition": [
+    -10.4838,
+    0.3962,
+    -0.4027
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -10.484,
+    0.396,
+    -0.403
+   ],
+   "before": {
+    "localPosition": [
+     -0.2138,
+     0.4093,
+     0.646
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/히든방 Art Content/Size - 히든룸-메모지",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     33.4461,
+     -0.7175,
+     -0.9872
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.1923,
+     0.7876,
+     1.055
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-소파",
+   "localPosition": [
+    -15.1854,
+    0.6003,
+    -0.6573
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -15.185,
+    0.6,
+    -0.657
+   ],
+   "before": {
+    "localPosition": [
+     1.2075,
+     0.4902,
+     0.67
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/Collider - 히든룸-책상",
+   "localPosition": [
+    -8.6258,
+    0.3925,
+    7.1469
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -8.626,
+    0.392,
+    7.147
+   ],
+   "before": {
+    "localPosition": [
+     -0.0,
+     0.375,
+     -0.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-상자/작업실-상자",
+   "localPosition": [
+    36.787,
+    3.3781,
+    25.2224
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.3992,
+    0.3992,
+    0.3992
+   ],
+   "worldPosition": [
+    36.787,
+    3.378,
+    25.222
+   ],
+   "before": {
+    "localPosition": [
+     -16.6281,
+     1.2586,
+     -5.5259
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.1929,
+     0.1929,
+     0.1929
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-탁자/탕비실-탁자",
+   "localPosition": [
+    -11.1163,
+    0.9241,
+    0.679
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.4866,
+    0.4866,
+    0.4866
+   ],
+   "worldPosition": [
+    -11.116,
+    0.924,
+    0.679
+   ],
+   "before": {
+    "localPosition": [
+     0.3868,
+     0.5666,
+     -0.6614
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.2976,
+     0.2976,
+     0.2976
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/히든방 Art Content/Size - 히든룸-책상",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     33.4379,
+     -1.352,
+     -1.0308
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.4762,
+     1.2422,
+     1.5003
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/복도",
+   "localPosition": [
+    308.7729,
+    -5.8047,
+    211.7009
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.0,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    429.868,
+    429.868,
+    429.868
+   ],
+   "worldPosition": [
+    -0.046,
+    1.632,
+    -0.125
+   ],
+   "before": {
+    "localPosition": [
+     309.1678,
+     -5.8047,
+     200.1215
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     429.868,
+     429.868,
+     429.868
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-탁자",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     37.9774,
+     -1.3368,
+     3.0025
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.7105,
+     1.543,
+     1.0066
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-책상",
+   "localPosition": [
+    -3.9251,
+    0.7764,
+    14.4621
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -3.925,
+    0.776,
+    14.462
+   ],
+   "before": {
+    "localPosition": [
+     5.3108,
+     0.5991,
+     -1.4263
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-녹음기/창구-녹음기",
+   "localPosition": [
+    0.2309,
+    1.2608,
+    -11.9666
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.203,
+    0.203,
+    0.203
+   ],
+   "worldPosition": [
+    0.231,
+    1.261,
+    -11.967
+   ],
+   "before": {
+    "localPosition": [
+     -0.129,
+     0.468,
+     0.5932
+    ],
+    "localRotationQuat_xyzw": [
+     0.09416,
+     -0.70081,
+     -0.70081,
+     -0.09417
+    ],
+    "localScale": [
+     0.105,
+     0.3124,
+     0.2214
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/히든방 Art Content",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -33.4379,
+     1.352,
+     1.0308
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/Collider - 칭고",
+   "localPosition": [
+    14.98,
+    0.05,
+    -0.15
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    14.98,
+    0.05,
+    -0.15
+   ],
+   "before": {
+    "localPosition": [
+     0.0,
+     1.05,
+     0.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/Collider - 히든룸-메모지",
+   "localPosition": [
+    -8.6364,
+    0.837,
+    7.0904
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -8.636,
+    0.837,
+    7.09
+   ],
+   "before": {
+    "localPosition": [
+     0.0081,
+     0.6419,
+     0.0436
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/창고 Art Content",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -46.3377,
+     2.6965,
+     -5.2307
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -31.0189,
+     1.3724,
+     5.2795
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-콘베이어 밸트",
+   "localPosition": [
+    2.3402,
+    0.4102,
+    13.7401
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    2.34,
+    0.41,
+    13.74
+   ],
+   "before": {
+    "localPosition": [
+     -1.0315,
+     0.3757,
+     0.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-우표",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     38.031,
+     0.43,
+     -2.21
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.70711,
+     0.0,
+     0.70711
+    ],
+    "localScale": [
+     2.268,
+     2.8174,
+     2.3086
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/비밀의방 문",
+   "localPosition": [
+    0.0,
+    1.065,
+    0.51
+   ],
+   "localRotationQuat_xyzw": [
+    1.0,
+    -0.0,
+    -0.0,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    180.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    -1.8,
+    1.075,
+    5.576
+   ],
+   "before": {
+    "localPosition": [
+     316.2212,
+     -7.3538,
+     175.5755
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     -0.0,
+     1.0,
+     -0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Hidden Room Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-책상",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     36.075,
+     -1.3724,
+     -5.675
+    ],
+    "localRotationQuat_xyzw": [
+     -0.0,
+     0.71844,
+     -0.0,
+     0.69559
+    ],
+    "localScale": [
+     1.0668,
+     0.6117,
+     0.7555
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 술",
+   "localPosition": [
+    3.12,
+    1.22,
+    9.65
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    9.65
+   ],
+   "before": {
+    "localPosition": [
+     10.55,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 물",
+   "localPosition": [
+    3.12,
+    1.22,
+    8.29
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    8.29
+   ],
+   "before": {
+    "localPosition": [
+     9.19,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 불",
+   "localPosition": [
+    3.12,
+    1.22,
+    7.95
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    7.95
+   ],
+   "before": {
+    "localPosition": [
+     8.85,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 전기",
+   "localPosition": [
+    3.12,
+    1.22,
+    8.63
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    8.63
+   ],
+   "before": {
+    "localPosition": [
+     9.53,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 충격",
+   "localPosition": [
+    3.12,
+    1.22,
+    8.97
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    8.97
+   ],
+   "before": {
+    "localPosition": [
+     9.87,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/Box Stamp 약",
+   "localPosition": [
+    3.12,
+    1.22,
+    9.31
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    0.22,
+    0.28,
+    0.22
+   ],
+   "worldPosition": [
+    3.12,
+    1.22,
+    9.31
+   ],
+   "before": {
+    "localPosition": [
+     10.21,
+     1.22,
+     -3.12
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.22,
+     0.28,
+     0.22
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/창구 Art Content/Size - 창구-책상",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     30.9359,
+     -1.1361,
+     9.5909
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.4385,
+     0.5546,
+     0.459
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/작업실 Art Content/Size - 작업실-콘베이어 밸트",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     29.9874,
+     -1.3717,
+     -5.2795
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.5506,
+     1.8929,
+     1.9039
+    ]
+   }
+  },
+  {
+   "path": "DAY 2 Gameplay Objects/DAY2 Packed Box",
+   "localPosition": [
+    4.035,
+    0.264,
+    10.3
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.70711,
+    0.0,
+    0.70711
+   ],
+   "localEulerAngles": [
+    0.0,
+    90.0,
+    0.0
+   ],
+   "localScale": [
+    0.82,
+    0.56,
+    0.68
+   ],
+   "worldPosition": [
+    4.035,
+    0.264,
+    10.3
+   ],
+   "before": {
+    "localPosition": [
+     11.2,
+     0.264,
+     -4.035
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     0.82,
+     0.56,
+     0.68
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     -7.6,
+     0.0,
+     7.0
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.70711,
+     0.0,
+     0.70711
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/작업실 문",
+   "localPosition": [
+    0.51,
+    1.065,
+    -0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.70711,
+    -0.0,
+    -0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    270.0,
+    180.0
+   ],
+   "localScale": [
+    -99.6505,
+    -99.6505,
+    -99.6505
+   ],
+   "worldPosition": [
+    0.0,
+    1.075,
+    7.0
+   ],
+   "before": {
+    "localPosition": [
+     309.3757,
+     -7.4259,
+     170.114
+    ],
+    "localRotationQuat_xyzw": [
+     0.70711,
+     -0.0,
+     0.70711,
+     0.0
+    ],
+    "localScale": [
+     -429.868,
+     -429.868,
+     -429.868
+    ]
+   },
+   "newParentPath": "DEAD LETTER - Graybox/Storage Hall Door Pivot",
+   "note": "reparented"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-선빈",
+   "localPosition": [
+    -11.0402,
+    0.6887,
+    4.1662
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    -11.04,
+    0.689,
+    4.166
+   ],
+   "before": {
+    "localPosition": [
+     -0.2774,
+     1.025,
+     -1.445
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-소파",
+   "localPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localRotationQuat_xyzw": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "localEulerAngles": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "localScale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "worldPosition": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "localPosition": [
+     39.3987,
+     -1.331,
+     3.0265
+    ],
+    "localRotationQuat_xyzw": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "localScale": [
+     1.187,
+     1.298,
+     1.0748
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/탕비실 Art Content/Size - 탕비실-냉장고/탕비실-냉장고",
+   "localPosition": [
+    -13.7189,
+    0.8611,
+    1.9956
+   ],
+   "localRotationQuat_xyzw": [
+    -0.0,
+    0.70711,
+    0.70711,
+    0.0
+   ],
+   "localEulerAngles": [
+    270.015,
+    180.0,
+    0.0
+   ],
+   "localScale": [
+    0.433,
+    0.433,
+    0.433
+   ],
+   "worldPosition": [
+    -13.719,
+    0.861,
+    1.996
+   ],
+   "before": {
+    "localPosition": [
+     -1.0545,
+     0.5922,
+     1.2273
+    ],
+    "localRotationQuat_xyzw": [
+     -0.70711,
+     -0.0,
+     -0.0,
+     0.70711
+    ],
+    "localScale": [
+     0.2976,
+     0.2976,
+     0.2976
+    ]
+   }
+  }
+ ],
+ "active": [
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves",
+   "activeSelf": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves",
+   "activeSelf": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Exterior Door Pivot",
+   "activeSelf": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves",
+   "activeSelf": true
+  }
+ ],
+ "renderers": [
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Post -1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Door Warning Plate",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Shelf 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Post 1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Post -1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Shelf 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Post -1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Exterior Door Lintel",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Rear Diagonal Brace B",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Post -1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Exterior Door Right Post",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Shelf 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Post 1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Rear Diagonal Brace A",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Rear Diagonal Brace B",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Rear Diagonal Brace A",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Shelf 4",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Shelf 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Rear Diagonal Brace B",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Post -1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Rear Diagonal Brace A",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage East Shelves/Post -1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Post 1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Post 1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Shelf 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Shelf 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Exterior Door Left Post",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Hinge Pin 3",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Hinge Pin 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Post 1 -1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Front Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Hall Door Pivot/Storage Hall Door Front Handle",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Shelf 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Post 1 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Upper Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Shelf 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Upper Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Hall Door Pivot/Counter Hall Door Back Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Front Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Shelf 4",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Upper Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage West Shelves/Shelf 2",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Front Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Hinge Pin 1",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Leaf",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Counter Exterior Door Pivot/Counter Exterior Door Back Lower Panel Near",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Workshop Hall Door Pivot/Workshop Hall Door Front Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Lower Panel Top",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Storage Rear Shelves/Shelf 4",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Lower Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Hidden Room Door Pivot/Hidden Room Door Back Lower Panel Far",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Pantry Hall Door Pivot/Pantry Hall Door Back Upper Panel Bottom",
+   "meshRendererEnabled": false
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/탕비실 문",
+   "meshRendererEnabled": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창고 문",
+   "meshRendererEnabled": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 안쪽 문",
+   "meshRendererEnabled": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 바깥 문",
+   "meshRendererEnabled": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/비밀의방 문",
+   "meshRendererEnabled": true
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/작업실 문",
+   "meshRendererEnabled": true
+  }
+ ],
+ "boxColliders": [
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-테이프",
+   "size": [
+    0.2059,
+    0.0421,
+    0.2245
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.18,
+     0.12,
+     0.25
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/Collider - 창구-책상",
+   "size": [
+    2.5067,
+    1.3542,
+    1.2013
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     1.0452,
+     0.7135,
+     0.525
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-우표",
+   "size": [
+    0.2415,
+    0.02,
+    0.1845
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.3859,
+     0.015,
+     0.4763
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Counter Production Art/Collider - 창구-녹음기",
+   "size": [
+    0.0866,
+    0.1982,
+    0.0708
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.0917,
+     0.0951,
+     0.08
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-냉장고",
+   "size": [
+    1.1862,
+    1.7355,
+    1.1307
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.9,
+     1.85,
+     0.8
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 직업실-도장",
+   "size": [
+    0.1768,
+    0.2129,
+    0.2179
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.15,
+     0.22,
+     0.15
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-상자",
+   "size": [
+    3.5624,
+    0.3897,
+    3.7781
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     1.2,
+     0.45,
+     2.4
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-탁자",
+   "size": [
+    1.9567,
+    0.7924,
+    2.9245
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.85,
+     0.75,
+     1.8
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-소파",
+   "size": [
+    1.3141,
+    1.2007,
+    3.2252
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.9,
+     0.9,
+     2.0
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/Collider - 히든룸-책상",
+   "size": [
+    0.7021,
+    0.7849,
+    1.4679
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.8,
+     0.75,
+     1.7
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-책상",
+   "size": [
+    0.9697,
+    1.5527,
+    2.8997
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     2.3567,
+     1.1906,
+     0.8591
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/Collider - 칭고",
+   "size": [
+    0.5,
+    0.1,
+    4.3
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     5.4,
+     2.1,
+     7.2
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Hidden Room Production Art/Collider - 히든룸-메모지",
+   "size": [
+    0.3259,
+    0.0247,
+    0.2456
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     0.3,
+     0.015,
+     0.2
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Workshop Production Art/Collider - 작업실-콘베이어 밸트",
+   "size": [
+    4.1334,
+    0.8205,
+    4.3466
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     1.1,
+     0.75,
+     4.0
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Pantry Production Art/Collider - 탕비실-선빈",
+   "size": [
+    3.5749,
+    1.3774,
+    0.433
+   ],
+   "center": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "before": {
+    "size": [
+     2.8,
+     2.05,
+     0.45
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ ],
+ "scripts": [
+  {
+   "path": "DEAD LETTER - Graybox/Production Room Art/Storage Production Art/Storage Shelf Set/Collider - 칭고",
+   "component": "ArtColliderFollower",
+   "enabled": false,
+   "target": null
+  }
+ ],
+ "materialSlots": [
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/탕비실 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창고 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 안쪽 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/창구 바깥 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/비밀의방 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  },
+  {
+   "path": "DEAD LETTER - Graybox/Final Map Visuals (Visual Only)/작업실 문",
+   "note": "both material slots now use the FBX door material (Graybox_SealedDoor imported with the FBX) carrying the door texture"
+  }
+ ],
+ "_readme": "Values are LOCAL (relative to parent) unless named world*. 'path' is the hierarchy path in the gameplay scene (build index 1). Apply 'newParentPath' first where present. Rotation: use localRotationQuat_xyzw; localEulerAngles is for reading only."
+}

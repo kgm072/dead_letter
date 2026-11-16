@@ -260,14 +260,14 @@ namespace DeadLetter.Editor
                 string objectName = renderer.gameObject.name;
                 ArtInteractionRole role = GetInteractionRole(objectName);
                 if (ShouldHaveCollider(spec.Name, objectName) || role != ArtInteractionRole.None)
-                    CreateColliderProxy(wrapper.transform, renderer, role);
+                    CreateColliderProxy(wrapper.transform, renderer, role, spec.Name == "창고");
             }
             wrapper.name = $"{spec.Name} Art Prefab";
             PrefabUtility.SaveAsPrefabAsset(wrapper, spec.PrefabPath);
             Object.DestroyImmediate(wrapper);
         }
 
-        private static void CreateColliderProxy(Transform wrapper, Renderer renderer, ArtInteractionRole role)
+        private static void CreateColliderProxy(Transform wrapper, Renderer renderer, ArtInteractionRole role, bool storageShelf)
         {
             GameObject proxy = new GameObject($"Collider - {renderer.gameObject.name}");
             proxy.transform.SetParent(wrapper, false);
@@ -277,6 +277,15 @@ namespace DeadLetter.Editor
             collider.size = renderer.bounds.size;
             ArtColliderFollower follower = proxy.AddComponent<ArtColliderFollower>();
             follower.Configure(renderer);
+            if (storageShelf)
+            {
+                // A single bounds collider around the U-shaped shelf closes the entire room.
+                // The generated graybox shelf rows provide the real collision instead.
+                follower.Configure(null);
+                follower.enabled = false;
+                collider.center = Vector3.zero;
+                collider.size = new Vector3(0.5f, 0.1f, 4.3f);
+            }
             if (role != ArtInteractionRole.None)
             {
                 ArtInteractionMarker marker = proxy.AddComponent<ArtInteractionMarker>();
