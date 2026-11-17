@@ -25,14 +25,14 @@ namespace DeadLetter.Mail
         {
             ResolveManager();
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged += RefreshVisibility;
+                dayCycle.PackageStateChanged += RefreshVisibility;
             RefreshVisibility();
         }
 
         private void OnDisable()
         {
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged -= RefreshVisibility;
+                dayCycle.PackageStateChanged -= RefreshVisibility;
         }
 
         public bool CanInteract(GameObject interactor)

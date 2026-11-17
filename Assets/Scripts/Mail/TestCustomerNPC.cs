@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using DeadLetter.Interaction;
+using DeadLetter.Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace DeadLetter.Mail
 {
@@ -12,6 +15,14 @@ namespace DeadLetter.Mail
             WaitingForLetter,
             WaitingForDispatch,
             Departing
+        }
+
+        private enum DialoguePhase
+        {
+            None,
+            Opening,
+            Completion,
+            CompletionPreview
         }
 
         [SerializeField] private LetterTaskState taskState;
@@ -34,16 +45,32 @@ namespace DeadLetter.Mail
         private string letterId;
         private LetterStamp requiredStamps;
         private string dialogue;
-        private float dialogueUntil;
         private GUIStyle dialogueStyle;
         private GUIStyle speakerStyle;
+        private GUIStyle choiceStyle;
+        private CustomerDialogueScenario dialogueScenario;
+        private readonly Queue<string> pendingDialogueLines = new();
+        private CustomerDialogueChoice pendingChoice;
+        private IReadOnlyList<string> pendingCommonLines;
+        private DialoguePhase dialoguePhase;
+        private bool waitingForChoice;
+        private bool dialogueInputSuspended;
+        private string pendingSectionEventId = string.Empty;
+        private bool pendingSectionEventAtStart;
+        private FirstPersonController playerController;
+        private bool playerInputBeforeDialogue;
+
+        public bool DialogueActive => dialoguePhase != DialoguePhase.None;
+        public bool WaitingForDialogueChoice => waitingForChoice;
+        public string DialoguePhaseLabel => dialoguePhase.ToString();
+        public event System.Action<string> DialogueEventReached;
 
         public string GetInteractionPrompt(GameObject interactor)
         {
             if (state != CustomerState.WaitingForDispatch)
                 return "편지 받기";
 
-            return dayCycle?.CurrentDayTwoRequest?.Definition.RequestType == MailRequestType.Receive
+            return dayCycle?.CurrentPackageRequest?.Definition.RequestType == MailRequestType.Receive
                 ? "포장 물품 전달"
                 : "발송 결과 알리기";
         }
@@ -55,6 +82,12 @@ namespace DeadLetter.Mail
 
         private void Update()
         {
+            if (DialogueActive)
+            {
+                HandleDialogueInput();
+                return;
+            }
+
             if (state != CustomerState.Approaching && state != CustomerState.Departing)
                 return;
 
@@ -72,7 +105,10 @@ namespace DeadLetter.Mail
             waypointIndex = 0;
             openedEntrance = false;
             dialogue = string.Empty;
-            dialogueUntil = 0f;
+            dialogueScenario = CustomerDialogueCatalog.TryGet(taskState != null ? taskState.CurrentDay : 1, id, out CustomerDialogueScenario scenario)
+                ? scenario
+                : null;
+            ResetDialogueRuntime();
             if (waypoints != null && waypoints.Length > 0)
             {
                 transform.position = waypoints[0].position + new Vector3(0f, 0f, -1.5f);
@@ -85,8 +121,10 @@ namespace DeadLetter.Mail
 
         public void HideUntilNextCustomer()
         {
+            EndDialogueLock();
             state = CustomerState.Inactive;
             dialogue = string.Empty;
+            ResetDialogueRuntime();
             if (letterProp != null)
                 letterProp.SetActive(false);
             gameObject.SetActive(false);
@@ -95,6 +133,9 @@ namespace DeadLetter.Mail
         public bool CanInteract(GameObject interactor)
         {
             if (taskState == null)
+                return false;
+
+            if (DialogueActive)
                 return false;
 
             return state == CustomerState.WaitingForLetter && !taskState.HasLetter ||
@@ -116,14 +157,7 @@ namespace DeadLetter.Mail
 
                 state = CustomerState.WaitingForDispatch;
                 dayCycle?.NotifyRequestAccepted(letterId);
-                MailRequestType? requestType = dayCycle?.CurrentDayTwoRequest?.Definition.RequestType;
-                string work = requestType == MailRequestType.Dispatch
-                    ? "제가 내려놓은 물품을 포장해 컨베이어로 보낸 뒤 다시 알려 주세요."
-                    : requestType == MailRequestType.Receive
-                        ? "창고 물품을 포장한 뒤 제게 전달해 주세요."
-                        : "처리 후 다시 알려 주세요.";
-                dialogue = $"필요한 도안은 {GetStampList(requiredStamps)}입니다. {work}";
-                dialogueUntil = Time.time + 6f;
+                dialogue = string.Empty;
                 if (letterProp != null)
                     letterProp.SetActive(false);
                 return;
@@ -132,11 +166,7 @@ namespace DeadLetter.Mail
             if (dayCycle != null && !dayCycle.TryFinishCurrentCustomer(customerId, letterId))
                 return;
 
-            dialogue = "확인했습니다. 수고하셨습니다.";
-            dialogueUntil = Time.time + 2.5f;
-            state = CustomerState.Departing;
-            waypointIndex = waypoints == null ? -1 : waypoints.Length - 1;
-            openedEntrance = false;
+            BeginDialogue(DialoguePhase.Completion, dialogueScenario?.Completion);
         }
 
         private void MoveAlongRoute()
@@ -171,10 +201,9 @@ namespace DeadLetter.Mail
 
                 state = CustomerState.WaitingForLetter;
                 FaceWaitingTarget();
-                dialogue = "안녕하세요. 이 편지를 접수해 주세요.";
-                dialogueUntil = float.PositiveInfinity;
                 if (entranceDoor != null)
                     entranceDoor.CloseDoor();
+                BeginDialogue(DialoguePhase.Opening, dialogueScenario?.Opening);
                 return;
             }
 
@@ -214,18 +243,35 @@ namespace DeadLetter.Mail
 
         private void OnGUI()
         {
-            if (string.IsNullOrEmpty(dialogue) || Time.time > dialogueUntil)
+            if (!DialogueActive || (string.IsNullOrEmpty(dialogue) && !waitingForChoice))
                 return;
 
             EnsureDialogueStyles();
             float scale = Mathf.Clamp(Mathf.Min(Screen.width / 1920f, Screen.height / 1080f), 0.75f, 1.15f);
             float width = 720f * scale;
-            float height = 112f * scale;
+            float height = (waitingForChoice ? 196f : 132f) * scale;
             Rect panel = new Rect((Screen.width - width) * 0.5f, Screen.height - height - 42f * scale, width, height);
             DrawRect(panel, new Color(0.025f, 0.02f, 0.03f, 0.93f));
             DrawRect(new Rect(panel.x, panel.y, 6f * scale, panel.height), new Color(0.92f, 0.28f, 0.08f, 1f));
-            GUI.Label(new Rect(panel.x + 24f * scale, panel.y + 13f * scale, panel.width - 48f * scale, 30f * scale), $"{customerDisplayName} 민원인", speakerStyle);
-            GUI.Label(new Rect(panel.x + 24f * scale, panel.y + 47f * scale, panel.width - 48f * scale, 50f * scale), dialogue, dialogueStyle);
+            string speakerName = dialogueScenario?.SpeakerName ?? customerDisplayName;
+            GUI.Label(new Rect(panel.x + 24f * scale, panel.y + 13f * scale, panel.width - 48f * scale, 30f * scale), $"{speakerName} 민원인", speakerStyle);
+            if (waitingForChoice && pendingChoice != null)
+            {
+                CustomerDialogueChoice visibleChoice = pendingChoice;
+                GUI.Label(new Rect(panel.x + 24f * scale, panel.y + 47f * scale, panel.width - 48f * scale, 26f * scale), "선택지를 고르세요.", dialogueStyle);
+                if (GUI.Button(new Rect(panel.x + 24f * scale, panel.y + 80f * scale, panel.width - 48f * scale, 43f * scale),
+                        $"[1] {visibleChoice.Options[0]}", choiceStyle))
+                    SelectChoice(0);
+                else if (GUI.Button(new Rect(panel.x + 24f * scale, panel.y + 130f * scale, panel.width - 48f * scale, 43f * scale),
+                        $"[2] {visibleChoice.Options[1]}", choiceStyle))
+                    SelectChoice(1);
+            }
+            else
+            {
+                GUI.Label(new Rect(panel.x + 24f * scale, panel.y + 47f * scale, panel.width - 48f * scale, 54f * scale), dialogue, dialogueStyle);
+                GUI.Label(new Rect(panel.x + panel.width - 180f * scale, panel.y + panel.height - 27f * scale, 156f * scale, 20f * scale),
+                    "[Space/Enter] 계속", choiceStyle);
+            }
         }
 
         private void EnsureDialogueStyles()
@@ -248,7 +294,210 @@ namespace DeadLetter.Mail
                 wordWrap = true,
                 normal = { textColor = new Color(0.96f, 0.92f, 0.84f, 1f) }
             };
+            choiceStyle = new GUIStyle(GUI.skin.button)
+            {
+                font = koreanFont,
+                fontSize = 15,
+                alignment = TextAnchor.MiddleLeft,
+                wordWrap = true,
+                normal = { textColor = new Color(0.96f, 0.92f, 0.84f, 1f) },
+                hover = { textColor = new Color(1f, 0.58f, 0.24f, 1f) }
+            };
         }
+
+        private void BeginDialogue(DialoguePhase phase, CustomerDialogueSection section)
+        {
+            bool dialogueWasAlreadyActive = DialogueActive;
+            dialoguePhase = phase;
+            pendingDialogueLines.Clear();
+            waitingForChoice = false;
+            pendingChoice = section?.Choice;
+            pendingCommonLines = section?.AfterChoice;
+            pendingSectionEventId = section?.EventId ?? string.Empty;
+            pendingSectionEventAtStart = section != null && section.EventAtStart;
+
+            if (pendingSectionEventAtStart && !string.IsNullOrWhiteSpace(pendingSectionEventId))
+                DialogueEventReached?.Invoke(pendingSectionEventId);
+
+            if (section != null)
+            {
+                foreach (string line in section.BeforeChoice)
+                    EnqueueLine(line);
+            }
+
+            if (pendingChoice == null && pendingCommonLines != null)
+            {
+                foreach (string line in pendingCommonLines)
+                    EnqueueLine(line);
+                pendingCommonLines = null;
+            }
+
+            BeginDialogueLock(dialogueWasAlreadyActive);
+            ShowNextDialogueEntry();
+        }
+
+        private void HandleDialogueInput()
+        {
+            if (dialogueInputSuspended)
+                return;
+
+            Keyboard keyboard = Keyboard.current;
+            if (keyboard == null)
+                return;
+
+            if (waitingForChoice)
+            {
+                if (keyboard.digit1Key.wasPressedThisFrame || keyboard.numpad1Key.wasPressedThisFrame)
+                    SelectChoice(0);
+                else if (keyboard.digit2Key.wasPressedThisFrame || keyboard.numpad2Key.wasPressedThisFrame)
+                    SelectChoice(1);
+                return;
+            }
+
+            if (keyboard.spaceKey.wasPressedThisFrame || keyboard.enterKey.wasPressedThisFrame ||
+                keyboard.numpadEnterKey.wasPressedThisFrame)
+                ShowNextDialogueEntry();
+        }
+
+        private void ShowNextDialogueEntry()
+        {
+            if (pendingDialogueLines.Count > 0)
+            {
+                dialogue = pendingDialogueLines.Dequeue();
+                return;
+            }
+
+            if (pendingChoice != null)
+            {
+                dialogue = string.Empty;
+                waitingForChoice = true;
+                return;
+            }
+
+            FinishDialogue();
+        }
+
+        private void SelectChoice(int optionIndex)
+        {
+            if (!waitingForChoice || pendingChoice == null || optionIndex < 0 || optionIndex >= pendingChoice.Options.Count)
+                return;
+
+            IReadOnlyList<string> responses = pendingChoice.Responses[optionIndex];
+            foreach (string line in responses)
+                EnqueueLine(line);
+            if (pendingCommonLines != null)
+            {
+                foreach (string line in pendingCommonLines)
+                    EnqueueLine(line);
+            }
+
+            pendingChoice = null;
+            pendingCommonLines = null;
+            waitingForChoice = false;
+            ShowNextDialogueEntry();
+        }
+
+        private void FinishDialogue()
+        {
+            DialoguePhase finishedPhase = dialoguePhase;
+            if (!pendingSectionEventAtStart && !string.IsNullOrWhiteSpace(pendingSectionEventId))
+                DialogueEventReached?.Invoke(pendingSectionEventId);
+            dialoguePhase = DialoguePhase.None;
+            dialogue = string.Empty;
+            waitingForChoice = false;
+            pendingChoice = null;
+            pendingCommonLines = null;
+            pendingSectionEventId = string.Empty;
+            pendingSectionEventAtStart = false;
+            EndDialogueLock();
+
+            if (finishedPhase == DialoguePhase.Completion)
+                BeginDeparture();
+        }
+
+        private void BeginDeparture()
+        {
+            state = CustomerState.Departing;
+            waypointIndex = waypoints == null ? -1 : waypoints.Length - 1;
+            openedEntrance = false;
+        }
+
+        private void BeginDialogueLock(bool preservePreviousInputState)
+        {
+            playerController ??= FindAnyObjectByType<FirstPersonController>();
+            if (!preservePreviousInputState)
+                playerInputBeforeDialogue = playerController == null || playerController.InputEnabled;
+            if (playerController != null)
+                playerController.SetInputEnabled(false);
+        }
+
+        private void EndDialogueLock()
+        {
+            if (playerController != null && playerInputBeforeDialogue && !dialogueInputSuspended)
+                playerController.SetInputEnabled(true);
+        }
+
+        private void ResetDialogueRuntime()
+        {
+            pendingDialogueLines.Clear();
+            pendingChoice = null;
+            pendingCommonLines = null;
+            dialoguePhase = DialoguePhase.None;
+            waitingForChoice = false;
+            dialogueInputSuspended = false;
+            pendingSectionEventId = string.Empty;
+            pendingSectionEventAtStart = false;
+        }
+
+        private void EnqueueLine(string line)
+        {
+            if (!string.IsNullOrWhiteSpace(line))
+                pendingDialogueLines.Enqueue(line);
+        }
+
+        public void SetDialogueInputSuspended(bool suspended)
+        {
+            dialogueInputSuspended = suspended;
+            if (!suspended && DialogueActive && playerController != null)
+            {
+                playerInputBeforeDialogue |= playerController.InputEnabled;
+                playerController.SetInputEnabled(false);
+            }
+        }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool DebugReplayOpeningDialogue()
+        {
+            if (dialogueScenario == null)
+                return false;
+            BeginDialogue(DialoguePhase.Opening, dialogueScenario.Opening);
+            return true;
+        }
+
+        public bool DebugPreviewCompletionDialogue()
+        {
+            if (dialogueScenario == null)
+                return false;
+            BeginDialogue(DialoguePhase.CompletionPreview, dialogueScenario.Completion);
+            return true;
+        }
+
+        public bool DebugAdvanceDialogue()
+        {
+            if (!DialogueActive || waitingForChoice)
+                return false;
+            ShowNextDialogueEntry();
+            return true;
+        }
+
+        public bool DebugSelectDialogueChoice(int optionIndex)
+        {
+            if (!DialogueActive || !waitingForChoice)
+                return false;
+            SelectChoice(optionIndex);
+            return true;
+        }
+#endif
 
         private static string GetStampList(LetterStamp stamps)
         {

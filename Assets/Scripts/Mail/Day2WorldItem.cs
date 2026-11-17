@@ -104,16 +104,16 @@ namespace DeadLetter.Mail
                 return;
 
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged -= RefreshVisibility;
+                subscribedDayCycle.PackageStateChanged -= RefreshVisibility;
             subscribedDayCycle = dayCycle;
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged += RefreshVisibility;
+                subscribedDayCycle.PackageStateChanged += RefreshVisibility;
         }
 
         private void UnsubscribeFromStateChanges()
         {
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged -= RefreshVisibility;
+                subscribedDayCycle.PackageStateChanged -= RefreshVisibility;
             subscribedDayCycle = null;
         }
 
@@ -127,14 +127,9 @@ namespace DeadLetter.Mail
             // Storage items remain staged in the storage room. Dispatch items are props
             // brought in by the matching customer, so unrelated counter items stay hidden.
             if (source != Day2ItemSource.Counter)
-                return dayCycle.IsDayTwoActive;
+                return dayCycle.ShouldPresentWorldItem(requestId, source);
 
-            return dayCycle.IsDayTwoActive &&
-                   dayCycle.CurrentDayTwoRequest != null &&
-                   string.Equals(
-                       dayCycle.CurrentDayTwoRequest.Definition.RequestId,
-                       requestId,
-                       System.StringComparison.Ordinal);
+            return dayCycle.ShouldPresentWorldItem(requestId, source);
         }
 
         private void RefreshVisibility()
@@ -161,12 +156,12 @@ namespace DeadLetter.Mail
             ResolveReferences();
             return source == Day2ItemSource.Counter &&
                    customer != null && customer.gameObject.activeInHierarchy &&
-                   dayCycle != null && dayCycle.CurrentDayTwoRequest != null &&
+                   dayCycle != null && dayCycle.CurrentPackageRequest != null &&
                    string.Equals(
-                       dayCycle.CurrentDayTwoRequest.Definition.RequestId,
+                       dayCycle.CurrentPackageRequest.Definition.RequestId,
                        requestId,
                        System.StringComparison.Ordinal) &&
-                   !dayCycle.CurrentDayTwoRequest.RequestAccepted &&
+                   !dayCycle.CurrentPackageRequest.RequestAccepted &&
                    !dayCycle.IsWorldItemClaimed(instanceId);
         }
 
@@ -202,6 +197,9 @@ namespace DeadLetter.Mail
                 Day2ItemType.Cigarettes => new Vector3(-0.17f, 1.05f, -0.24f),
                 Day2ItemType.Lighter => new Vector3(0.17f, 1.08f, -0.24f),
                 Day2ItemType.BulliedUniform => new Vector3(0f, 0.98f, -0.27f),
+                Day2ItemType.DriverLicense => new Vector3(0f, 1.04f, -0.25f),
+                Day2ItemType.Soap => new Vector3(-0.17f, 1.04f, -0.24f),
+                Day2ItemType.Bandage => new Vector3(0.17f, 1.04f, -0.24f),
                 _ => new Vector3(0f, 1.02f, -0.24f)
             };
 

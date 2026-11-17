@@ -43,7 +43,7 @@ namespace DeadLetter.UI
             ResolveReferences();
             if (taskState != null)
                 taskState.Changed += RefreshTaskHUD;
-            SubscribeDayTwoState();
+            SubscribePackageState();
             RefreshTaskHUD();
         }
 
@@ -52,7 +52,7 @@ namespace DeadLetter.UI
             if (taskState != null)
                 taskState.Changed -= RefreshTaskHUD;
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged -= RefreshTaskHUD;
+                subscribedDayCycle.PackageStateChanged -= RefreshTaskHUD;
             subscribedDayCycle = null;
         }
 
@@ -69,15 +69,15 @@ namespace DeadLetter.UI
             dayCycle ??= FindAnyObjectByType<DayCycleManager>();
         }
 
-        private void SubscribeDayTwoState()
+        private void SubscribePackageState()
         {
             if (subscribedDayCycle == dayCycle)
                 return;
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged -= RefreshTaskHUD;
+                subscribedDayCycle.PackageStateChanged -= RefreshTaskHUD;
             subscribedDayCycle = dayCycle;
             if (subscribedDayCycle != null)
-                subscribedDayCycle.DayTwoStateChanged += RefreshTaskHUD;
+                subscribedDayCycle.PackageStateChanged += RefreshTaskHUD;
         }
 
         private void RefreshWorldHUD(bool force)

@@ -22,8 +22,8 @@ namespace DeadLetter.Mail
             if (selected == LetterStamp.None)
                 return "박스 도장 선택 필요";
 
-            bool applied = dayCycle?.CurrentDayTwoRequest != null &&
-                           (dayCycle.CurrentDayTwoRequest.AppliedBoxPictograms & selected) == selected;
+            bool applied = dayCycle?.CurrentPackageRequest != null &&
+                           (dayCycle.CurrentPackageRequest.AppliedBoxPictograms & selected) == selected;
             return applied
                 ? $"{Day2Labels.GetStampLabel(selected)} 도장 제거"
                 : $"{Day2Labels.GetStampLabel(selected)} 도장 날인";
@@ -40,14 +40,14 @@ namespace DeadLetter.Mail
         {
             ResolveManager();
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged += Refresh;
+                dayCycle.PackageStateChanged += Refresh;
             Refresh();
         }
 
         private void OnDisable()
         {
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged -= Refresh;
+                dayCycle.PackageStateChanged -= Refresh;
         }
 
         public bool CanInteract(GameObject interactor)
@@ -87,7 +87,7 @@ namespace DeadLetter.Mail
 
         private bool IsPackageVisible()
         {
-            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentDayTwoRequest : null;
+            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentPackageRequest : null;
             return state != null && state.Packed && !state.ConveyorDispatched &&
                    !state.DeliveredToCustomer && !state.Completed;
         }
@@ -102,7 +102,7 @@ namespace DeadLetter.Mail
             foreach (Collider target in colliders)
                 target.enabled = visible;
 
-            LetterStamp marks = dayCycle?.CurrentDayTwoRequest?.AppliedBoxPictograms ?? LetterStamp.None;
+            LetterStamp marks = dayCycle?.CurrentPackageRequest?.AppliedBoxPictograms ?? LetterStamp.None;
             SetMark(fireMark, visible && Has(marks, LetterStamp.Fire));
             SetMark(waterMark, visible && Has(marks, LetterStamp.Water));
             SetMark(electricityMark, visible && Has(marks, LetterStamp.Electricity));

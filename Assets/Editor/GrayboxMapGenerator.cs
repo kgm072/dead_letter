@@ -389,6 +389,7 @@ namespace DeadLetter.Editor
             SerializedObject dropBoxData = new SerializedObject(dropBox);
             dropBoxData.FindProperty("taskState").objectReferenceValue = taskState;
             dropBoxData.ApplyModifiedPropertiesWithoutUndo();
+            MailboxVisualIntegrator.ApplyTo(box, body);
         }
 
         private static void CreateCounterFurniture(Transform parent, Material furniture, Material equipment, Material trim, Material upholstery, Material paper, Material screen)

@@ -43,7 +43,7 @@ namespace DeadLetter.Mail
             if (taskState.TryMailLetter())
             {
                 dayCycle ??= FindAnyObjectByType<DayCycleManager>();
-                ShowMessage(dayCycle != null && dayCycle.IsDayTwoActive
+                ShowMessage(dayCycle != null && dayCycle.IsPackageDayActive
                     ? "편지 처리 완료. 박스 업무를 계속 진행하세요."
                     : "발송 접수 완료. 민원인에게 돌아가 상호작용하세요.");
             }

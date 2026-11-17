@@ -17,7 +17,12 @@ namespace DeadLetter.Mail
         HangoverRemedy,
         BulliedUniform,
         SafetyHelmet,
-        InsulatedGloves
+        InsulatedGloves,
+        DriverLicense,
+        Soap,
+        Bandage,
+        Soju,
+        DriedSnack
     }
 
     public enum Day2ItemSource
@@ -32,7 +37,20 @@ namespace DeadLetter.Mail
         DesignatedDriverCard,
         MilkAndShoeMarks,
         CementDust,
-        WaterSoaked
+        WaterSoaked,
+        NearlyBurnedBlack,
+        DesignatedDriverCardAndBlood,
+        RepeatedPrescription,
+        ElectricRootScorch,
+        WetBloodAndFishHooks
+    }
+
+    public enum DailyRequestStatus
+    {
+        NotAppeared,
+        InService,
+        WorkInProgress,
+        Completed
     }
 
     public enum MailRequestProgressStage
@@ -61,18 +79,23 @@ namespace DeadLetter.Mail
             LetterAppearanceType letterAppearance,
             LetterStamp requiredPictograms,
             string relatedRequestId = "",
-            string transferLinkId = "")
+            string transferLinkId = "",
+            int day = 2,
+            bool itemRequirementsConfirmed = true,
+            bool requiresRelatedRequestCompletionForItems = false)
         {
             RequestId = requestId;
             CustomerId = customerId;
             CustomerDisplayName = customerDisplayName;
-            Day = 2;
+            Day = day;
             RequestType = requestType;
             RequestedItems = requestedItems?.Distinct().ToArray() ?? Array.Empty<Day2ItemType>();
             LetterAppearance = letterAppearance;
             RequiredPictograms = requiredPictograms;
             RelatedRequestId = relatedRequestId ?? string.Empty;
             TransferLinkId = transferLinkId ?? string.Empty;
+            ItemRequirementsConfirmed = itemRequirementsConfirmed;
+            RequiresRelatedRequestCompletionForItems = requiresRelatedRequestCompletionForItems;
         }
 
         public string RequestId { get; }
@@ -85,6 +108,8 @@ namespace DeadLetter.Mail
         public LetterStamp RequiredPictograms { get; }
         public string RelatedRequestId { get; }
         public string TransferLinkId { get; }
+        public bool ItemRequirementsConfirmed { get; }
+        public bool RequiresRelatedRequestCompletionForItems { get; }
     }
 
     public sealed class Day2RequestRuntimeState
@@ -102,8 +127,10 @@ namespace DeadLetter.Mail
         public IReadOnlyCollection<Day2ItemType> SecuredItems => securedItems;
         public IReadOnlyDictionary<Day2ItemType, string> SecuredItemInstanceIds => securedItemInstanceIds;
         public IReadOnlyList<Day2ItemType> PackedItems => packedItems;
+        public bool HasAppeared { get; private set; }
         public bool RequestAccepted { get; private set; }
-        public bool ItemsSecured => Definition.RequestedItems.All(securedItems.Contains);
+        public bool ItemsSecured => Definition.ItemRequirementsConfirmed &&
+                                    Definition.RequestedItems.All(securedItems.Contains);
         public bool EmptyBoxSecured { get; private set; }
         public string BoxId { get; private set; } = string.Empty;
         public bool Packed { get; private set; }
@@ -117,6 +144,13 @@ namespace DeadLetter.Mail
         public bool HasOnlyRequiredLetterStamps => AttachedLetterStamps == Definition.RequiredPictograms;
         public bool HasOnlyRequiredBoxPictograms => AppliedBoxPictograms == Definition.RequiredPictograms;
         public bool LetterProcessingComplete => HasOnlyRequiredLetterStamps && LetterPostmarkApplied;
+        public DailyRequestStatus DailyStatus => Completed
+            ? DailyRequestStatus.Completed
+            : RequestAccepted
+                ? DailyRequestStatus.WorkInProgress
+                : HasAppeared
+                    ? DailyRequestStatus.InService
+                    : DailyRequestStatus.NotAppeared;
 
         public MailRequestProgressStage ProgressStage
         {
@@ -135,8 +169,14 @@ namespace DeadLetter.Mail
             }
         }
 
+        public void MarkAppeared()
+        {
+            HasAppeared = true;
+        }
+
         public void AcceptRequest()
         {
+            HasAppeared = true;
             RequestAccepted = true;
         }
 
@@ -240,6 +280,7 @@ namespace DeadLetter.Mail
             securedItems.Clear();
             securedItemInstanceIds.Clear();
             packedItems.Clear();
+            HasAppeared = false;
             RequestAccepted = false;
             EmptyBoxSecured = false;
             BoxId = string.Empty;
@@ -288,7 +329,8 @@ namespace DeadLetter.Mail
                     TroublemakerRequestId, "troublemaker", "불량이", MailRequestType.Receive,
                     new[] { Day2ItemType.BulliedUniform },
                     LetterAppearanceType.WaterSoaked, LetterStamp.Water,
-                    ModelStudentRequestId, StudentUniformTransferLinkId)
+                    ModelStudentRequestId, StudentUniformTransferLinkId,
+                    requiresRelatedRequestCompletionForItems: true)
             };
         }
 

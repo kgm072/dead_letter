@@ -28,13 +28,13 @@ namespace DeadLetter.Mail
         {
             dayCycle ??= FindAnyObjectByType<DayCycleManager>();
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged += Refresh;
+                dayCycle.PackageStateChanged += Refresh;
         }
 
         private void OnDisable()
         {
             if (dayCycle != null)
-                dayCycle.DayTwoStateChanged -= Refresh;
+                dayCycle.PackageStateChanged -= Refresh;
             SetOpen(false);
         }
 
@@ -47,8 +47,8 @@ namespace DeadLetter.Mail
         public bool CanInteract(GameObject interactor)
         {
             dayCycle ??= FindAnyObjectByType<DayCycleManager>();
-            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentDayTwoRequest : null;
-            return dayCycle != null && dayCycle.IsDayTwoActive && state != null && state.RequestAccepted;
+            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentPackageRequest : null;
+            return dayCycle != null && dayCycle.IsPackageDayActive && state != null && state.RequestAccepted;
         }
 
         public void Interact(GameObject interactor)
@@ -78,9 +78,9 @@ namespace DeadLetter.Mail
 
         private string BuildSlipText()
         {
-            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentDayTwoRequest : null;
+            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentPackageRequest : null;
             if (state == null)
-                return "현재 처리 중인 DAY 2 민원이 없습니다.";
+                return "현재 처리 중인 택배 민원이 없습니다.";
 
             Day2RequestDefinition definition = state.Definition;
             LetterStamp required = definition.RequiredPictograms;
@@ -94,10 +94,10 @@ namespace DeadLetter.Mail
                 status += $"\n잘못 찍은 도장: {Day2Labels.GetStampList(incorrect)} (같은 도장을 다시 찍어 제거)";
 
             return
-                $"우편물 분류 전표\n\n" +
+                $"DAY {definition.Day} 우편물 분류 전표\n\n" +
                 $"민원인  {definition.CustomerDisplayName}\n" +
                 $"구분    {(definition.RequestType == MailRequestType.Dispatch ? "발송" : "수령")}\n" +
-                $"물품    {Day2Labels.GetItemList(definition.RequestedItems)}\n" +
+                $"물품    {(definition.ItemRequirementsConfirmed ? Day2Labels.GetItemList(definition.RequestedItems) : "기획 미확정")}\n" +
                 $"필수 박스 도장  {Day2Labels.GetStampList(required)}\n" +
                 $"현재 박스 도장  {Day2Labels.GetStampList(applied)}\n" +
                 $"상태    {status}\n\n" +
@@ -106,7 +106,7 @@ namespace DeadLetter.Mail
 
         private void CreateOverlay()
         {
-            GameObject canvasObject = new("DAY 2 Classification Slip Canvas");
+            GameObject canvasObject = new("Package Classification Slip Canvas");
             canvasObject.transform.SetParent(transform, false);
             Canvas canvas = canvasObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;

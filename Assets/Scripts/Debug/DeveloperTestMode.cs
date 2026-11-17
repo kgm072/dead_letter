@@ -23,6 +23,7 @@ namespace DeadLetter.DebugTools
         private LetterTaskState taskState;
         private FirstPersonController playerController;
         private FirstPersonInteractor interactor;
+        private TestCustomerNPC customer;
         private GameObject canvasRoot;
         private GameObject panel;
         private TextMeshProUGUI statusText;
@@ -73,7 +74,8 @@ namespace DeadLetter.DebugTools
             ResolveReferences();
             return dayCycle != null && taskState != null &&
                    !taskState.WorkstationViewOpen &&
-                   (playerController == null || playerController.InputEnabled);
+                   (playerController == null || playerController.InputEnabled ||
+                    (customer != null && customer.DialogueActive));
         }
 
         private void SetPanelOpen(bool open)
@@ -93,6 +95,7 @@ namespace DeadLetter.DebugTools
                     playerController.SetInputEnabled(false);
                 if (interactor != null)
                     interactor.enabled = false;
+                customer?.SetDialogueInputSuspended(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 RefreshStatus();
@@ -105,6 +108,7 @@ namespace DeadLetter.DebugTools
                     playerController.SetInputEnabled(previousPlayerInput);
                 Cursor.lockState = previousCursorLockMode;
                 Cursor.visible = previousCursorVisible;
+                customer?.SetDialogueInputSuspended(false);
             }
         }
 
@@ -114,6 +118,7 @@ namespace DeadLetter.DebugTools
             taskState ??= FindAnyObjectByType<LetterTaskState>();
             playerController ??= FindAnyObjectByType<FirstPersonController>();
             interactor ??= FindAnyObjectByType<FirstPersonInteractor>();
+            customer ??= FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include);
         }
 
         private void BuildInterface()
@@ -154,19 +159,29 @@ namespace DeadLetter.DebugTools
             Transform dayRow = CreateRow(panel.transform, "DAY Buttons");
             AddButton(dayRow, "DAY 1", () => Run("DAY 1 초기화", () => dayCycle.DebugStartDay(1)));
             AddButton(dayRow, "DAY 2", () => Run("DAY 2 초기화", () => dayCycle.DebugStartDay(2)));
+            AddButton(dayRow, "DAY 3", () => Run("DAY 3 초기화", () => dayCycle.DebugStartDay(3)));
             AddButton(dayRow, "현재 DAY 초기화", () => Run("현재 DAY 전체 초기화", dayCycle.DebugResetCurrentDay));
             Transform orderRow = CreateRow(panel.transform, "Order Buttons");
             AddButton(orderRow, "무작위 등장 순서 재생성", () => Run("등장 순서 재생성", dayCycle.DebugRegenerateCurrentDay));
 
-            AddLabel(panel.transform, "DAY 2 민원 선택", 17, GetAccent(), 26f, TextAlignmentOptions.Left);
+            AddLabel(panel.transform, "DAY 1 / DAY 2 / DAY 3 민원 선택", 17, GetAccent(), 26f, TextAlignmentOptions.Left);
             Transform customerRow1 = CreateRow(panel.transform, "Customer Row 1");
-            AddCustomerButton(customerRow1, "인형탈", Day2RequestCatalog.MascotRequestId);
-            AddCustomerButton(customerRow1, "음주운전", Day2RequestCatalog.DrunkDriverRequestId);
-            AddCustomerButton(customerRow1, "모범생", Day2RequestCatalog.ModelStudentRequestId);
+            AddCustomerButton(customerRow1, "인형탈", "mascot", Day2RequestCatalog.MascotRequestId, Day3RequestCatalog.MascotRequestId);
+            AddCustomerButton(customerRow1, "음주운전", "drunk_driver", Day2RequestCatalog.DrunkDriverRequestId, Day3RequestCatalog.DrunkDriverRequestId);
+            AddCustomerButton(customerRow1, "모범생", "model_student", Day2RequestCatalog.ModelStudentRequestId, Day3RequestCatalog.ModelStudentRequestId);
             Transform customerRow2 = CreateRow(panel.transform, "Customer Row 2");
-            AddCustomerButton(customerRow2, "부실공사", Day2RequestCatalog.BadConstructionRequestId);
-            AddCustomerButton(customerRow2, "불량이", Day2RequestCatalog.TroublemakerRequestId);
+            AddCustomerButton(customerRow2, "부실공사", "bad_construction", Day2RequestCatalog.BadConstructionRequestId, Day3RequestCatalog.BadConstructionRequestId);
+            AddCustomerButton(customerRow2, "익사자", "troublemaker", Day2RequestCatalog.TroublemakerRequestId, Day3RequestCatalog.TroublemakerRequestId);
             AddButton(customerRow2, "현재 민원 초기화", () => Run("현재 민원 초기화", dayCycle.DebugRestartCurrentRequest));
+
+            AddLabel(panel.transform, "대사 미리보기", 17, GetAccent(), 26f, TextAlignmentOptions.Left);
+            Transform dialogueRow1 = CreateRow(panel.transform, "Dialogue Row 1");
+            AddButton(dialogueRow1, "첫 대사", () => Run("첫 대사 다시 시작", () => customer != null && customer.DebugReplayOpeningDialogue()));
+            AddButton(dialogueRow1, "다음 대사", () => Run("다음 대사", () => customer != null && customer.DebugAdvanceDialogue()));
+            AddButton(dialogueRow1, "완료 후 대사", () => Run("완료 후 대사 미리보기", () => customer != null && customer.DebugPreviewCompletionDialogue()));
+            Transform dialogueRow2 = CreateRow(panel.transform, "Dialogue Row 2");
+            AddButton(dialogueRow2, "선택지 1", () => Run("대사 선택지 1", () => customer != null && customer.DebugSelectDialogueChoice(0)));
+            AddButton(dialogueRow2, "선택지 2", () => Run("대사 선택지 2", () => customer != null && customer.DebugSelectDialogueChoice(1)));
 
             AddLabel(panel.transform, "현재 민원 상태 진행", 17, GetAccent(), 26f, TextAlignmentOptions.Left);
             Transform progressRow1 = CreateRow(panel.transform, "Progress Row 1");
@@ -186,9 +201,19 @@ namespace DeadLetter.DebugTools
             AddLabel(panel.transform, "※ 버튼은 실제 상태 전이 조건을 통과할 때만 성공합니다.", 13, GetMuted(), 24f, TextAlignmentOptions.Left);
         }
 
-        private void AddCustomerButton(Transform parent, string label, string requestId)
+        private void AddCustomerButton(Transform parent, string label, string dayOneCustomerId,
+            string dayTwoRequestId, string dayThreeRequestId)
         {
-            AddButton(parent, label, () => Run($"{label} 민원 선택", () => dayCycle.DebugSelectDayTwoRequest(requestId)));
+            AddButton(parent, label, () => Run($"{label} 민원 선택", () =>
+            {
+                int day = taskState != null ? taskState.CurrentDay : 2;
+                return day switch
+                {
+                    1 => dayCycle.DebugSelectDayOneCustomer(dayOneCustomerId),
+                    3 => dayCycle.DebugSelectDayThreeRequest(dayThreeRequestId),
+                    _ => dayCycle.DebugSelectDayTwoRequest(dayTwoRequestId)
+                };
+            }));
         }
 
         private void Run(string label, Func<bool> operation)
@@ -215,34 +240,44 @@ namespace DeadLetter.DebugTools
             value.AppendLine($"현재 DAY: {taskState.CurrentDay:00}    완료: {taskState.CompletedRequests}/{taskState.RequiredRequestsPerDay}");
             value.AppendLine($"현재 민원인: {EmptyAsDash(dayCycle.CurrentCustomerDisplayName)}  ({EmptyAsDash(dayCycle.CurrentCustomerId)})");
             value.AppendLine($"등장 순서: {EmptyAsDash(dayCycle.GetCurrentOrderSummary())}");
+            if (customer != null)
+                value.AppendLine($"대사: {(customer.DialogueActive ? customer.DialoguePhaseLabel : "대기")} / 선택지: {Flag(customer.WaitingForDialogueChoice)}");
 
-            if (taskState.CurrentDay != 2 || dayCycle.CurrentDayTwoRequest == null)
+            if ((taskState.CurrentDay != 2 && taskState.CurrentDay != 3) || dayCycle.CurrentPackageRequest == null)
             {
-                value.AppendLine("DAY 2 민원 상태 없음");
+                value.AppendLine("택배 민원 상태 없음");
                 statusText.text = value.ToString();
                 return;
             }
 
-            Day2RequestRuntimeState state = dayCycle.CurrentDayTwoRequest;
+            Day2RequestRuntimeState state = dayCycle.CurrentPackageRequest;
             Day2RequestDefinition definition = state.Definition;
-            int modelIndex = IndexOfRequest(dayCycle.DayTwoOrder, Day2RequestCatalog.ModelStudentRequestId);
-            int troubleIndex = IndexOfRequest(dayCycle.DayTwoOrder, Day2RequestCatalog.TroublemakerRequestId);
-            value.AppendLine($"선후 조건: {(modelIndex >= 0 && modelIndex < troubleIndex ? "정상" : "오류")}  모범생 {modelIndex + 1} / 불량이 {troubleIndex + 1}");
+            bool dayThree = taskState.CurrentDay == 3;
+            var order = dayThree ? dayCycle.DayThreeOrder : dayCycle.DayTwoOrder;
+            string modelRequestId = dayThree ? Day3RequestCatalog.ModelStudentRequestId : Day2RequestCatalog.ModelStudentRequestId;
+            string troubleRequestId = dayThree ? Day3RequestCatalog.TroublemakerRequestId : Day2RequestCatalog.TroublemakerRequestId;
+            int modelIndex = IndexOfRequest(order, modelRequestId);
+            int troubleIndex = IndexOfRequest(order, troubleRequestId);
+            bool precedenceValid = dayThree
+                ? troubleIndex >= 0 && troubleIndex < modelIndex
+                : modelIndex >= 0 && modelIndex < troubleIndex;
+            value.AppendLine($"선후 조건: {(precedenceValid ? "정상" : "오류")}  모범생 {modelIndex + 1} / 불량이 {troubleIndex + 1}");
             value.AppendLine($"민원: {definition.RequestId}  유형: {(definition.RequestType == MailRequestType.Dispatch ? "발송" : "수령")}");
-            value.AppendLine($"물품: {string.Join(", ", definition.RequestedItems.Select(GetItemLabel))}");
+            value.AppendLine($"물품: {(definition.ItemRequirementsConfirmed ? string.Join(", ", definition.RequestedItems.Select(GetItemLabel)) : "기획 미확정")}");
             value.AppendLine($"확보 물품: {(state.SecuredItemInstanceIds.Count == 0 ? "-" : string.Join(", ", state.SecuredItemInstanceIds.Select(pair => $"{GetItemLabel(pair.Key)}={pair.Value}")))}");
             value.AppendLine($"박스 ID: {EmptyAsDash(state.BoxId)}");
-            value.AppendLine($"진행: {state.ProgressStage}");
+            value.AppendLine($"일일 상태: {state.DailyStatus}  진행: {state.ProgressStage}  다음 대기: {Flag(dayCycle.WaitingForNextCustomer)}");
             value.AppendLine($"{Flag(state.RequestAccepted)} 접수   {Flag(state.ItemsSecured)} 물품   {Flag(state.EmptyBoxSecured)} 빈 박스   {Flag(state.Packed)} 포장");
             value.AppendLine($"{Flag(state.HasOnlyRequiredLetterStamps)} 편지 우표   {Flag(state.LetterPostmarkApplied)} 편지 도장   {Flag(state.HasOnlyRequiredBoxPictograms)} 박스 도장");
             value.AppendLine($"{Flag(state.ConveyorDispatched)} 발송   {Flag(state.DeliveredToCustomer)} 전달   {Flag(state.CompletionNoticeGiven)} 안내   {Flag(state.Completed)} 최종 완료");
             value.AppendLine($"편지 우표: {state.AttachedLetterStamps} / 박스 도장: {state.AppliedBoxPictograms}");
             value.AppendLine($"연계 민원: {EmptyAsDash(definition.RelatedRequestId)} / 전달 ID: {EmptyAsDash(definition.TransferLinkId)}");
-            if (definition.TransferLinkId == Day2RequestCatalog.StudentUniformTransferLinkId)
+            if (!string.IsNullOrWhiteSpace(definition.TransferLinkId))
             {
-                Day2RequestRuntimeState modelStudent = dayCycle.DayTwoRequests.FirstOrDefault(
-                    request => request.Definition.RequestId == Day2RequestCatalog.ModelStudentRequestId);
-                value.AppendLine($"교복 연계 발송 완료: {Flag(modelStudent != null && modelStudent.Completed)}");
+                var requests = dayThree ? dayCycle.DayThreeRequests : dayCycle.DayTwoRequests;
+                Day2RequestRuntimeState related = requests.FirstOrDefault(
+                    request => request.Definition.RequestId == definition.RelatedRequestId);
+                value.AppendLine($"연계 민원 완료: {Flag(related != null && related.Completed)}");
             }
             statusText.text = value.ToString();
         }
@@ -346,6 +381,11 @@ namespace DeadLetter.DebugTools
                 Day2ItemType.BulliedUniform => "괴롭힘 흔적 교복",
                 Day2ItemType.SafetyHelmet => "안전모",
                 Day2ItemType.InsulatedGloves => "절연장갑",
+                Day2ItemType.DriverLicense => "운전면허증",
+                Day2ItemType.Soap => "비누",
+                Day2ItemType.Bandage => "붕대",
+                Day2ItemType.Soju => "소주",
+                Day2ItemType.DriedSnack => "마른안주",
                 _ => item.ToString()
             };
         }

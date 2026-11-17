@@ -31,6 +31,11 @@ namespace DeadLetter.Mail
                 Day2ItemType.BulliedUniform => "괴롭힘 흔적 교복",
                 Day2ItemType.SafetyHelmet => "안전모",
                 Day2ItemType.InsulatedGloves => "절연장갑",
+                Day2ItemType.DriverLicense => "운전면허증",
+                Day2ItemType.Soap => "비누",
+                Day2ItemType.Bandage => "붕대",
+                Day2ItemType.Soju => "소주",
+                Day2ItemType.DriedSnack => "마른안주",
                 _ => item.ToString()
             };
         }

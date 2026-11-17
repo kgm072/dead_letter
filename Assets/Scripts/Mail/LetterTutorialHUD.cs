@@ -15,9 +15,9 @@ namespace DeadLetter.Mail
                 return "업무 정보 없음";
 
             ResolveDayCycle();
-            if (taskState.CurrentDay == 2 && dayCycle?.CurrentDayTwoRequest != null)
+            if ((taskState.CurrentDay == 2 || taskState.CurrentDay == 3) && dayCycle?.CurrentPackageRequest != null)
             {
-                Day2RequestDefinition definition = dayCycle.CurrentDayTwoRequest.Definition;
+                Day2RequestDefinition definition = dayCycle.CurrentPackageRequest.Definition;
                 return definition.RequestType == MailRequestType.Dispatch
                     ? $"{definition.CustomerDisplayName} 발송 업무"
                     : $"{definition.CustomerDisplayName} 수령 업무";
@@ -31,10 +31,12 @@ namespace DeadLetter.Mail
             if (taskState == null)
                 return "업무 상태를 확인할 수 없음";
             if (taskState.RequiredDayComplete)
-                return "탕비실 소파에서 다음 DAY 시작";
+                return taskState.CurrentDay >= 3
+                    ? "DAY 3 업무 완료 — 엔딩 연결 대기"
+                    : "탕비실 소파에서 다음 DAY 시작";
             ResolveDayCycle();
-            if (taskState.CurrentDay == 2 && dayCycle?.CurrentDayTwoRequest != null)
-                return GetDayTwoNextAction(dayCycle.CurrentDayTwoRequest);
+            if ((taskState.CurrentDay == 2 || taskState.CurrentDay == 3) && dayCycle?.CurrentPackageRequest != null)
+                return GetPackageNextAction(dayCycle.CurrentPackageRequest);
             if (!taskState.HasLetter)
                 return "창구 민원인에게 편지 받기";
             if (!taskState.WorkstationOpened)
@@ -48,10 +50,12 @@ namespace DeadLetter.Mail
             return "민원인에게 발송 결과 알리기";
         }
 
-        private string GetDayTwoNextAction(Day2RequestRuntimeState state)
+        private string GetPackageNextAction(Day2RequestRuntimeState state)
         {
             if (!state.RequestAccepted || !taskState.HasLetter)
                 return "창구 민원인에게 편지와 민원 받기";
+            if (!state.Definition.ItemRequirementsConfirmed)
+                return $"{state.Definition.CustomerDisplayName} 수령 물품 기획 확정 필요";
             if (!state.ItemsSecured)
                 return state.Definition.RequestType == MailRequestType.Dispatch
                     ? "창구에서 요청 물품 받기"

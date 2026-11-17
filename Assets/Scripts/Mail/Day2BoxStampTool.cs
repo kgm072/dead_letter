@@ -34,7 +34,7 @@ namespace DeadLetter.Mail
         public bool CanInteract(GameObject interactor)
         {
             dayCycle ??= FindAnyObjectByType<DayCycleManager>();
-            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentDayTwoRequest : null;
+            Day2RequestRuntimeState state = dayCycle != null ? dayCycle.CurrentPackageRequest : null;
             return state != null && state.RequestAccepted && state.Packed &&
                    !state.ConveyorDispatched && !state.DeliveredToCustomer && !state.Completed;
         }
