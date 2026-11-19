@@ -36,6 +36,7 @@ namespace DeadLetter.Mail
                 Day2ItemType.Bandage => "붕대",
                 Day2ItemType.Soju => "소주",
                 Day2ItemType.DriedSnack => "마른안주",
+                Day2ItemType.UnknownCargo => "미상의 화물",
                 _ => item.ToString()
             };
         }

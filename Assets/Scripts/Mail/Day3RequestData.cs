@@ -17,14 +17,13 @@ namespace DeadLetter.Mail
         {
             return new[]
             {
-                // The latest direction fixes this as a receive request, but the planning document
-                // still leaves the received item undecided. Keeping the requirement unconfirmed
-                // prevents an empty item list from being treated as completed work.
+                // The contents deliberately remain unidentified, but the sealed cargo itself is
+                // a concrete workflow item so the normal receive-package validation can be reused.
                 new Day2RequestDefinition(
                     MascotRequestId, "mascot", "인형탈", MailRequestType.Receive,
-                    Array.Empty<Day2ItemType>(),
+                    new[] { Day2ItemType.UnknownCargo },
                     LetterAppearanceType.NearlyBurnedBlack, LetterStamp.Fire | LetterStamp.Shock,
-                    day: 3, itemRequirementsConfirmed: false),
+                    day: 3),
                 new Day2RequestDefinition(
                     DrunkDriverRequestId, "drunk_driver", "음주운전자", MailRequestType.Dispatch,
                     new[] { Day2ItemType.DriverLicense },

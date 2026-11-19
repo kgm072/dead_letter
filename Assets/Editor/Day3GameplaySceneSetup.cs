@@ -17,7 +17,7 @@ namespace DeadLetter.Editor
         public static void InstallFromMenu()
         {
             Install();
-            EditorUtility.DisplayDialog("DEAD LETTER", "DAY 3 임시 물품 7개를 SampleScene에 배치했습니다.", "확인");
+            EditorUtility.DisplayDialog("DEAD LETTER", "DAY 3 물품 8개와 인형탈 풍선 연출을 SampleScene에 배치했습니다.", "확인");
         }
 
         public static void InstallBatch()
@@ -67,16 +67,25 @@ namespace DeadLetter.Editor
             // is completed. It then becomes the storage-side handoff inventory.
             CreateItem(root.transform, itemPrefab, "Storage Linked Soap", "day3_model_student_soap",
                 Day3RequestCatalog.ModelStudentRequestId, Day2ItemType.Soap, Day2ItemSource.Storage,
-                new Vector3(-3.45f, 1.15f, 12.25f), new Vector3(0.24f, 0.12f, 0.16f));
+                new Vector3(11.8f, 1.15f, -2.75f), new Vector3(0.24f, 0.12f, 0.16f));
             CreateItem(root.transform, itemPrefab, "Storage Linked Bandage", "day3_model_student_bandage",
                 Day3RequestCatalog.ModelStudentRequestId, Day2ItemType.Bandage, Day2ItemSource.Storage,
-                new Vector3(-3.45f, 1.15f, 12.75f), new Vector3(0.2f, 0.16f, 0.2f));
+                new Vector3(12.35f, 1.15f, -2.75f), new Vector3(0.2f, 0.16f, 0.2f));
             CreateItem(root.transform, itemPrefab, "Storage Soju", "day3_bad_construction_soju",
                 Day3RequestCatalog.BadConstructionRequestId, Day2ItemType.Soju, Day2ItemSource.Storage,
-                new Vector3(3.45f, 1.2f, 12.3f), new Vector3(0.16f, 0.45f, 0.16f));
+                new Vector3(12.5f, 1.2f, -2.75f), new Vector3(0.16f, 0.45f, 0.16f));
             CreateItem(root.transform, itemPrefab, "Storage Dried Snack", "day3_bad_construction_dried_snack",
                 Day3RequestCatalog.BadConstructionRequestId, Day2ItemType.DriedSnack, Day2ItemSource.Storage,
-                new Vector3(3.45f, 0.72f, 13.0f), new Vector3(0.38f, 0.12f, 0.28f));
+                new Vector3(13.4f, 1.1f, -2.75f), new Vector3(0.38f, 0.12f, 0.28f));
+            CreateItem(root.transform, itemPrefab, "Storage Unknown Cargo", "day3_mascot_unknown_cargo",
+                Day3RequestCatalog.MascotRequestId, Day2ItemType.UnknownCargo, Day2ItemSource.Storage,
+                new Vector3(14.25f, 1.12f, -2.75f), new Vector3(0.46f, 0.3f, 0.36f));
+
+            TestCustomerNPC customer = UnityEngine.Object.FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include);
+            if (customer == null)
+                throw new InvalidOperationException("SampleScene에서 민원인 오브젝트를 찾을 수 없습니다.");
+            if (customer.GetComponent<Day3MascotBalloonSequence>() == null)
+                customer.gameObject.AddComponent<Day3MascotBalloonSequence>();
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);

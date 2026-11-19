@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DeadLetter.Interaction;
 using DeadLetter.Mail;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -91,6 +92,8 @@ namespace DeadLetter.Editor
                 "Scene must contain one packed-box interaction surface.");
             Require(root.GetComponentsInChildren<Day2ConveyorTerminal>(true).Length == 1,
                 "Scene must contain one conveyor terminal.");
+            Require(UnityEngine.Object.FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include) is IInteractionRaycastPassthrough,
+                "Customer must yield the interaction ray to an available carried item.");
 
             string[] prefabPaths =
             {
@@ -176,23 +179,66 @@ namespace DeadLetter.Editor
                     "Carried dispatch item must follow the active customer.");
 
                 Require(manager.DebugAcceptCurrentRequest(),
-                    "Could not accept mascot request for counter presentation validation.");
+                    "Could not accept mascot request for carried-item interaction validation.");
                 item.Configure(
                     "validation_carried_cigarettes",
                     Day2RequestCatalog.MascotRequestId,
                     Day2ItemType.Cigarettes,
                     Day2ItemSource.Counter);
-                Require(!item.IsPresentedByCustomer,
-                    "Accepted dispatch item must no longer follow the customer.");
+                Require(item.IsPresentedByCustomer,
+                    "Accepted dispatch item must remain in the customer's hands until acquired.");
                 Require(itemObject.GetComponent<Collider>().enabled,
-                    "Accepted dispatch item collider must be enabled on the counter.");
-                Require(Vector3.Distance(itemObject.transform.position, item.CounterWorldPosition) < 0.01f,
-                    "Accepted dispatch item must return to its counter placement.");
+                    "Accepted carried item collider must be enabled for right-click acquisition.");
+                Require(Vector3.Distance(itemObject.transform.position, customer.transform.position) < 2f,
+                    "Accepted dispatch item must remain attached to the active customer.");
+                ValidateCarriedItemRaycast(item, itemObject, customer);
             }
             finally
             {
                 itemObject.SetActive(false);
                 UnityEngine.Object.DestroyImmediate(itemObject);
+            }
+        }
+
+        private static void ValidateCarriedItemRaycast(
+            Day2WorldItem item,
+            GameObject itemObject,
+            TestCustomerNPC customer)
+        {
+            GameObject cameraObject = new("Carried Item Raycast Validation Camera");
+            CapsuleCollider customerCollider = customer.gameObject.AddComponent<CapsuleCollider>();
+            try
+            {
+                customerCollider.center = new Vector3(0f, 0.975f, 0f);
+                customerCollider.radius = 0.4f;
+                customerCollider.height = 1.95f;
+                itemObject.transform.localScale = new Vector3(0.34f, 0.12f, 0.22f);
+
+                Camera camera = cameraObject.AddComponent<Camera>();
+                cameraObject.transform.SetPositionAndRotation(
+                    customer.transform.position + new Vector3(0f, 1.05f, -2f),
+                    Quaternion.identity);
+                FirstPersonInteractor interactor = cameraObject.AddComponent<FirstPersonInteractor>();
+                SerializedObject serializedInteractor = new(interactor);
+                serializedInteractor.FindProperty("playerCamera").objectReferenceValue = camera;
+                serializedInteractor.ApplyModifiedPropertiesWithoutUndo();
+
+                Physics.SyncTransforms();
+                var findInteractable = typeof(FirstPersonInteractor).GetMethod(
+                    "FindInteractable",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                Require(findInteractable != null, "FirstPersonInteractor.FindInteractable is missing.");
+                findInteractable.Invoke(interactor, new object[] { true });
+
+                Require(interactor.HasInteractionTarget,
+                    "Interaction ray did not reach the accepted item behind the customer collider.");
+                Require(interactor.CurrentPrompt.Contains(Day2Labels.GetItemLabel(item.ItemType)),
+                    "Interaction ray selected the customer instead of the carried item.");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(customerCollider);
+                UnityEngine.Object.DestroyImmediate(cameraObject);
             }
         }
 

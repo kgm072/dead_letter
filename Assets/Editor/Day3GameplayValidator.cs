@@ -20,6 +20,29 @@ namespace DeadLetter.Editor
             EditorUtility.DisplayDialog("DEAD LETTER", "DAY 3 2단계 자동 검증을 통과했습니다.", "확인");
         }
 
+        [MenuItem("Tools/DEAD LETTER/DAY 3/Preview Mascot Balloon (Play Mode)")]
+        public static void PreviewMascotBalloon()
+        {
+            if (!Application.isPlaying)
+                throw new InvalidOperationException("인형탈 풍선 미리보기는 Play Mode에서만 실행할 수 있습니다.");
+
+            DayCycleManager manager = UnityEngine.Object.FindAnyObjectByType<DayCycleManager>();
+            TestCustomerNPC customer = UnityEngine.Object.FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include);
+            Require(manager != null && customer != null, "DAY 3 manager or customer is missing.");
+            Require(manager.DebugStartDay(3), "Could not start DAY 3 for the mascot preview.");
+            Require(manager.DebugSelectDayThreeRequest(Day3RequestCatalog.MascotRequestId),
+                "Could not select the mascot request for preview.");
+            Require(customer.DebugSnapToWaitingPosition(), "Could not place the mascot at the counter for preview.");
+            Require(manager.DebugAcceptCurrentRequest(), "Mascot preview acceptance failed.");
+            Require(manager.DebugSecureAllCurrentItems(), "Mascot preview cargo acquisition failed.");
+            Require(manager.DebugSecureCurrentBox(), "Mascot preview box acquisition failed.");
+            Require(manager.DebugPackCurrentRequest(), "Mascot preview packing failed.");
+            Require(manager.DebugApplyCurrentBoxPictograms(), "Mascot preview box stamping failed.");
+            Require(manager.DebugProcessCurrentLetter(), "Mascot preview letter processing failed.");
+            Require(manager.DebugDeliverCurrentRequest("mascot"), "Mascot preview delivery failed.");
+            Require(customer.DebugPreviewCompletionDialogue(), "Mascot completion dialogue preview failed.");
+        }
+
         public static void InstallAndValidateBatch()
         {
             try
@@ -40,7 +63,7 @@ namespace DeadLetter.Editor
             ValidateSceneObjects();
             ValidatePlayableRequestFlow();
             ValidateDayTwoRegression();
-            Debug.Log("DAY 3 Stage 2 validation passed for scene items and four confirmed requests.");
+            Debug.Log("DAY 3 Stage 2 validation passed for scene items and all five requests.");
         }
 
         private static void ValidateSceneObjects()
@@ -51,7 +74,7 @@ namespace DeadLetter.Editor
             GameObject dayThreeRoot = GameObject.Find("DAY 3 Gameplay Objects");
             Require(dayThreeRoot != null, "DAY 3 gameplay root is missing.");
             Day2WorldItem[] items = dayThreeRoot.GetComponentsInChildren<Day2WorldItem>(true);
-            Require(items.Length == 7, "DAY 3 must install exactly seven confirmed item pickups.");
+            Require(items.Length == 8, "DAY 3 must install exactly eight item pickups.");
             Require(items.Select(item => item.InstanceId).Distinct().Count() == items.Length,
                 "DAY 3 item instance IDs must be unique.");
 
@@ -63,7 +86,8 @@ namespace DeadLetter.Editor
                 ["day3_model_student_soap"] = (Day3RequestCatalog.ModelStudentRequestId, Day2ItemType.Soap, Day2ItemSource.Storage),
                 ["day3_model_student_bandage"] = (Day3RequestCatalog.ModelStudentRequestId, Day2ItemType.Bandage, Day2ItemSource.Storage),
                 ["day3_bad_construction_soju"] = (Day3RequestCatalog.BadConstructionRequestId, Day2ItemType.Soju, Day2ItemSource.Storage),
-                ["day3_bad_construction_dried_snack"] = (Day3RequestCatalog.BadConstructionRequestId, Day2ItemType.DriedSnack, Day2ItemSource.Storage)
+                ["day3_bad_construction_dried_snack"] = (Day3RequestCatalog.BadConstructionRequestId, Day2ItemType.DriedSnack, Day2ItemSource.Storage),
+                ["day3_mascot_unknown_cargo"] = (Day3RequestCatalog.MascotRequestId, Day2ItemType.UnknownCargo, Day2ItemSource.Storage)
             };
 
             foreach (Day2WorldItem item in items)
@@ -78,7 +102,20 @@ namespace DeadLetter.Editor
                     $"DAY 3 item renderer is missing: {item.InstanceId}");
                 Require(!string.IsNullOrWhiteSpace(Day2Labels.GetItemLabel(item.ItemType)),
                     $"DAY 3 item label is missing: {item.InstanceId}");
+                Require(item.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"),
+                    $"DAY 3 item is on Ignore Raycast layer: {item.InstanceId}");
             }
+
+
+            RequirePosition(items, "day3_model_student_soap", new Vector3(11.8f, 1.15f, -2.75f));
+            RequirePosition(items, "day3_model_student_bandage", new Vector3(12.35f, 1.15f, -2.75f));
+            RequirePosition(items, "day3_bad_construction_soju", new Vector3(12.5f, 1.2f, -2.75f));
+            RequirePosition(items, "day3_bad_construction_dried_snack", new Vector3(13.4f, 1.1f, -2.75f));
+            RequirePosition(items, "day3_mascot_unknown_cargo", new Vector3(14.25f, 1.12f, -2.75f));
+
+            TestCustomerNPC customer = UnityEngine.Object.FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include);
+            Require(customer != null && customer.GetComponent<Day3MascotBalloonSequence>() != null,
+                "The DAY 3 mascot red-balloon sequence must be attached to the customer.");
 
             GameObject sharedRoot = GameObject.Find("DAY 2 Gameplay Objects");
             Require(sharedRoot != null, "Shared DAY 2 gameplay root is missing.");
@@ -124,17 +161,13 @@ namespace DeadLetter.Editor
                 CompleteReceive(manager, taskState, Day3RequestCatalog.BadConstructionRequestId, "bad_construction");
 
                 Require(taskState.CompletedRequests == 4 && !taskState.RequiredDayComplete,
-                    "Four confirmed requests must complete exactly once without faking DAY 3 completion.");
+                    "The first four requests must complete exactly once without finishing DAY 3 early.");
                 Require(!taskState.CompleteCurrentRequest(),
                     "A cleared request must not increment the completion count twice.");
 
-                Require(manager.DebugSelectDayThreeRequest(Day3RequestCatalog.MascotRequestId),
-                    "Mascot request selection failed.");
-                Require(manager.DebugAcceptCurrentRequest(), "Mascot request acceptance failed.");
-                Require(!manager.DebugSecureAllCurrentItems() && !manager.DebugPackCurrentRequest(),
-                    "Unconfirmed mascot items must keep the fifth request from fake completion.");
-                Require(taskState.CompletedRequests == 4 && !manager.CurrentDayThreeRequest.Completed,
-                    "Mascot request must remain unresolved until its item is specified.");
+                CompleteReceive(manager, taskState, Day3RequestCatalog.MascotRequestId, "mascot");
+                Require(taskState.CompletedRequests == 5 && taskState.RequiredDayComplete && manager.IsDayThreeComplete,
+                    "The mascot must complete DAY 3 only after the normal receive workflow and departure count.");
             }
             finally
             {
@@ -207,6 +240,14 @@ namespace DeadLetter.Editor
                 if (list[index].RequestId == requestId)
                     return index;
             return -1;
+        }
+
+        private static void RequirePosition(Day2WorldItem[] items, string instanceId, Vector3 expected)
+        {
+            Day2WorldItem item = items.FirstOrDefault(candidate => candidate.InstanceId == instanceId);
+            Require(item != null, $"DAY 3 item is missing: {instanceId}");
+            Require(Vector3.Distance(item.transform.position, expected) < 0.01f,
+                $"DAY 3 storage item is outside the final storage shelf: {instanceId} at {item.transform.position}");
         }
 
         private static void Require(bool condition, string message)

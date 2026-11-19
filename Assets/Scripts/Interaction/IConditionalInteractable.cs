@@ -7,4 +7,14 @@ namespace DeadLetter.Interaction
     {
         bool CanInteract(GameObject interactor);
     }
+
+    /// <summary>
+    /// Allows a disabled/unavailable interactable to yield the interaction ray to a
+    /// specifically approved target immediately behind it. This is intentionally
+    /// opt-in so walls, ordinary props, and unrelated interactables remain blocked.
+    /// </summary>
+    public interface IInteractionRaycastPassthrough
+    {
+        bool AllowsInteractionRaycastPassthrough(MonoBehaviour target);
+    }
 }

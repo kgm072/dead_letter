@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 namespace DeadLetter.Mail
 {
-    public sealed class TestCustomerNPC : MonoBehaviour, IInteractable, IConditionalInteractable, IInteractionPromptProvider
+    public sealed class TestCustomerNPC : MonoBehaviour, IInteractable, IConditionalInteractable,
+        IInteractionPromptProvider, IInteractionRaycastPassthrough
     {
         private enum CustomerState
         {
@@ -55,6 +56,8 @@ namespace DeadLetter.Mail
         private DialoguePhase dialoguePhase;
         private bool waitingForChoice;
         private bool dialogueInputSuspended;
+        private bool dialogueEventGateActive;
+        private bool dialogueEntryPendingAfterGate;
         private string pendingSectionEventId = string.Empty;
         private bool pendingSectionEventAtStart;
         private FirstPersonController playerController;
@@ -62,6 +65,7 @@ namespace DeadLetter.Mail
 
         public bool DialogueActive => dialoguePhase != DialoguePhase.None;
         public bool WaitingForDialogueChoice => waitingForChoice;
+        public bool DialogueEventGateActive => dialogueEventGateActive;
         public string DialoguePhaseLabel => dialoguePhase.ToString();
         public event System.Action<string> DialogueEventReached;
 
@@ -73,6 +77,11 @@ namespace DeadLetter.Mail
             return dayCycle?.CurrentPackageRequest?.Definition.RequestType == MailRequestType.Receive
                 ? "포장 물품 전달"
                 : "발송 결과 알리기";
+        }
+
+        public bool AllowsInteractionRaycastPassthrough(MonoBehaviour target)
+        {
+            return target is Day2WorldItem item && item.IsPresentedByCustomer;
         }
 
         private void Awake()
@@ -317,7 +326,7 @@ namespace DeadLetter.Mail
             pendingSectionEventAtStart = section != null && section.EventAtStart;
 
             if (pendingSectionEventAtStart && !string.IsNullOrWhiteSpace(pendingSectionEventId))
-                DialogueEventReached?.Invoke(pendingSectionEventId);
+                RaiseDialogueEvent(pendingSectionEventId);
 
             if (section != null)
             {
@@ -333,12 +342,18 @@ namespace DeadLetter.Mail
             }
 
             BeginDialogueLock(dialogueWasAlreadyActive);
+            if (dialogueEventGateActive)
+            {
+                dialogue = string.Empty;
+                dialogueEntryPendingAfterGate = true;
+                return;
+            }
             ShowNextDialogueEntry();
         }
 
         private void HandleDialogueInput()
         {
-            if (dialogueInputSuspended)
+            if (dialogueInputSuspended || dialogueEventGateActive)
                 return;
 
             Keyboard keyboard = Keyboard.current;
@@ -401,7 +416,7 @@ namespace DeadLetter.Mail
         {
             DialoguePhase finishedPhase = dialoguePhase;
             if (!pendingSectionEventAtStart && !string.IsNullOrWhiteSpace(pendingSectionEventId))
-                DialogueEventReached?.Invoke(pendingSectionEventId);
+                RaiseDialogueEvent(pendingSectionEventId);
             dialoguePhase = DialoguePhase.None;
             dialogue = string.Empty;
             waitingForChoice = false;
@@ -433,7 +448,8 @@ namespace DeadLetter.Mail
 
         private void EndDialogueLock()
         {
-            if (playerController != null && playerInputBeforeDialogue && !dialogueInputSuspended)
+            if (playerController != null && playerInputBeforeDialogue &&
+                !dialogueInputSuspended && !dialogueEventGateActive)
                 playerController.SetInputEnabled(true);
         }
 
@@ -445,6 +461,8 @@ namespace DeadLetter.Mail
             dialoguePhase = DialoguePhase.None;
             waitingForChoice = false;
             dialogueInputSuspended = false;
+            dialogueEventGateActive = false;
+            dialogueEntryPendingAfterGate = false;
             pendingSectionEventId = string.Empty;
             pendingSectionEventAtStart = false;
         }
@@ -453,6 +471,18 @@ namespace DeadLetter.Mail
         {
             if (!string.IsNullOrWhiteSpace(line))
                 pendingDialogueLines.Enqueue(line);
+        }
+
+        private void RaiseDialogueEvent(string eventId)
+        {
+            DialogueEventReached?.Invoke(eventId);
+
+            // The customer object is disabled between visitors. Depending on the
+            // activation order, an event listener on that same object may not have
+            // subscribed yet. Route the DAY 3 reveal directly as a safe fallback;
+            // the sequence guards against duplicate starts.
+            if (TryGetComponent(out Day3MascotBalloonSequence mascotSequence))
+                mascotSequence.TryStartForDialogueEvent(eventId);
         }
 
         public void SetDialogueInputSuspended(bool suspended)
@@ -465,7 +495,37 @@ namespace DeadLetter.Mail
             }
         }
 
+        public void SetDialogueEventGate(bool active)
+        {
+            dialogueEventGateActive = active;
+            if (active)
+                return;
+
+            if (DialogueActive && playerController != null)
+            {
+                playerInputBeforeDialogue |= playerController.InputEnabled;
+                playerController.SetInputEnabled(false);
+            }
+
+            if (!dialogueEntryPendingAfterGate || !DialogueActive)
+                return;
+
+            dialogueEntryPendingAfterGate = false;
+            ShowNextDialogueEntry();
+        }
+
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool DebugSnapToWaitingPosition()
+        {
+            if (waypoints == null || waypoints.Length == 0)
+                return false;
+
+            transform.position = waypoints[^1].position;
+            waypointIndex = waypoints.Length;
+            FaceWaitingTarget();
+            return true;
+        }
+
         public bool DebugReplayOpeningDialogue()
         {
             if (dialogueScenario == null)
@@ -484,7 +544,7 @@ namespace DeadLetter.Mail
 
         public bool DebugAdvanceDialogue()
         {
-            if (!DialogueActive || waitingForChoice)
+            if (!DialogueActive || waitingForChoice || dialogueInputSuspended || dialogueEventGateActive)
                 return false;
             ShowNextDialogueEntry();
             return true;

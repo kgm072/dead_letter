@@ -42,8 +42,8 @@ namespace DeadLetter.Editor
 
             Dictionary<string, Day2RequestDefinition> byId = definitions.ToDictionary(item => item.RequestId);
             ValidateDefinition(byId[Day3RequestCatalog.MascotRequestId], MailRequestType.Receive,
-                Array.Empty<Day2ItemType>(), LetterAppearanceType.NearlyBurnedBlack,
-                LetterStamp.Fire | LetterStamp.Shock, false);
+                new[] { Day2ItemType.UnknownCargo }, LetterAppearanceType.NearlyBurnedBlack,
+                LetterStamp.Fire | LetterStamp.Shock);
             ValidateDefinition(byId[Day3RequestCatalog.DrunkDriverRequestId], MailRequestType.Dispatch,
                 new[] { Day2ItemType.DriverLicense }, LetterAppearanceType.DesignatedDriverCardAndBlood,
                 LetterStamp.Shock | LetterStamp.Alcohol);
@@ -79,7 +79,7 @@ namespace DeadLetter.Editor
                     $"Seed {seed}: troublemaker must appear before model student.");
             }
 
-            ValidateUnconfirmedMascot(byId[Day3RequestCatalog.MascotRequestId]);
+            ValidateUnknownCargoMascot(byId[Day3RequestCatalog.MascotRequestId]);
             ValidateManagerIntegration();
             Debug.Log("DAY 3 Stage 1 validation passed for five definitions and 1000 generated orders.");
         }
@@ -101,15 +101,17 @@ namespace DeadLetter.Editor
                 $"{definition.RequestId}: item confirmation flag mismatch.");
         }
 
-        private static void ValidateUnconfirmedMascot(Day2RequestDefinition definition)
+        private static void ValidateUnknownCargoMascot(Day2RequestDefinition definition)
         {
             Day2RequestRuntimeState state = new(definition);
             state.MarkAppeared();
             state.AcceptRequest();
-            Require(!state.ItemsSecured, "Unconfirmed mascot items must not pass as secured.");
+            Require(!state.ItemsSecured, "Mascot cargo must be acquired before packing.");
+            Require(state.SecureItem(Day2ItemType.UnknownCargo, "day3_mascot_unknown_cargo"),
+                "The internally identified unknown cargo must be acquirable.");
             Require(state.SecureEmptyBox("mascot_test_box"), "The box state itself should remain reusable.");
-            Require(!state.TryPack(), "Mascot packing must stay blocked until its receive item is confirmed.");
-            Require(!state.Completed, "Unconfirmed mascot work must never be fake-completed.");
+            Require(state.TryPack(), "Mascot cargo must use the normal packing path.");
+            Require(!state.Completed, "Packing alone must not complete mascot work.");
         }
 
         private static void ValidateManagerIntegration()
@@ -147,12 +149,15 @@ namespace DeadLetter.Editor
                 Require(manager.DebugSelectDayThreeRequest(Day3RequestCatalog.MascotRequestId),
                     "Mascot selection failed.");
                 Require(manager.DebugAcceptCurrentRequest(), "Mascot acceptance failed.");
-                Require(!manager.DebugSecureAllCurrentItems(),
-                    "Unconfirmed mascot items must be blocked in developer mode.");
-                Require(manager.DebugSecureCurrentBox(), "Mascot box acquisition should still be recordable.");
-                Require(!manager.DebugPackCurrentRequest(),
-                    "Unconfirmed mascot request must not be packable or completable.");
-                Require(!manager.CurrentDayThreeRequest.Completed, "Mascot must remain incomplete.");
+                Require(manager.DebugSecureAllCurrentItems(), "Mascot unknown cargo acquisition failed.");
+                Require(manager.DebugSecureCurrentBox(), "Mascot box acquisition failed.");
+                Require(manager.DebugPackCurrentRequest(), "Mascot packing failed.");
+                Require(manager.DebugApplyCurrentBoxPictograms(), "Mascot box marks failed.");
+                Require(manager.DebugProcessCurrentLetter(), "Mascot letter processing failed.");
+                Require(!manager.DebugDeliverCurrentRequest("wrong_customer"),
+                    "Mascot cargo must reject the wrong customer.");
+                Require(manager.DebugDeliverCurrentRequest("mascot"), "Mascot delivery failed.");
+                Require(manager.CurrentDayThreeRequest.Completed, "Mascot delivery state was not recorded.");
 
                 Require(manager.DebugResetCurrentDay(), "DAY 3 reset failed.");
                 Require(taskState.CurrentDay == 3 && taskState.CompletedRequests == 0 &&

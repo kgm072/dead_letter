@@ -5,6 +5,8 @@ namespace DeadLetter.Interaction
 {
     public sealed class FirstPersonInteractor : MonoBehaviour
     {
+        private const int RaycastBufferSize = 16;
+
         [SerializeField] private Camera playerCamera;
         [SerializeField, Min(0.1f)] private float interactionDistance = 3f;
         [SerializeField] private LayerMask interactionLayers = Physics.DefaultRaycastLayers;
@@ -15,6 +17,7 @@ namespace DeadLetter.Interaction
 
         private IInteractable currentInteractable;
         private string currentPrompt = string.Empty;
+        private readonly RaycastHit[] raycastHits = new RaycastHit[RaycastBufferSize];
 
         public bool HasInteractionTarget => currentInteractable != null;
         public string CurrentPrompt => currentPrompt;
@@ -50,7 +53,13 @@ namespace DeadLetter.Interaction
                 return;
 
             Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-            if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayers, QueryTriggerInteraction.Ignore))
+            int hitCount = Physics.RaycastNonAlloc(
+                ray,
+                raycastHits,
+                interactionDistance,
+                interactionLayers,
+                QueryTriggerInteraction.Ignore);
+            if (hitCount == 0)
             {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 DrawDebugRay(ray, interactionDistance, false);
@@ -59,13 +68,31 @@ namespace DeadLetter.Interaction
                 return;
             }
 
-            MonoBehaviour[] behaviours = hit.collider.GetComponentsInParent<MonoBehaviour>();
-            foreach (MonoBehaviour behaviour in behaviours)
+            SortHitsByDistance(raycastHits, hitCount);
+            IInteractionRaycastPassthrough passthroughBlocker = null;
+            for (int hitIndex = 0; hitIndex < hitCount; hitIndex++)
             {
-                if (behaviour is IInteractable interactable)
+                RaycastHit hit = raycastHits[hitIndex];
+                MonoBehaviour[] behaviours = hit.collider.GetComponentsInParent<MonoBehaviour>();
+                IInteractionRaycastPassthrough hitPassthrough = null;
+                foreach (MonoBehaviour behaviour in behaviours)
                 {
+                    if (behaviour is IInteractionRaycastPassthrough passthrough)
+                        hitPassthrough = passthrough;
+
+                    if (behaviour is not IInteractable interactable)
+                        continue;
                     if (behaviour is IConditionalInteractable conditional && !conditional.CanInteract(gameObject))
                         continue;
+                    if (passthroughBlocker != null &&
+                        !passthroughBlocker.AllowsInteractionRaycastPassthrough(behaviour))
+                    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        DrawDebugRay(ray, hit.distance, false);
+                        LogDebugHit(hit.collider, null, hit.distance);
+#endif
+                        return;
+                    }
 
                     currentInteractable = interactable;
                     currentPrompt = behaviour is IInteractionPromptProvider promptProvider
@@ -77,12 +104,40 @@ namespace DeadLetter.Interaction
 #endif
                     return;
                 }
+
+                if (hitPassthrough != null && passthroughBlocker == null)
+                {
+                    passthroughBlocker = hitPassthrough;
+                    continue;
+                }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                DrawDebugRay(ray, hit.distance, false);
+                LogDebugHit(hit.collider, null, hit.distance);
+#endif
+                return;
             }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            DrawDebugRay(ray, hit.distance, false);
-            LogDebugHit(hit.collider, null, hit.distance);
+            DrawDebugRay(ray, interactionDistance, false);
+            LogDebugHit(null, null, 0f);
 #endif
+        }
+
+        private static void SortHitsByDistance(RaycastHit[] hits, int count)
+        {
+            for (int index = 1; index < count; index++)
+            {
+                RaycastHit current = hits[index];
+                int insertionIndex = index - 1;
+                while (insertionIndex >= 0 && hits[insertionIndex].distance > current.distance)
+                {
+                    hits[insertionIndex + 1] = hits[insertionIndex];
+                    insertionIndex--;
+                }
+
+                hits[insertionIndex + 1] = current;
+            }
         }
 
         private void ClearTarget()

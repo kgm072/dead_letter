@@ -67,8 +67,7 @@ namespace DeadLetter.Mail
 
         public bool CanInteract(GameObject interactor)
         {
-            return IsVisible() && dayCycle != null &&
-                   dayCycle.CanAcquireCurrentItem(instanceId, requestId, itemType, source, out _);
+            return IsVisible() && CanAcquire();
         }
 
         public void Interact(GameObject interactor)
@@ -143,7 +142,7 @@ namespace DeadLetter.Mail
                     target.enabled = visible;
             foreach (Collider target in colliders)
                 if (target != null)
-                    target.enabled = visible && !carried;
+                    target.enabled = visible && (!carried || CanAcquire());
 
             if (carried)
                 FollowCustomerHands();
@@ -161,8 +160,13 @@ namespace DeadLetter.Mail
                        dayCycle.CurrentPackageRequest.Definition.RequestId,
                        requestId,
                        System.StringComparison.Ordinal) &&
-                   !dayCycle.CurrentPackageRequest.RequestAccepted &&
                    !dayCycle.IsWorldItemClaimed(instanceId);
+        }
+
+        private bool CanAcquire()
+        {
+            return dayCycle != null &&
+                   dayCycle.CanAcquireCurrentItem(instanceId, requestId, itemType, source, out _);
         }
 
         private void CacheCounterPose()

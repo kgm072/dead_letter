@@ -22,7 +22,8 @@ namespace DeadLetter.Mail
         Soap,
         Bandage,
         Soju,
-        DriedSnack
+        DriedSnack,
+        UnknownCargo
     }
 
     public enum Day2ItemSource
