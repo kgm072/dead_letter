@@ -27,10 +27,15 @@ namespace DeadLetter.Mail
             }
 
             int finishedDay = taskState.CurrentDay;
+            if (finishedDay == 3)
+            {
+                var ending = FindAnyObjectByType<DeadLetter.Endings.EndingFlowController>();
+                if (ending == null || !ending.TryStartNormal())
+                    ShowMessage("마지막 민원인의 대화와 퇴장이 끝난 뒤 잠들 수 있습니다.");
+                return;
+            }
             if (dayCycle.TryAdvanceDay())
                 ShowMessage($"DAY {finishedDay} 종료. DAY {taskState.CurrentDay} 업무를 시작합니다.");
-            else if (finishedDay >= 3)
-                ShowMessage("DAY 3 업무 완료. 엔딩 진입은 후속 단계에서 연결됩니다.");
         }
 
         private void OnGUI()

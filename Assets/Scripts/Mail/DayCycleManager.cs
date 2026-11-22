@@ -54,6 +54,7 @@ namespace DeadLetter.Mail
         public bool IsDayThreeActive => taskState != null && taskState.CurrentDay == 3;
         public bool IsPackageDayActive => IsDayTwoActive || IsDayThreeActive;
         public bool IsDayThreeComplete => IsDayThreeActive && taskState.RequiredDayComplete;
+        public bool AllCustomersDeparted => !customerActive && string.IsNullOrEmpty(currentCustomerId);
         public bool WaitingForNextCustomer => IsPackageDayActive && !customerActive &&
                                               taskState != null && !taskState.RequiredDayComplete;
 

@@ -186,6 +186,13 @@ namespace DeadLetter.Editor
             // Normalize small authored floor/ceiling height drift into derived Unity meshes.
             // The source FBX stays untouched and physics remains on the stable legacy colliders.
             FinalMapFlatteningTool.ApplyToLoadedScene(scene);
+            // Reapply the six authored FBX doors after every final-map installation.
+            // Gameplay pivots/colliders stay on the stable graybox objects; only the
+            // UV-preserving visual mesh and its URP material are replaced.
+            FinalMapDoorVisualIntegrator.ApplyToLoadedScene(scene, false);
+            // The FBX room meshes leave their door headers open. Reuse each room's
+            // textured URP material on the stable graybox lintel that fills that space.
+            FinalMapDoorSurroundingIntegrator.ApplyToLoadedScene(scene, false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             if (!EditorSceneManager.SaveScene(scene, ScenePath))

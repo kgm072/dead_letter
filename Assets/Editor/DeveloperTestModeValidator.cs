@@ -74,18 +74,18 @@ namespace DeadLetter.Editor
                 Require(manager.DebugRecordCurrentCompletionNotice(), "Developer completion notice failed.");
                 Require(manager.CurrentDayTwoRequest.Completed, "Dispatch request should complete after notice.");
 
-                Require(manager.DebugSelectDayTwoRequest(Day2RequestCatalog.TroublemakerRequestId), "Troublemaker selection failed.");
+                Require(manager.DebugSelectDayTwoRequest(Day2RequestCatalog.DrunkDriverRequestId), "Drunk driver selection failed.");
                 Require(manager.DebugAcceptCurrentRequest(), "Receive acceptance failed.");
                 Require(manager.DebugSecureAllCurrentItems(), "Receive item acquisition failed.");
                 Require(manager.DebugSecureCurrentBox(), "Receive box acquisition failed.");
                 Require(manager.DebugPackCurrentRequest(), "Receive packing failed.");
                 Require(manager.DebugApplyCurrentBoxPictograms(), "Receive box marking failed.");
-                Require(!manager.DebugDeliverCurrentRequest("troublemaker"),
+                Require(!manager.DebugDeliverCurrentRequest("drunk_driver"),
                     "Delivery must fail until the letter has been processed.");
                 Require(manager.DebugProcessCurrentLetter(), "Receive letter processing failed.");
                 Require(!manager.DebugDeliverCurrentRequest("model_student"), "Wrong-customer developer delivery must fail.");
                 Require(!manager.CurrentDayTwoRequest.Completed, "Wrong-customer delivery must not complete the request.");
-                Require(manager.DebugDeliverCurrentRequest("troublemaker"), "Correct developer delivery failed.");
+                Require(manager.DebugDeliverCurrentRequest("drunk_driver"), "Correct developer delivery failed.");
 
                 Require(manager.DebugRestartCurrentRequest(), "Developer current-request reset failed.");
                 Day2RequestRuntimeState reset = manager.CurrentDayTwoRequest;

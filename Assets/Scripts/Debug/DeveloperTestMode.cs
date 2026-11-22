@@ -72,6 +72,8 @@ namespace DeadLetter.DebugTools
         private bool CanOpen()
         {
             ResolveReferences();
+            var ending = FindAnyObjectByType<DeadLetter.Endings.EndingFlowController>();
+            if (ending != null && ending.IsBusy) return false;
             return dayCycle != null && taskState != null &&
                    !taskState.WorkstationViewOpen &&
                    (playerController == null || playerController.InputEnabled ||

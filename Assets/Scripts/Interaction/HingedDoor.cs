@@ -13,8 +13,12 @@ namespace DeadLetter.Interaction
         private Quaternion closedRotation;
         private Quaternion openRotation;
         private bool isOpen;
+        private bool locked;
 
-        public string GetInteractionPrompt(GameObject interactor) => isOpen ? "문 닫기" : "문 열기";
+        public bool IsLocked => locked;
+        public void SetLocked(bool value) { locked = value; if (value) CloseDoor(); }
+
+        public string GetInteractionPrompt(GameObject interactor) => locked ? "잠긴 문" : isOpen ? "문 닫기" : "문 열기";
 
         private void Awake()
         {
@@ -39,6 +43,7 @@ namespace DeadLetter.Interaction
 
         public void Interact(GameObject interactor)
         {
+            if (locked) return;
             if (isOpen)
                 CloseDoor();
             else
@@ -49,7 +54,7 @@ namespace DeadLetter.Interaction
 
         public void OpenFrom(GameObject interactor)
         {
-            if (isOpen)
+            if (locked || isOpen)
                 return;
 
             if (interactor != null)
