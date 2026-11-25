@@ -245,6 +245,12 @@ namespace DeadLetter.DebugTools
             if (customer != null)
                 value.AppendLine($"대사: {(customer.DialogueActive ? customer.DialoguePhaseLabel : "대기")} / 선택지: {Flag(customer.WaitingForDialogueChoice)}");
 
+            if (taskState.CurrentDay == 1)
+            {
+                value.AppendLine($"신원 ID: {EmptyAsDash(dayCycle.CurrentCustomerId)} / 조회: {Flag(dayCycle.CurrentDayOneIdentityLookedUp)} / 일치: {Flag(dayCycle.CurrentDayOneIdentityMatches)}");
+                value.AppendLine($"접수 승인: {Flag(dayCycle.CurrentDayOneIdentityVerified)} / 편지 업무: {Flag(dayCycle.CanAcceptDayOneLetter(dayCycle.CurrentCustomerId))} / 민원 완료: {taskState.CompletedRequests}/{taskState.RequiredRequestsPerDay}");
+            }
+
             if ((taskState.CurrentDay != 2 && taskState.CurrentDay != 3) || dayCycle.CurrentPackageRequest == null)
             {
                 value.AppendLine("택배 민원 상태 없음");

@@ -32,6 +32,7 @@ namespace DeadLetter.Mail
         private readonly List<Day2RequestRuntimeState> dayThreeOrder = new();
         private readonly Dictionary<string, string> claimedWorldItemOwners = new();
         private readonly Dictionary<string, string> claimedBoxOwners = new();
+        private readonly HashSet<string> verifiedDayOneCustomers = new();
         private int nextCustomerIndex;
         private bool transitionInProgress;
         private bool customerActive;
@@ -39,6 +40,9 @@ namespace DeadLetter.Mail
         private string currentLetterId = string.Empty;
         private string currentCustomerId = string.Empty;
         private string currentCustomerDisplayName = string.Empty;
+        private string identityCheckCustomerId = string.Empty;
+        private string identityLookedUpCustomerId = string.Empty;
+        private bool identityInformationMatches;
 
         public IReadOnlyList<Day2RequestRuntimeState> DayTwoRequests => dayTwoRequests;
         public IReadOnlyList<Day2RequestRuntimeState> DayTwoOrder => dayTwoOrder;
@@ -57,11 +61,83 @@ namespace DeadLetter.Mail
         public bool AllCustomersDeparted => !customerActive && string.IsNullOrEmpty(currentCustomerId);
         public bool WaitingForNextCustomer => IsPackageDayActive && !customerActive &&
                                               taskState != null && !taskState.RequiredDayComplete;
+        public bool CanUseDayOneIdentityMonitor => taskState != null && taskState.CurrentDay == 1 &&
+                                                   customerActive && !string.IsNullOrEmpty(currentCustomerId) &&
+                                                   string.Equals(identityCheckCustomerId, currentCustomerId,
+                                                       System.StringComparison.Ordinal);
+        public bool CurrentDayOneIdentityVerified => CanUseDayOneIdentityMonitor &&
+                                                     verifiedDayOneCustomers.Contains(currentCustomerId);
+        public bool CurrentDayOneIdentityRequired => CanUseDayOneIdentityMonitor &&
+                                                     !CurrentDayOneIdentityVerified;
+        public bool CurrentDayOneIdentityLookedUp => CanUseDayOneIdentityMonitor &&
+            string.Equals(identityLookedUpCustomerId, currentCustomerId, System.StringComparison.Ordinal);
+        public bool CurrentDayOneIdentityMatches => CurrentDayOneIdentityLookedUp && identityInformationMatches;
 
         public event System.Action DayTwoStateChanged;
         public event System.Action DayThreeStateChanged;
         public event System.Action PackageStateChanged;
         public event System.Action<string> ActionFeedback;
+
+        public bool IsDayOneIdentityVerified(string customerId)
+        {
+            return !string.IsNullOrWhiteSpace(customerId) && verifiedDayOneCustomers.Contains(customerId);
+        }
+
+        public bool CanAcceptDayOneLetter(string customerId)
+        {
+            return taskState == null || taskState.CurrentDay != 1 ||
+                   (string.Equals(currentCustomerId, customerId, System.StringComparison.Ordinal) &&
+                    IsDayOneIdentityVerified(customerId));
+        }
+
+        public bool LookUpCurrentDayOneIdentity(out string message)
+        {
+            identityLookedUpCustomerId = string.Empty;
+            identityInformationMatches = false;
+            if (!CanUseDayOneIdentityMonitor)
+            {
+                message = "조회할 민원인이 없습니다.";
+                return false;
+            }
+
+            CustomerDefinition definition = dayOneOrder.FirstOrDefault(entry =>
+                string.Equals(entry.Id, currentCustomerId, System.StringComparison.Ordinal));
+            if (string.IsNullOrEmpty(definition.Id) ||
+                !string.Equals(definition.DisplayName, currentCustomerDisplayName, System.StringComparison.Ordinal) ||
+                (taskState.HasLetter && !string.Equals(taskState.CustomerId, currentCustomerId, System.StringComparison.Ordinal)))
+            {
+                message = "현재 민원과 등록 정보가 일치하지 않습니다.";
+                return false;
+            }
+
+            identityLookedUpCustomerId = currentCustomerId;
+            identityInformationMatches = true;
+            message = "정보 일치";
+            NotifyPackageStateChanged();
+            return true;
+        }
+
+        public void NotifyDayOneIdentityCheckRequested(string customerId)
+        {
+            if (taskState == null || taskState.CurrentDay != 1 || !customerActive ||
+                !string.Equals(currentCustomerId, customerId, System.StringComparison.Ordinal))
+                return;
+
+            identityCheckCustomerId = customerId;
+            NotifyPackageStateChanged();
+        }
+
+        public bool ConfirmCurrentDayOneIdentity()
+        {
+            if (!CurrentDayOneIdentityMatches)
+                return false;
+            if (CurrentDayOneIdentityVerified)
+                return true;
+
+            verifiedDayOneCustomers.Add(currentCustomerId);
+            NotifyPackageStateChanged();
+            return Succeed("신원 확인 완료");
+        }
 
         public string GetCurrentOrderSummary()
         {
@@ -492,6 +568,10 @@ namespace DeadLetter.Mail
             dayThreeOrder.Clear();
             claimedWorldItemOwners.Clear();
             claimedBoxOwners.Clear();
+            verifiedDayOneCustomers.Clear();
+            identityCheckCustomerId = string.Empty;
+            identityLookedUpCustomerId = string.Empty;
+            identityInformationMatches = false;
             currentPackageRequest = null;
             currentLetterId = string.Empty;
             currentCustomerId = string.Empty;
@@ -519,7 +599,7 @@ namespace DeadLetter.Mail
             dayOneOrder.Add(new CustomerDefinition("drunk_driver", "음주운전", LetterStamp.Shock | LetterStamp.Alcohol));
             dayOneOrder.Add(new CustomerDefinition("model_student", "모범생", LetterStamp.Medicine));
             dayOneOrder.Add(new CustomerDefinition("bad_construction", "부실공사", LetterStamp.Electricity | LetterStamp.Shock));
-            dayOneOrder.Add(new CustomerDefinition("troublemaker", "불량이", LetterStamp.Water));
+            dayOneOrder.Add(new CustomerDefinition("troublemaker", "익사자", LetterStamp.Water));
 
             for (int index = dayOneOrder.Count - 1; index > 0; index--)
             {
@@ -584,6 +664,9 @@ namespace DeadLetter.Mail
 
         private void BeginDayOneCustomer(CustomerDefinition dayOneDefinition)
         {
+            identityCheckCustomerId = string.Empty;
+            identityLookedUpCustomerId = string.Empty;
+            identityInformationMatches = false;
             string letterId = $"day_{taskState.CurrentDay:00}_{dayOneDefinition.Id}";
             currentCustomerId = dayOneDefinition.Id;
             currentCustomerDisplayName = dayOneDefinition.DisplayName;

@@ -147,7 +147,8 @@ namespace DeadLetter.Mail
             if (DialogueActive)
                 return false;
 
-            return state == CustomerState.WaitingForLetter && !taskState.HasLetter ||
+            return state == CustomerState.WaitingForLetter && !taskState.HasLetter &&
+                   (dayCycle == null || dayCycle.CanAcceptDayOneLetter(customerId)) ||
                    state == CustomerState.WaitingForDispatch &&
                    (dayCycle != null
                        ? dayCycle.CanFinishCurrentCustomer(customerId, letterId)
@@ -161,6 +162,8 @@ namespace DeadLetter.Mail
 
             if (state == CustomerState.WaitingForLetter)
             {
+                if (dayCycle != null && !dayCycle.CanAcceptDayOneLetter(customerId))
+                    return;
                 if (!taskState.TryReceiveLetter(letterId, customerId, customerDisplayName, requiredStamps))
                     return;
 
@@ -476,6 +479,9 @@ namespace DeadLetter.Mail
         private void RaiseDialogueEvent(string eventId)
         {
             DialogueEventReached?.Invoke(eventId);
+
+            if (eventId == CustomerDialogueCatalog.DayOneIdentityCheckEvent)
+                dayCycle?.NotifyDayOneIdentityCheckRequested(customerId);
 
             // The customer object is disabled between visitors. Depending on the
             // activation order, an event listener on that same object may not have

@@ -56,7 +56,7 @@ namespace DeadLetter.UI
             subscribedDayCycle = null;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             RefreshWorldHUD(false);
         }
@@ -82,9 +82,11 @@ namespace DeadLetter.UI
 
         private void RefreshWorldHUD(bool force)
         {
+            bool focusedUiOpen = (taskState != null && taskState.WorkstationViewOpen) ||
+                                 DayOneIdentityPanel.IsAnyOpen;
             bool worldFocused = interactor != null && interactor.isActiveAndEnabled &&
                                 Cursor.lockState == CursorLockMode.Locked &&
-                                (taskState == null || !taskState.WorkstationViewOpen);
+                                !focusedUiOpen;
             bool interactive = worldFocused && interactor.HasInteractionTarget;
             string prompt = interactive ? interactor.CurrentPrompt : string.Empty;
 
@@ -105,7 +107,9 @@ namespace DeadLetter.UI
             }
 
             if (taskPanel != null)
-                taskPanel.SetActive(taskState == null || !taskState.WorkstationViewOpen);
+                taskPanel.SetActive(!focusedUiOpen);
+            if (crosshair != null)
+                crosshair.enabled = !focusedUiOpen;
         }
 
         private void RefreshTaskHUD()

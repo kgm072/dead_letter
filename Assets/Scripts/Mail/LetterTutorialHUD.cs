@@ -37,6 +37,10 @@ namespace DeadLetter.Mail
             ResolveDayCycle();
             if ((taskState.CurrentDay == 2 || taskState.CurrentDay == 3) && dayCycle?.CurrentPackageRequest != null)
                 return GetPackageNextAction(dayCycle.CurrentPackageRequest);
+            if (taskState.CurrentDay == 1 && dayCycle != null && dayCycle.CurrentDayOneIdentityRequired)
+                return "창구 모니터에서 신원을 확인하세요.";
+            if (taskState.CurrentDay == 1 && dayCycle != null && dayCycle.CurrentDayOneIdentityVerified && !taskState.HasLetter)
+                return "신원 확인 완료 — 편지 발송 업무를 진행하세요.";
             if (!taskState.HasLetter)
                 return "창구 민원인에게 편지 받기";
             if (!taskState.WorkstationOpened)

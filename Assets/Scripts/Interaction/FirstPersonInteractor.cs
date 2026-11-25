@@ -28,6 +28,13 @@ namespace DeadLetter.Interaction
             set => interactionDistance = Mathf.Max(0.1f, value);
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public void DebugRefreshTarget()
+        {
+            FindInteractable(true);
+        }
+#endif
+
         private void Update()
         {
             Mouse mouse = Mouse.current;
