@@ -260,6 +260,8 @@ namespace DeadLetter.DebugTools
 
             Day2RequestRuntimeState state = dayCycle.CurrentPackageRequest;
             Day2RequestDefinition definition = state.Definition;
+            if (taskState.CurrentDay == 2)
+                value.AppendLine($"DAY 2 신원: ID {EmptyAsDash(dayCycle.CurrentCustomerId)} / 조회 {Flag(dayCycle.CurrentIdentityLookedUp)} / 일치 {Flag(dayCycle.CurrentIdentityMatches)} / 승인 {Flag(dayCycle.CurrentDayTwoIdentityVerified)}");
             bool dayThree = taskState.CurrentDay == 3;
             var order = dayThree ? dayCycle.DayThreeOrder : dayCycle.DayTwoOrder;
             string modelRequestId = dayThree ? Day3RequestCatalog.ModelStudentRequestId : Day2RequestCatalog.ModelStudentRequestId;

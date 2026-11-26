@@ -17,7 +17,7 @@ namespace DeadLetter.Mail
         public bool CanInteract(GameObject interactor)
         {
             ResolveReferences();
-            return dayCycle != null && panel != null && dayCycle.CurrentDayOneIdentityRequired &&
+            return dayCycle != null && panel != null && dayCycle.CurrentIdentityRequired &&
                    (customer == null || !customer.DialogueActive) &&
                    (taskState == null || !taskState.WorkstationViewOpen) && !panel.IsOpen;
         }

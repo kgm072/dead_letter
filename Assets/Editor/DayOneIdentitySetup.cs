@@ -55,6 +55,7 @@ namespace DeadLetter.Editor
                 else if (command == "play-confirm") ConfirmPlayModePreview();
                 else if (command == "play-close") ClosePlayModePreview();
                 else if (command == "play-verify-monitor-ray") VerifyMonitorRayDirections();
+                else if (command == "play-verify-day2") VerifyDayTwoPlayMode();
                 else if (command == "play-right-click-monitor") QueueMonitorRightClick();
                 else if (command == "stop-play") EditorApplication.isPlaying = false;
                 else if (command == "regression-day2")
@@ -150,7 +151,7 @@ namespace DeadLetter.Editor
             if (scene.path != ScenePath)
                 scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             ValidateSceneAndPrefab(scene);
-            const string message = "PASS DAY 1 identity state for five customers, reset isolation, monitor prefab, and scene references.";
+            const string message = "PASS DAY 1 and DAY 2 identity state, five customers per day, reset isolation, monitor prefab, and scene references.";
             File.WriteAllText("Temp/DeadLetterIdentityResult.txt", message);
             Debug.Log(message);
         }
@@ -262,6 +263,60 @@ namespace DeadLetter.Editor
             Require(player.InputEnabled && player.CursorLocked && !Cursor.visible,
                 "Player input or cursor was not restored after closing the panel.");
             WriteResult("PASS Play Mode close button restored player input and cursor lock.");
+        }
+
+        private static void VerifyDayTwoPlayMode()
+        {
+            Require(Application.isPlaying, "Play Mode is required.");
+            DayCycleManager manager = UnityEngine.Object.FindAnyObjectByType<DayCycleManager>();
+            DayOneIdentityMonitor monitor = UnityEngine.Object.FindAnyObjectByType<DayOneIdentityMonitor>();
+            DayOneIdentityPanel panel = UnityEngine.Object.FindAnyObjectByType<DayOneIdentityPanel>(FindObjectsInactive.Include);
+            TestCustomerNPC customer = UnityEngine.Object.FindAnyObjectByType<TestCustomerNPC>(FindObjectsInactive.Include);
+            FirstPersonController player = UnityEngine.Object.FindAnyObjectByType<FirstPersonController>();
+            Require(manager != null && monitor != null && panel != null && customer != null && player != null,
+                "DAY 2 Play Mode identity references are incomplete.");
+            Require(manager.DebugStartDay(2), "DAY 2 Play Mode start failed.");
+            foreach (Day2RequestDefinition definition in Day2RequestCatalog.CreateDefinitions())
+            {
+                Require(manager.DebugSelectDayTwoRequest(definition.RequestId),
+                    $"DAY 2 Play Mode selection failed: {definition.RequestId}");
+                customer.gameObject.SetActive(false);
+                Require(!manager.CurrentIdentityVerified && !manager.CanAcceptCurrentLetter(definition.CustomerId),
+                    $"DAY 2 previous approval leaked: {definition.RequestId}");
+                manager.NotifyDayTwoIdentityCheckRequested(definition.CustomerId);
+                Require(monitor.CanInteract(player.gameObject),
+                    $"DAY 2 monitor did not activate: {definition.RequestId}");
+                monitor.Interact(player.gameObject);
+                Require(panel.IsOpen, $"DAY 2 panel did not open: {definition.RequestId}");
+                TextMeshProUGUI[] labels = panel.GetComponentsInChildren<TextMeshProUGUI>(true);
+                string day = labels.First(label => label.name == "Day").text;
+                string customerName = labels.First(label => label.name == "Customer").text;
+                string work = labels.First(label => label.name == "Work").text;
+                string item = labels.First(label => label.name == "Item").text;
+                string expectedName = definition.CustomerId == "drunk_driver" ? "음주운전자" :
+                    CustomerDialogueCatalog.TryGet(2, definition.CustomerId, out CustomerDialogueScenario scenario)
+                        ? scenario.SpeakerName : definition.CustomerDisplayName;
+                Require(day == "DAY 02" &&
+                        customerName.Contains(expectedName) &&
+                        work.Contains(definition.RequestType == MailRequestType.Dispatch ? "발송" : "수령") &&
+                        definition.RequestedItems.All(type => item.Contains(Day2Labels.GetItemLabel(type))) &&
+                        item.Contains("편지 처리: 필요"),
+                    $"DAY 2 displayed work data is wrong: {definition.RequestId}");
+                Button lookup = panel.GetComponentsInChildren<Button>(true).First(button => button.name == "Lookup");
+                Button confirm = panel.GetComponentsInChildren<Button>(true).First(button => button.name == "Confirm");
+                Require(!confirm.interactable, "DAY 2 approved before lookup.");
+                lookup.onClick.Invoke();
+                Require(confirm.interactable && manager.CurrentIdentityMatches,
+                    $"DAY 2 lookup did not enable approval: {definition.RequestId}");
+                confirm.onClick.Invoke();
+                Require(manager.CurrentDayTwoIdentityVerified && !monitor.CanInteract(player.gameObject) &&
+                        manager.CanAcceptCurrentLetter(definition.CustomerId),
+                    $"DAY 2 approval did not unlock work and disable monitor: {definition.RequestId}");
+                panel.Close();
+                Require(manager.DebugAcceptCurrentRequest() && manager.CurrentDayTwoRequest.RequestAccepted,
+                    $"DAY 2 package acceptance failed after approval: {definition.RequestId}");
+            }
+            WriteResult("PASS Play Mode DAY 2: all five monitor records, labels, lookup, approval, reinteraction lock, and package acceptance.");
         }
 
         private static void VerifyMonitorRayDirections()
@@ -471,6 +526,38 @@ namespace DeadLetter.Editor
 
                 Require(manager.DebugStartDay(2), "DAY 2 regression start failed.");
                 Require(!manager.CanUseDayOneIdentityMonitor, "Identity monitor leaked into DAY 2.");
+                Require(!manager.CurrentIdentityVerified && !manager.CurrentIdentityLookedUp,
+                    "DAY 1 identity state leaked into DAY 2.");
+                Day2RequestDefinition[] expected = Day2RequestCatalog.CreateDefinitions().ToArray();
+                int studentIndex = Array.FindIndex(manager.DayTwoOrder.ToArray(), request =>
+                    request.Definition.RequestId == Day2RequestCatalog.ModelStudentRequestId);
+                int drownedIndex = Array.FindIndex(manager.DayTwoOrder.ToArray(), request =>
+                    request.Definition.RequestId == Day2RequestCatalog.TroublemakerRequestId);
+                Require(studentIndex >= 0 && drownedIndex > studentIndex,
+                    "DAY 2 student transfer order changed.");
+                foreach (Day2RequestDefinition definition in expected)
+                {
+                    Require(manager.DebugSelectDayTwoRequest(definition.RequestId),
+                        $"DAY 2 customer selection failed: {definition.RequestId}");
+                    Require(!manager.CanAcceptCurrentLetter(definition.CustomerId),
+                        $"DAY 2 letter was available before approval: {definition.RequestId}");
+                    manager.NotifyDayTwoIdentityCheckRequested(definition.CustomerId);
+                    Require(manager.CurrentIdentityRequired && !manager.ConfirmCurrentIdentity(),
+                        $"DAY 2 approved before lookup: {definition.RequestId}");
+                    Require(manager.CurrentDayTwoRequest.Definition.RequestType == definition.RequestType &&
+                            manager.CurrentDayTwoRequest.Definition.RequestedItems.SequenceEqual(definition.RequestedItems),
+                        $"DAY 2 work data changed: {definition.RequestId}");
+                    Require(manager.LookUpCurrentIdentity(out string dayTwoResult) && dayTwoResult == "정보 일치" &&
+                            manager.CurrentIdentityMatches, $"DAY 2 lookup failed: {definition.RequestId}");
+                    Require(manager.ConfirmCurrentIdentity() && manager.CurrentDayTwoIdentityVerified &&
+                            !manager.CurrentIdentityRequired && manager.CanAcceptCurrentLetter(definition.CustomerId),
+                        $"DAY 2 approval failed: {definition.RequestId}");
+                    Require(manager.DebugAcceptCurrentRequest() && manager.CurrentDayTwoRequest.RequestAccepted,
+                        $"DAY 2 original package acceptance failed: {definition.RequestId}");
+                }
+                Require(manager.DebugSelectDayTwoRequest(expected[0].RequestId) &&
+                        !manager.CurrentDayTwoIdentityVerified && !manager.CurrentIdentityLookedUp,
+                    "Previous DAY 2 identity state leaked into the next request.");
                 Require(manager.DebugStartDay(1), "DAY 1 reset failed.");
                 Require(manager.DebugSelectDayOneCustomer("mascot"), "DAY 1 reset customer selection failed.");
                 manager.NotifyDayOneIdentityCheckRequested("mascot");

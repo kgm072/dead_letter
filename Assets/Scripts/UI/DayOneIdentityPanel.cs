@@ -14,6 +14,9 @@ namespace DeadLetter.UI
         [SerializeField] private DayCycleManager dayCycle;
         [SerializeField] private FirstPersonController playerController;
         [SerializeField] private TextMeshProUGUI customerNameText;
+        [SerializeField] private TextMeshProUGUI dayText;
+        [SerializeField] private TextMeshProUGUI workText;
+        [SerializeField] private TextMeshProUGUI itemText;
         [SerializeField] private TextMeshProUGUI statusText;
         [SerializeField] private Button lookupButton;
         [SerializeField] private Button confirmButton;
@@ -49,7 +52,7 @@ namespace DeadLetter.UI
         public void Open()
         {
             ResolveReferences();
-            if (dayCycle == null || !dayCycle.CurrentDayOneIdentityRequired)
+            if (dayCycle == null || !dayCycle.CurrentIdentityRequired)
                 return;
 
             restorePlayerInput = playerController == null || playerController.InputEnabled;
@@ -57,6 +60,7 @@ namespace DeadLetter.UI
                 playerController.SetInputEnabled(false);
             gameObject.SetActive(true);
             lookupError = string.Empty;
+            lookupInProgress = false;
             Refresh();
         }
 
@@ -72,8 +76,29 @@ namespace DeadLetter.UI
             string displayName = dayCycle != null && !string.IsNullOrWhiteSpace(dayCycle.CurrentCustomerDisplayName)
                 ? dayCycle.CurrentCustomerDisplayName
                 : "조회 대상 없음";
-            bool verified = dayCycle != null && dayCycle.CurrentDayOneIdentityVerified;
-            bool matched = dayCycle != null && dayCycle.CurrentDayOneIdentityMatches;
+            bool verified = dayCycle != null && dayCycle.CurrentIdentityVerified;
+            bool matched = dayCycle != null && dayCycle.CurrentIdentityMatches;
+            Day2RequestDefinition package = dayCycle != null && dayCycle.IsDayTwoActive
+                ? dayCycle.CurrentDayTwoRequest?.Definition : null;
+            if (package != null)
+            {
+                if (package.CustomerId == "drunk_driver")
+                    displayName = "음주운전자";
+                else if (CustomerDialogueCatalog.TryGet(2, package.CustomerId, out CustomerDialogueScenario scenario))
+                    displayName = scenario.SpeakerName;
+            }
+
+            dayText ??= FindLabel("Day");
+            workText ??= FindLabel("Work");
+            itemText ??= FindLabel("Item");
+            if (dayText != null)
+                dayText.text = $"DAY {(dayCycle != null && dayCycle.IsDayTwoActive ? 2 : 1):00}";
+            if (workText != null)
+                workText.text = package == null ? "업무 유형: 편지 발송" :
+                    $"업무 유형: 택배 {(package.RequestType == MailRequestType.Dispatch ? "발송" : "수령")}";
+            if (itemText != null)
+                itemText.text = package == null ? "접수 물품: 편지 1통" :
+                    $"{(package.RequestType == MailRequestType.Dispatch ? "발송" : "수령")} 물품: {Day2Labels.GetItemList(package.RequestedItems)}  |  편지 처리: 필요";
 
             if (customerNameText != null)
                 customerNameText.text = $"현재 민원인: {displayName}";
@@ -88,9 +113,9 @@ namespace DeadLetter.UI
                     : new Color(0.95f, 0.91f, 0.82f, 1f);
             }
             if (lookupButton != null)
-                lookupButton.interactable = dayCycle != null && dayCycle.CanUseDayOneIdentityMonitor && !verified;
+                lookupButton.interactable = dayCycle != null && dayCycle.CanUseCurrentIdentityMonitor && !verified;
             if (confirmButton != null)
-                confirmButton.interactable = dayCycle != null && dayCycle.CurrentDayOneIdentityRequired && matched;
+                confirmButton.interactable = dayCycle != null && dayCycle.CurrentIdentityRequired && matched;
         }
 
         public void LookUpIdentity()
@@ -99,7 +124,7 @@ namespace DeadLetter.UI
             lookupInProgress = true;
             Refresh();
             string message = "조회를 완료할 수 없습니다.";
-            if (dayCycle == null || !dayCycle.LookUpCurrentDayOneIdentity(out message))
+            if (dayCycle == null || !dayCycle.LookUpCurrentIdentity(out message))
                 lookupError = message;
             lookupInProgress = false;
             Refresh();
@@ -107,8 +132,16 @@ namespace DeadLetter.UI
 
         public void ConfirmIdentity()
         {
-            if (dayCycle != null && dayCycle.ConfirmCurrentDayOneIdentity())
+            if (dayCycle != null && dayCycle.ConfirmCurrentIdentity())
                 Refresh();
+        }
+
+        private TextMeshProUGUI FindLabel(string labelName)
+        {
+            foreach (TextMeshProUGUI label in GetComponentsInChildren<TextMeshProUGUI>(true))
+                if (label.name == labelName)
+                    return label;
+            return null;
         }
 
         private void ResolveReferences()

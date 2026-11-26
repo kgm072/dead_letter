@@ -33,6 +33,7 @@ namespace DeadLetter.Mail
         private readonly Dictionary<string, string> claimedWorldItemOwners = new();
         private readonly Dictionary<string, string> claimedBoxOwners = new();
         private readonly HashSet<string> verifiedDayOneCustomers = new();
+        private readonly HashSet<string> verifiedDayTwoRequests = new();
         private int nextCustomerIndex;
         private bool transitionInProgress;
         private bool customerActive;
@@ -72,6 +73,16 @@ namespace DeadLetter.Mail
         public bool CurrentDayOneIdentityLookedUp => CanUseDayOneIdentityMonitor &&
             string.Equals(identityLookedUpCustomerId, currentCustomerId, System.StringComparison.Ordinal);
         public bool CurrentDayOneIdentityMatches => CurrentDayOneIdentityLookedUp && identityInformationMatches;
+        public bool CanUseCurrentIdentityMonitor => CanUseDayOneIdentityMonitor || CanUseDayTwoIdentityMonitor;
+        public bool CanUseDayTwoIdentityMonitor => IsDayTwoActive && customerActive && currentPackageRequest != null &&
+            string.Equals(identityCheckCustomerId, currentCustomerId, System.StringComparison.Ordinal);
+        public bool CurrentIdentityVerified => CurrentDayOneIdentityVerified || CurrentDayTwoIdentityVerified;
+        public bool CurrentIdentityRequired => CanUseCurrentIdentityMonitor && !CurrentIdentityVerified;
+        public bool CurrentIdentityLookedUp => CanUseCurrentIdentityMonitor &&
+            string.Equals(identityLookedUpCustomerId, currentCustomerId, System.StringComparison.Ordinal);
+        public bool CurrentIdentityMatches => CurrentIdentityLookedUp && identityInformationMatches;
+        public bool CurrentDayTwoIdentityVerified => CanUseDayTwoIdentityMonitor &&
+            verifiedDayTwoRequests.Contains(currentPackageRequest.Definition.RequestId);
 
         public event System.Action DayTwoStateChanged;
         public event System.Action DayThreeStateChanged;
@@ -88,6 +99,77 @@ namespace DeadLetter.Mail
             return taskState == null || taskState.CurrentDay != 1 ||
                    (string.Equals(currentCustomerId, customerId, System.StringComparison.Ordinal) &&
                     IsDayOneIdentityVerified(customerId));
+        }
+
+        public bool CanAcceptCurrentLetter(string customerId)
+        {
+            if (IsDayTwoActive)
+                return CurrentDayTwoIdentityVerified &&
+                       string.Equals(currentCustomerId, customerId, System.StringComparison.Ordinal);
+            return CanAcceptDayOneLetter(customerId);
+        }
+
+        public bool LookUpCurrentIdentity(out string message)
+        {
+            if (IsDayTwoActive)
+            {
+                identityLookedUpCustomerId = string.Empty;
+                identityInformationMatches = false;
+                if (!CanUseDayTwoIdentityMonitor)
+                {
+                    message = "조회할 민원인이 없습니다.";
+                    return false;
+                }
+
+                Day2RequestDefinition actual = currentPackageRequest.Definition;
+                Day2RequestDefinition registered = Day2RequestCatalog.CreateDefinitions().FirstOrDefault(candidate =>
+                    string.Equals(candidate.RequestId, actual.RequestId, System.StringComparison.Ordinal));
+                if (registered == null || actual.Day != 2 ||
+                    !string.Equals(actual.CustomerId, currentCustomerId, System.StringComparison.Ordinal) ||
+                    !string.Equals(actual.CustomerDisplayName, currentCustomerDisplayName, System.StringComparison.Ordinal) ||
+                    !string.Equals(registered.CustomerId, actual.CustomerId, System.StringComparison.Ordinal) ||
+                    registered.RequestType != actual.RequestType ||
+                    !registered.RequestedItems.SequenceEqual(actual.RequestedItems) ||
+                    registered.RequiredPictograms != actual.RequiredPictograms ||
+                    (taskState.HasLetter && (!string.Equals(taskState.CustomerId, currentCustomerId, System.StringComparison.Ordinal) ||
+                                             !string.Equals(taskState.LetterId, currentLetterId, System.StringComparison.Ordinal))))
+                {
+                    message = "현재 민원과 등록된 업무·물품 정보가 일치하지 않습니다.";
+                    NotifyPackageStateChanged();
+                    return false;
+                }
+
+                identityLookedUpCustomerId = currentCustomerId;
+                identityInformationMatches = true;
+                message = "정보 일치";
+                NotifyPackageStateChanged();
+                return true;
+            }
+            return LookUpCurrentDayOneIdentity(out message);
+        }
+
+        public bool ConfirmCurrentIdentity()
+        {
+            if (IsDayTwoActive)
+            {
+                if (!CurrentIdentityMatches || currentPackageRequest == null)
+                    return false;
+                if (CurrentDayTwoIdentityVerified)
+                    return true;
+                verifiedDayTwoRequests.Add(currentPackageRequest.Definition.RequestId);
+                NotifyPackageStateChanged();
+                return Succeed("접수 승인 완료");
+            }
+            return ConfirmCurrentDayOneIdentity();
+        }
+
+        public void NotifyDayTwoIdentityCheckRequested(string customerId)
+        {
+            if (!IsDayTwoActive || !customerActive || currentPackageRequest == null ||
+                !string.Equals(currentCustomerId, customerId, System.StringComparison.Ordinal))
+                return;
+            identityCheckCustomerId = customerId;
+            NotifyPackageStateChanged();
         }
 
         public bool LookUpCurrentDayOneIdentity(out string message)
@@ -569,6 +651,7 @@ namespace DeadLetter.Mail
             claimedWorldItemOwners.Clear();
             claimedBoxOwners.Clear();
             verifiedDayOneCustomers.Clear();
+            verifiedDayTwoRequests.Clear();
             identityCheckCustomerId = string.Empty;
             identityLookedUpCustomerId = string.Empty;
             identityInformationMatches = false;
@@ -839,6 +922,8 @@ namespace DeadLetter.Mail
             customer.HideUntilNextCustomer();
             taskState.DebugClearCurrentRequest();
             selected.Reset();
+            if (day == 2)
+                verifiedDayTwoRequests.Remove(selected.Definition.RequestId);
             ReleaseClaimsForRequest(selected.Definition.RequestId);
             currentPackageRequest = selected;
             int orderIndex = IndexOfRequest(order, selected);
@@ -976,6 +1061,9 @@ namespace DeadLetter.Mail
 
         private void BeginPackageCustomer(Day2RequestRuntimeState request)
         {
+            identityCheckCustomerId = string.Empty;
+            identityLookedUpCustomerId = string.Empty;
+            identityInformationMatches = false;
             Day2RequestDefinition definition = request.Definition;
             request.MarkAppeared();
             currentLetterId = $"{definition.RequestId}_letter";

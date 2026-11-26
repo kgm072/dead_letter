@@ -35,6 +35,11 @@ namespace DeadLetter.Mail
                     ? "DAY 3 업무 완료 — 엔딩 연결 대기"
                     : "탕비실 소파에서 다음 DAY 시작";
             ResolveDayCycle();
+            if (taskState.CurrentDay == 2 && dayCycle != null && dayCycle.CurrentIdentityRequired)
+                return "창구 모니터에서 신원을 확인하세요.";
+            if (taskState.CurrentDay == 2 && dayCycle != null && dayCycle.CurrentDayTwoIdentityVerified &&
+                dayCycle.CurrentPackageRequest != null && !dayCycle.CurrentPackageRequest.RequestAccepted)
+                return "접수 승인 완료 — 창구 민원인에게 편지와 민원 받기";
             if ((taskState.CurrentDay == 2 || taskState.CurrentDay == 3) && dayCycle?.CurrentPackageRequest != null)
                 return GetPackageNextAction(dayCycle.CurrentPackageRequest);
             if (taskState.CurrentDay == 1 && dayCycle != null && dayCycle.CurrentDayOneIdentityRequired)

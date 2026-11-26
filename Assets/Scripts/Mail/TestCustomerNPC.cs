@@ -148,7 +148,7 @@ namespace DeadLetter.Mail
                 return false;
 
             return state == CustomerState.WaitingForLetter && !taskState.HasLetter &&
-                   (dayCycle == null || dayCycle.CanAcceptDayOneLetter(customerId)) ||
+                   (dayCycle == null || dayCycle.CanAcceptCurrentLetter(customerId)) ||
                    state == CustomerState.WaitingForDispatch &&
                    (dayCycle != null
                        ? dayCycle.CanFinishCurrentCustomer(customerId, letterId)
@@ -162,7 +162,7 @@ namespace DeadLetter.Mail
 
             if (state == CustomerState.WaitingForLetter)
             {
-                if (dayCycle != null && !dayCycle.CanAcceptDayOneLetter(customerId))
+                if (dayCycle != null && !dayCycle.CanAcceptCurrentLetter(customerId))
                     return;
                 if (!taskState.TryReceiveLetter(letterId, customerId, customerDisplayName, requiredStamps))
                     return;
@@ -428,6 +428,9 @@ namespace DeadLetter.Mail
             pendingSectionEventId = string.Empty;
             pendingSectionEventAtStart = false;
             EndDialogueLock();
+
+            if (finishedPhase == DialoguePhase.Opening)
+                dayCycle?.NotifyDayTwoIdentityCheckRequested(customerId);
 
             if (finishedPhase == DialoguePhase.Completion)
                 BeginDeparture();
