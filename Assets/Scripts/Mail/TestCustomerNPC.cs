@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DeadLetter.Characters;
 using DeadLetter.Interaction;
 using DeadLetter.Player;
 using UnityEngine;
@@ -36,6 +37,8 @@ namespace DeadLetter.Mail
         [SerializeField] private GameObject letterProp;
         [SerializeField, Min(0.1f)] private float moveSpeed = 1.45f;
         [SerializeField, Min(1f)] private float turnSpeed = 360f;
+        [Tooltip("손님 ID별 캐릭터 모델. 비어 있으면 같은 오브젝트에서 찾는다.")]
+        [SerializeField] private CustomerVisualSet visualSet;
 
         private CustomerState state = CustomerState.Inactive;
         private DayCycleManager dayCycle;
@@ -126,6 +129,14 @@ namespace DeadLetter.Mail
             if (letterProp != null)
                 letterProp.SetActive(true);
             gameObject.SetActive(true);
+
+            if (visualSet == null)
+                visualSet = GetComponent<CustomerVisualSet>();
+            if (visualSet != null)
+            {
+                visualSet.SetTalkingQuery(() => DialogueActive);
+                visualSet.Show(taskState != null ? taskState.CurrentDay : 1, id);
+            }
         }
 
         public void HideUntilNextCustomer()
